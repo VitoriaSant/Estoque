@@ -6,6 +6,7 @@
   <Linhas />
   <Pizza />
   <Tabela />
+  <Filtro />
 </template>
 
 <script lang="ts" setup>

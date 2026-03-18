@@ -14,6 +14,7 @@ declare module 'vue' {
     BarrasHorizontal: typeof import('./components/BarrasHorizontal.vue')['default']
     BarrasVertical: typeof import('./components/BarrasVertical.vue')['default']
     Donuts: typeof import('./components/Donuts.vue')['default']
+    Filtro: typeof import('./components/Filtro.vue')['default']
     HelloWorld: typeof import('./components/HelloWorld.vue')['default']
     Linhas: typeof import('./components/Linhas.vue')['default']
     NavBar: typeof import('./components/NavBar.vue')['default']
