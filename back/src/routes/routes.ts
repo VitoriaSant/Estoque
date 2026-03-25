@@ -4,6 +4,6 @@ import ComprasPendentesController from '../controllers/comprasPendetes.Controlle
 const router = Router();
 const comprasPendentesController = new ComprasPendentesController
 
-router.get('/', comprasPendentesController.get);
+router.post('/', comprasPendentesController.post);
 
 export default router;
