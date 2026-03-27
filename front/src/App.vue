@@ -3,6 +3,10 @@
     <v-app-bar app color="primary">
       <v-app-bar-nav-icon @click="drawer = !drawer" />
       <v-toolbar-title>Estoque</v-toolbar-title>
+      <v-btn class="text-h7 ml-auto d-flex align-center justify-end">
+        <v-icon >mdi-filter-outline</v-icon>
+          Filtros
+      </v-btn>
     </v-app-bar>
 
     <v-navigation-drawer v-model="drawer" app temporary>
