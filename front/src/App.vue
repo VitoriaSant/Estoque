@@ -23,6 +23,16 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import { testeService } from "./Service/teste";
 const drawer = ref(false)
+
+
+const service = new testeService()
+
+onMounted(async () => {
+  console.log('App component mounted');
+  await service.getTesteData();
+
+})
 </script>

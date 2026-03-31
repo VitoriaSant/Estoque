@@ -160,22 +160,77 @@
             label="Operador"
             variant="underlined"
             item-title="title"
-            v-model="select" 
+            v-model="select.state" 
         ></v-select>
+        {{ select.state }}
 
         <v-text-field
             label="Descrição"
             variant="underlined"
         ></v-text-field>
-
         </v-card-text>
-        <div id="consultar-valores-btn" class="d-flex flex-column" >
-            <v-btn color="secondary"> Consultar Valores </v-btn>
-        </div>
-        <div class="d-flex flex-column">
-            <v-btn color="primary"> Filtrar </v-btn>
-        </div>
 
+        <!--CONSULTAR VALORES-->
+        <div class="pa-4 text-center">
+            <v-dialog
+            v-model="dialog"
+            max-width="600"
+            >
+            <template v-slot:activator="{ props: activatorProps }">
+                <!-- BOTÃO CONSULTAR VALORES-->
+                <div id="consultar-valores-btn" class="d-flex flex-column ga-2">
+                    <v-btn 
+                        v-bind="activatorProps"
+                        color="secondary" 
+                        @click="ConsultarValores"> 
+                        Consultar Valores 
+                    </v-btn>
+
+                <!-- FILTRAR -->
+                <div class="d-flex flex-column ga-2">
+                    <v-btn color="primary"> Filtrar </v-btn>
+                </div>
+                </div>
+            </template>
+
+            <!--CARD/PESQUISA CONSULTAR VALORES-->
+            <v-card>
+                <v-card-text>
+                    <v-text-field
+                        :loading="loading"
+                        color="primary"
+                        append-inner-icon="mdi-magnify"
+                        density="compact"
+                        label="Consultar Valores"
+                        variant="solo"
+                        hide-details
+                        single-line
+                        @click:append-inner="onClick"
+                    ></v-text-field>
+                </v-card-text>
+
+                <v-divider></v-divider>
+
+                <v-card-actions>
+                <v-spacer></v-spacer>
+
+                <v-btn
+                    color="secondary"
+                    text="Fechar"
+                    variant="plain"
+                    @click="dialog = false"
+                ></v-btn>
+
+                <v-btn
+                    color="primary"
+                    text="Confirmar"
+                    variant="tonal"
+                    @click="dialog = false"
+                ></v-btn>
+                </v-card-actions>
+            </v-card>
+            </v-dialog>
+        </div>
         </v-card>
     </v-col>
 
@@ -191,14 +246,30 @@ import { shallowRef } from 'vue'
 const dataInicio = ref('')
 const dataFim = ref('')
 const filtroSelecionado = ref('Item')
-
 const select = shallowRef({ state: 'Igual'})
+const ConstValores = ref(false)
+const dialog = ref(false);
+const loaded = ref(false)
+const loading = ref(false)
+
+
+const ConsultarValores =[
+    ConstValores.value = !ConstValores.value
+]
 
 const operadores = [
-    { title: 'Igual', value: 'igual', icon: 'mdi-equal' },
-    { title: 'Diferente', value: 'diferente', icon: 'mdi-not-equal' },
-    { title: 'Contém', value: 'contem', icon: 'mdi-magnify' },
+    { title: 'Igual', value: 'igual'},
+    { title: 'Diferente', value: 'diferente'},
+    { title: 'Contém', value: 'contem'},
 ]
+
+function onClick () {
+    loading.value = true
+    setTimeout(() => {
+    loading.value = false
+    loaded.value = true
+    }, 2000)
+}
 
 function filtrar(valor: string) {
     filtroSelecionado.value = valor
