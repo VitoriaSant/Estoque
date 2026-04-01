@@ -49,11 +49,13 @@ function fechar() {
 
 //Teste de conexão com o backend
 const service = new testeService()
+const compraPendenteService = new CompraPendenteService();
 
 onMounted(async () => {
   console.log('App component mounted');
   await service.getTesteData();
 
-
-})
+  const comprasPendentes = await compraPendenteService.listarComprasPendentes(273);
+    console.log('Compras Pendentes:', comprasPendentes);
+  })
 </script>
