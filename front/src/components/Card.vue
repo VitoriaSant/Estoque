@@ -1,8 +1,7 @@
 <template>
     <v-card
-        variant="outlined"
+        variant="elevated"
         class="mx-auto"
-        color="primary"
         :title="title"
         :subtitle="subtitle"
     >
@@ -12,7 +11,6 @@
     </v-card>
 </template>
 <script setup>
-
 defineProps({
     title: String,
     subtitle: String
