@@ -5,17 +5,17 @@
             <v-btn icon="mdi-close" variant="text" class="position-absolute right-0 top-0" @click="fechar" />
         </v-card-title>
 
-        <v-row class="mb-2">
-            <v-col cols="12" md="6">
+        <v-row class="mb-2" no-gutters >
+            <v-col cols="12" md="6" class="pa-1">
                 <v-text-field v-model="dataInicio" label="Data início" type="date" variant="outlined" />
             </v-col>
 
-            <v-col cols="12" md="6">
+            <v-col cols="12" md="6" class="pa-1">
                 <v-text-field v-model="dataFim" label="Data fim" type="date" variant="outlined" />
             </v-col>
         </v-row>
 
-        <v-row>
+        <v-row no-gutters>
             <v-col cols="12" md="6">
                 <v-card variant="outlined" class="pa-4" border="sm">
                     <div class="d-flex flex-column ga-2">
@@ -160,12 +160,8 @@ function filtrar(valor: string) {
     filtroSelecionado.value = valor
 }
 
-
-
 </script>
 
 <style scoped>
-#consultar-valores-btn {
-    margin-bottom: 20px;
-}
+
 </style>
