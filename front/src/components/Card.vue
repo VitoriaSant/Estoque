@@ -4,6 +4,7 @@
         class="mx-auto"
         :title="title"
         :subtitle="subtitle"
+        :prepend-icon="icon"
     >
     <template v-slot:text>
         VALOR 
@@ -13,6 +14,7 @@
 <script setup>
 defineProps({
     title: String,
-    subtitle: String
+    subtitle: String,
+    icon: String
 })
 </script>
