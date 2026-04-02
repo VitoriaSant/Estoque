@@ -13,6 +13,7 @@ declare module 'vue' {
   export interface GlobalComponents {
     BarrasHorizontal: typeof import('./components/BarrasHorizontal.vue')['default']
     BarrasVertical: typeof import('./components/BarrasVertical.vue')['default']
+    Card: typeof import('./components/Card.vue')['default']
     Donuts: typeof import('./components/Donuts.vue')['default']
     Filtro: typeof import('./components/Filtro.vue')['default']
     HelloWorld: typeof import('./components/HelloWorld.vue')['default']
