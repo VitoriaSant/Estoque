@@ -12,7 +12,7 @@
 
 <script setup lang="ts">
 // Vue
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch } from "vue";
 
 // Services
 import PedidoCompraPendenteController from "@/Service/tema-estoque/pedidos-compra-pendente/PedidoCompraPendenteController";
@@ -32,9 +32,29 @@ const classeFiltro = ref<CClasseFiltro<CPedidoCompraPendenteModel>>(
 
 // Constantes
 const controller = new PedidoCompraPendenteController();
+const dialog = ref(false);
+const listaCompras = ref<CPedidoCompraPendenteModel[]>([]);
+
+async function buscarDados() {
+  console.log("Iniciando busca com filtros:", classeFiltro.value);
+  const comprasPendentes = await controller.listarComprasPendentes(classeFiltro.value);
+  listaCompras.value = comprasPendentes;
+  console.log("Resultado da busca:", comprasPendentes);
+  
+  // Aqui você provavelmente deve passar esses dados para os seus componentes de "Linha"
+  // Ex: listaCompras.value = comprasPendentes;
+}
+  watch(
+    classeFiltro, 
+    () => {
+      buscarDados();
+    }, 
+    { deep: true }
+);
 
 onMounted(async () => {
   console.log("App component mounted");
+  buscarDados();
 
   // const classeFiltro = new CClasseFiltro<CPedidoCompraPendenteModel>();
 
@@ -46,10 +66,6 @@ onMounted(async () => {
   //   },
   // ];
 
-  const comprasPendentes =
-    await controller.listarComprasPendentes(classeFiltro.value);
-    console.log("Classe Filtro:", classeFiltro.value);
-    console.log("Compras Pendentes:", comprasPendentes);
 });
 </script>
 

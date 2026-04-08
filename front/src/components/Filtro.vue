@@ -20,7 +20,7 @@
                 <v-card variant="outlined" class="pa-4" border="sm">
                     <div class="d-flex flex-column ga-2">
                         <v-btn
-                            v-for="item in ['Código do Fornecedor', 'Fornecedor', 'Código do Item', 'Item', 'Código da Cor', 'Cor', 'Código da Variação', 'Variação', 'Código do Acabamento', 'Acabamento']"
+                            v-for="item in valoresParaFiltro"
                             :key="item" block color="primary"
                             :variant="filtroSelecionado === item ? 'elevated' : 'tonal'" class="justify-start text-none"
                             @click="filtrar(item)">
@@ -50,7 +50,11 @@
                             class="mb-4"
                         ></v-select>
 
-                        <v-text-field label="Descrição" variant="outlined" placeholder="Digite o valor para filtrar..."
+                        <v-text-field
+                            v-model="valorDigitado"
+                            label="Descrição" 
+                            variant="outlined" 
+                            placeholder="Digite o valor para filtrar..."
                             clearable></v-text-field>
                     </v-card-text>
 
@@ -64,7 +68,11 @@
                                         Consultar Valores
                                     </v-btn>
 
-                                    <v-btn color="primary" size="large" variant="elevated">
+                                    <v-btn 
+                                        color="primary" 
+                                        size="large" 
+                                        variant="elevated"
+                                        @click="aplicarFiltro">
                                         <v-icon start icon="mdi-check" />
                                         Aplicar Filtro
                                     </v-btn>
@@ -121,22 +129,35 @@
 </template>
 
 <script setup lang="ts">
+//Vue
 import { ref } from 'vue'
 
-
-const dataInicio = ref('')
-const dataFim = ref('')
 const filtroSelecionado = ref('Item')
 const ConstValores = ref(false)
 const dialog = ref(false)
 const loaded = ref(false)
 const loading = ref(false)
-const emit = defineEmits(['fechar'])
-const operadorSelecionado = ref('igual')
+const emit = defineEmits(['fechar', 'update:classeFiltro'])
 
-function fechar() {
+const props = defineProps(['classeFiltro'])
+
+const operadorSelecionado = ref('igual')
+const valorDigitado = ref('')
+
+function aplicarFiltro() {
+    props.classeFiltro.filtros = [
+        {
+        campo: filtroSelecionado.value, // ex: 'fornecedorId'
+        operador: operadorSelecionado.value.toUpperCase(), // ex: 'IGUAL'
+        valor: valorDigitado.value
+        }
+    ];
+
+    emit('update:classeFiltro', props.classeFiltro);
     emit('fechar')
 }
+
+const valoresParaFiltro = ['Código do Fornecedor', 'Fornecedor', 'Código do Item', 'Item', 'Código da Cor', 'Cor', 'Código da Variação', 'Variação', 'Código do Acabamento', 'Acabamento']
 
 const ConsultarValores = () => {
     ConstValores.value = !ConstValores.value
@@ -147,6 +168,18 @@ const operadores = [
     { title: 'Diferente', value: 'diferente' },
     { title: 'Contém', value: 'contem' },
 ]
+
+// Forçando data atual e data de 30 dias atrás para os campos de data
+const formatarDataParaInput = (data: Date) => {return data.toISOString().split('T')[0]}
+const dataAtual = new Date()
+const dataPassada = new Date() 
+dataPassada.setDate(dataAtual.getDate() - 30)
+const dataInicio = ref(formatarDataParaInput(dataPassada))
+const dataFim = ref(formatarDataParaInput(dataAtual))
+
+function fechar() {
+    emit('fechar')
+}
 
 function onClick() {
     loading.value = true
