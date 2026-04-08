@@ -19,7 +19,8 @@ declare module 'vue-router/auto-routes' {
    */
   export interface RouteNamedMap {
     '/': RouteRecordInfo<'/', '/', Record<never, never>, Record<never, never>>,
-    '/comprasPendentes': RouteRecordInfo<'/comprasPendentes', '/comprasPendentes', Record<never, never>, Record<never, never>>,
+    '/tema-estoque/pedido-compra-pendente/components/Cards': RouteRecordInfo<'/tema-estoque/pedido-compra-pendente/components/Cards', '/tema-estoque/pedido-compra-pendente/components/Cards', Record<never, never>, Record<never, never>>,
+    '/tema-estoque/pedido-compra-pendente/PedidoCompraPendente': RouteRecordInfo<'/tema-estoque/pedido-compra-pendente/PedidoCompraPendente', '/tema-estoque/pedido-compra-pendente/PedidoCompraPendente', Record<never, never>, Record<never, never>>,
   }
 
   /**
@@ -37,8 +38,12 @@ declare module 'vue-router/auto-routes' {
       routes: '/'
       views: never
     }
-    'src/pages/comprasPendentes.vue': {
-      routes: '/comprasPendentes'
+    'src/pages/tema-estoque/pedido-compra-pendente/components/Cards.vue': {
+      routes: '/tema-estoque/pedido-compra-pendente/components/Cards'
+      views: never
+    }
+    'src/pages/tema-estoque/pedido-compra-pendente/PedidoCompraPendente.vue': {
+      routes: '/tema-estoque/pedido-compra-pendente/PedidoCompraPendente'
       views: never
     }
   }
