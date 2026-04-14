@@ -72,7 +72,7 @@
                                         color="primary" 
                                         size="large" 
                                         variant="elevated"
-                                        @click="aplicarFiltro">
+                                        @click="buscarDados()">
                                         <v-icon start icon="mdi-check" />
                                         Aplicar Filtro
                                     </v-btn>
@@ -131,31 +131,32 @@
 <script setup lang="ts">
 //Vue
 import { ref } from 'vue'
+import CClasseFiltro from '@/Service/base/CClasseFiltro'
+import CPedidoCompraPendenteModel from '@/Service/tema-estoque/pedidos-compra-pendente/CPedidoCompraPendenteModel'
+
+//Services
+import PedidoCompraPendenteController from "@/Service/tema-estoque/pedidos-compra-pendente/PedidoCompraPendenteController";
 
 const filtroSelecionado = ref('Item')
 const ConstValores = ref(false)
 const dialog = ref(false)
 const loaded = ref(false)
 const loading = ref(false)
-const emit = defineEmits(['fechar', 'update:classeFiltro'])
+// Define os eventos que este componente pode emitir
+const emit = defineEmits(['fechar', 'aplicar'])
 
 const props = defineProps(['classeFiltro'])
 
+// Constantes
 const operadorSelecionado = ref('igual')
 const valorDigitado = ref('')
+const controller = new PedidoCompraPendenteController();
+const listaCompras = ref<CPedidoCompraPendenteModel[]>([]);
 
-function aplicarFiltro() {
-    props.classeFiltro.filtros = [
-        {
-        campo: filtroSelecionado.value, // ex: 'fornecedorId'
-        operador: operadorSelecionado.value.toUpperCase(), // ex: 'IGUAL'
-        valor: valorDigitado.value
-        }
-    ];
-
-    emit('update:classeFiltro', props.classeFiltro);
-    emit('fechar')
-}
+//Reativas
+const classeFiltro = ref<CClasseFiltro<CPedidoCompraPendenteModel>>(
+    new CClasseFiltro(),
+);
 
 const valoresParaFiltro = ['Código do Fornecedor', 'Fornecedor', 'Código do Item', 'Item', 'Código da Cor', 'Cor', 'Código da Variação', 'Variação', 'Código do Acabamento', 'Acabamento']
 
@@ -193,6 +194,45 @@ function filtrar(valor: string) {
     filtroSelecionado.value = valor
 }
 
+// Função para buscar dados com os filtros atuais
+async function buscarDados() {
+    // Validação: verifica se digitou um valor
+    if (!valorDigitado.value || valorDigitado.value.trim() === '') {
+        alert('Digite um valor para filtrar');
+        return;
+    }
+
+    // Obtém o nome técnico do campo usando o mapeamento do modelo
+    const mapaCampos = CPedidoCompraPendenteModel.getMapaCampos();
+    const campoTecnico = (mapaCampos[filtroSelecionado.value] || filtroSelecionado.value) as keyof CPedidoCompraPendenteModel;
+
+    // Converte valor para número se for um ID
+    let valorConvertido: any = valorDigitado.value;
+    if (campoTecnico.toString().endsWith('Id')) {
+        valorConvertido = Number(valorDigitado.value);
+    }
+
+    // Preenche o objeto de filtro
+    classeFiltro.value.filtros = [
+        {
+            campo: campoTecnico,
+            operador: operadorSelecionado.value.toUpperCase() as any,
+            valor: valorConvertido
+        }
+    ];
+
+    console.log("Filtros:", classeFiltro.value);
+    
+    const comprasPendentes = await controller.listarComprasPendentes(classeFiltro.value);
+    listaCompras.value = comprasPendentes;
+    console.log("Resultado:", comprasPendentes);
+}
+
+// Função chamada quando "Aplicar Filtro" é clicado
+// function onAplicarFiltro(novoFiltro: CClasseFiltro<CPedidoCompraPendenteModel>) {
+//     classeFiltro.value = novoFiltro;
+//     dialog.value = false;
+// }
 </script>
 
 <style scoped>
