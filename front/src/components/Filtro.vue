@@ -221,11 +221,11 @@ async function buscarDados() {
         }
     ];
 
-    console.log("Filtros:", classeFiltro.value);
+    //console.log("Filtros:", classeFiltro.value);
     
     const comprasPendentes = await controller.listarComprasPendentes(classeFiltro.value);
     listaCompras.value = comprasPendentes;
-    console.log("Resultado:", comprasPendentes);
+   // console.log("Resultado:", comprasPendentes);
 }
 
 // Função chamada quando "Aplicar Filtro" é clicado

@@ -1,5 +1,5 @@
-type TOperadorFiltro = "IGUAL" | "DIFERENTE" | "MAIOR" | "MENOR";
-type TOperadorSQL = "=" | "<>" | ">";
+type TOperadorFiltro = "IGUAL" | "DIFERENTE" | "MAIOR" | "MENOR" | "CONTEM";
+type TOperadorSQL = "=" | "<>" | ">" | "CONSTAINING";
 
 export class CFiltro<Classe> {
   campo: keyof Classe = "" as any;
@@ -21,8 +21,8 @@ export class CFiltro<Classe> {
       case "DIFERENTE":
         return "<>";
 
-      case "MAIOR":
-        return ">";
+      case "CONTEM":
+        return "CONSTAINING";
 
       default:
         throw `O operador: "${pOperador}" não foi mapeado na função.`;
@@ -68,5 +68,4 @@ class Joao {
   inteligencia: number = 100;
 }
 
- 
 */

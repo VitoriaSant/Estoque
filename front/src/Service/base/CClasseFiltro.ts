@@ -11,6 +11,5 @@ export default class CClasseFiltro<Classe> {
 
   constructor(pObj?: Partial<CClasseFiltro<Classe>>) {
     this.filtros = pObj?.filtros ?? this.filtros;
-    console.log("CClasseFiltro", this);
   }
 }
