@@ -19,10 +19,9 @@
   </v-navigation-drawer>
 
   <v-main>
-    <v-dialog v-model="dialog" scrollable width="900">
-      <Filtro @fechar="dialog = false" v-model:classe-filtro="classe"/>
-    </v-dialog>
-
+    
+      <!-- <Filtro v-model="dialog" @fechar="dialog = false" @aplicar="onAplicarFiltro" v-model:classe-filtro="classe"/> -->
+    
     <RouterView />
   </v-main>
 </template>

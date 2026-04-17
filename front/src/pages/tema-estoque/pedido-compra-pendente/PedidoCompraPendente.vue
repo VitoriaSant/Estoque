@@ -1,15 +1,10 @@
-<template>
-  <v-dialog v-model="dialog" scrollable width="900">
+<template> 
     <!-- <Filtro @fechar="dialog = false" @aplicar="onAplicarFiltro" v-model:classe-filtro="classeFiltro" /> -->
-    <Filtro @fechar="dialog = false" />
-  </v-dialog>
+    <Filtro v-model:dialogFiltro="dialog" @fechar="dialog = false" @aplicar="onAplicarFiltro" v-model:classe-filtro="classeFiltro" />
 
-  <v-btn @click="onAplicarFiltro"> TEste </v-btn>
-  <Linha1-Cards />
-  <Linha2-PedidoPendente-FornecedorAtraso />
-  <Linha3-PedidoPendente-ItensPendentes />
-
-  
+    <Linha1-Cards />
+    <Linha2-PedidoPendente-FornecedorAtraso />
+    <Linha3-PedidoPendente-ItensPendentes />
 </template>
 
 <script setup lang="ts">
@@ -29,29 +24,27 @@ import Filtro from "@/components/Filtro.vue";
 
 const controller = new PedidoCompraPendenteController();
 const listaCompras = ref<CPedidoCompraPendenteModel[]>([]);
-const filtroRef = ref();
+
 //Reativas
 const classeFiltro = ref<CClasseFiltro<CPedidoCompraPendenteModel>>(
     new CClasseFiltro(),
 );
 
-const dialog = ref(false);
+const dialog = ref(true);
 
 // Função chamada quando "Aplicar Filtro" é clicado
 function onAplicarFiltro(novoFiltro: CClasseFiltro<CPedidoCompraPendenteModel>) {
-    console.log("=== onAplicarFiltro chamada ===");
-    //console.log("Entrou em onAplicarFiltro");
+    console.log("On Aplicar Filtro", novoFiltro);
     classeFiltro.value = novoFiltro;
-    //console.log("Novo filtro recebido do componente Filtro:", classeFiltro.value.filtros);
     dialog.value = false;
-    buscarDados();
 }
 
-// Função para buscar dados com os filtros atuais
+//Função para buscar dados com os filtros atuais
+// Ela nao está sendo chamada ainda
 async function buscarDados() {
     const comprasPendentes = await controller.listarComprasPendentes(classeFiltro.value);
     listaCompras.value = comprasPendentes;
-    console.log("buscarDados");
+    console.log("Buscou dados com filtro:", classeFiltro.value);
 }
 
 </script>
