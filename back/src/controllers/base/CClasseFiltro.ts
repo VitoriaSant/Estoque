@@ -1,5 +1,5 @@
 type TOperadorFiltro = "IGUAL" | "DIFERENTE" | "MAIOR" | "MENOR" | "CONTEM";
-type TOperadorSQL = "=" | "<>" | ">" | "CONSTAINING";
+type TOperadorSQL = "=" | "<>" | ">" | "LIKE";
 
 export class CFiltro<Classe> {
   campo: keyof Classe = "" as any;
@@ -22,7 +22,7 @@ export class CFiltro<Classe> {
         return "<>";
 
       case "CONTEM":
-        return "CONSTAINING";
+        return "LIKE";
 
       default:
         throw `O operador: "${pOperador}" não foi mapeado na função.`;
@@ -41,31 +41,3 @@ export default class CClasseFiltro<Classe> {
     console.log("Constructor CClasseFiltro:", this.filtros);
   }
 }
-
-/**
-
-const filtros: CClasseFiltro<Joao> = {
-  filtros: [
-    {
-      campo: "inteligencia",
-      operador: "IGUAL",
-      valor: 100,
-    },
-  ],
-};
-
-const a: keyof Joao = "idade";
-
-class Vitoria {
-  nome: string = "";
-  idade: number = 0;
-  paciencia: number = 0;
-}
-
-class Joao {
-  nome: string = "";
-  idade: number = 0;
-  inteligencia: number = 100;
-}
-
-*/

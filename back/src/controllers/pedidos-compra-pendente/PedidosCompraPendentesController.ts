@@ -54,69 +54,112 @@ export default class PedidosCompraPendentesControlles {
         );
         console.log("ClasseFiltro:", classeFiltro);
         for (const filtro of classeFiltro.filtros) {
-          if (filtro.campo == "empresaId") {
-            query += ` AND pedido_compra.empresa_pdc ${CFiltro.toOperadorSQL(filtro.operador)} ?`;
-            params.push(filtro.valor);
+            if (filtro.campo == "empresaId") {
+              query += ` AND pedido_compra.empresa_pdc ${CFiltro.toOperadorSQL(filtro.operador)} ?`;
+              if (filtro.operador != "CONTEM") {
+                params.push(filtro.valor);
+              } else {
+                params.push(`%${filtro.valor}%`);
+              }
+            }
+
+            if (filtro.campo == "fornecedorId") {
+              query += ` AND pedido_compra.fornecedor_pdc ${CFiltro.toOperadorSQL(filtro.operador)} ?`;
+              if (filtro.operador != "CONTEM") {
+                params.push(filtro.valor);
+              } else {
+                params.push(`%${filtro.valor}%`);
+              }
+            }
+
+            if (filtro.campo == "razaoSocialFornecedor") {
+              query += ` AND pessoa.razaosocial_pessoa ${CFiltro.toOperadorSQL(filtro.operador)} ?`;
+              if (filtro.operador != "CONTEM") {
+                params.push(filtro.valor);
+              } else {
+                params.push(`%${filtro.valor}%`);
+              }
+            }
+
+            if (filtro.campo == "itemId") {
+              query += ` AND item.codigo_item ${CFiltro.toOperadorSQL(filtro.operador)} ?`;
+              if (filtro.operador != "CONTEM") {
+                params.push(filtro.valor);
+              } else {
+                params.push(`%${filtro.valor}%`);
+              }
           }
 
-          if (filtro.campo == "fornecedorId") {
-            query += ` AND pedido_compra.fornecedor_pdc ${CFiltro.toOperadorSQL(filtro.operador)} ?`;
-            params.push(filtro.valor);
-          }
+            if (filtro.campo == "descricaoItem") {
+              query += ` AND item.descricao_item ${CFiltro.toOperadorSQL(filtro.operador)} ?`;
+              if (filtro.operador != "CONTEM") {
+                params.push(filtro.valor);
+              } else {
+                params.push(`%${filtro.valor}%`);
+              }
+            }
 
-          if (filtro.campo == "razaoSocialFornecedor") {
-            query += ` AND pessoa.razaosocial_pessoa ${CFiltro.toOperadorSQL(filtro.operador)} ?`;
-            params.push(filtro.valor);
-          }
+            if (filtro.campo == "variacaoId") {
+              query += ` AND pedido_compra_item.variacao_pdcitem ${CFiltro.toOperadorSQL(filtro.operador)} ?`;
+              if (filtro.operador != "CONTEM") {
+                params.push(filtro.valor);
+              } else {
+                params.push(`%${filtro.valor}%`);
+              }
+            }
+            if (filtro.campo == "descricaoVariacao") {
+              query += ` AND variacao.descricao_variacao ${CFiltro.toOperadorSQL(filtro.operador)} ?`;
+              if (filtro.operador != "CONTEM") {
+                params.push(filtro.valor);
+              } else {
+                params.push(`%${filtro.valor}%`);
+              }
+            }
 
-          if (filtro.campo == "itemId") {
-            query += ` AND item.codigo_item ${CFiltro.toOperadorSQL(filtro.operador)} ?`;
-            params.push(filtro.valor);
-          }
+            if (filtro.campo == "corId") {
+              query += ` AND pedido_compra_item.cor_pdcitem ${CFiltro.toOperadorSQL(filtro.operador)} ?`;
+              if (filtro.operador != "CONTEM") {
+                params.push(filtro.valor);
+              } else {
+                params.push(`%${filtro.valor}%`);
+              }
+            }
 
-          if (filtro.campo == "descricaoItem") {
-            query += ` AND item.descricao_item ${CFiltro.toOperadorSQL(filtro.operador)} ?`;
-            params.push(filtro.valor);
-          }
+            if (filtro.campo == "descricaoCor") {
+              query += ` AND cor.descricao_cor ${CFiltro.toOperadorSQL(filtro.operador)} ?`;
+              if (filtro.operador != "CONTEM") {
+                params.push(filtro.valor);
+              } else {
+                params.push(`%${filtro.valor}%`);
+              }
+            }
 
-          if (filtro.campo == "variacaoId") {
-            query += ` AND pedido_compra_item.variacao_pdcitem ${CFiltro.toOperadorSQL(filtro.operador)} ?`;
-            params.push(filtro.valor);
-          }
-          if (filtro.campo == "descricaoVariacao") {
-            query += ` AND variacao.descricao_variacao ${CFiltro.toOperadorSQL(filtro.operador)} ?`;
-            params.push(filtro.valor);
-          }
+            if (filtro.campo == "acabamentoId") {
+              query += ` AND pedido_compra_item.acabamento_pdcitem ${CFiltro.toOperadorSQL(filtro.operador)} ?`;
+              if (filtro.operador != "CONTEM") {
+                params.push(filtro.valor);
+              } else {
+                params.push(`%${filtro.valor}%`);
+              }
+            }
+            if (filtro.campo == "descricaoAcabamento") {
+              query += ` AND acabamento.descricao_acabamento ${CFiltro.toOperadorSQL(filtro.operador)} ?`;
+              if (filtro.operador != "CONTEM") {
+                params.push(filtro.valor);
+              } else {
+                params.push(`%${filtro.valor}%`);
+              }
+            }
 
-          if (filtro.campo == "corId") {
-            query += ` AND pedido_compra_item.cor_pdcitem ${CFiltro.toOperadorSQL(filtro.operador)} ?`;
-            params.push(filtro.valor);
-          }
+            if (filtro.campo == "dataEmissao") {
+              query += ` AND pedido_compra.dtemissao_pdc ${CFiltro.toOperadorSQL(filtro.operador)} ?`;
+            }
 
-          if (filtro.campo == "descricaoCor") {
-            query += ` AND cor.descricao_cor ${CFiltro.toOperadorSQL(filtro.operador)} ?`;
-            params.push(filtro.valor);
-          }
-
-          if (filtro.campo == "acabamentoId") {
-            query += ` AND pedido_compra_item.acabamento_pdcitem ${CFiltro.toOperadorSQL(filtro.operador)} ?`;
-            params.push(filtro.valor);
-          }
-          if (filtro.campo == "descricaoAcabamento") {
-            query += ` AND acabamento.descricao_acabamento ${CFiltro.toOperadorSQL(filtro.operador)} ?`;
-            params.push(filtro.valor);
-          }
-
-          if (filtro.campo == "dataEmissao") {
-            query += ` AND pedido_compra.dtemissao_pdc ${CFiltro.toOperadorSQL(filtro.operador)} ?`;
-            params.push(filtro.valor);
-          }
-
-          if (filtro.campo == "dataPrevisaoEntrega") {
-            query += ` AND pedido_compra.dtpreventrega_pdc ${CFiltro.toOperadorSQL(filtro.operador)} ?`;
-            params.push(filtro.valor);
+            if (filtro.campo == "dataPrevisaoEntrega") {
+              query += ` AND pedido_compra.dtpreventrega_pdc ${CFiltro.toOperadorSQL(filtro.operador)} ?`;
+            } 
           } 
-        }
+        
 
         db.query(query, params, (err: any, result: any) => {
           if (err) {

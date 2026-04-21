@@ -1,4 +1,4 @@
-type TOperadorFiltro = "IGUAL" | "DIFERENTE" | "MAIOR" | "MENOR";
+type TOperadorFiltro = "IGUAL" | "DIFERENTE" | "MAIOR" | "MENOR" | "CONTEM";
 
 class CFiltro<Classe> {
   campo: keyof Classe = "" as any;
