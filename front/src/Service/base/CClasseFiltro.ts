@@ -1,15 +1,19 @@
 type TOperadorFiltro = "IGUAL" | "DIFERENTE" | "MAIOR" | "MENOR" | "CONTEM";
 
-class CFiltro<Classe> {
+class CFiltro<Classe> { 
   campo: keyof Classe = "" as any;
   operador: TOperadorFiltro = "IGUAL";
   valor: any = "";
 }
 
 export default class CClasseFiltro<Classe> {
+
   filtros: CFiltro<Classe>[] = [];
 
   constructor(pObj?: Partial<CClasseFiltro<Classe>>) {
-    this.filtros = pObj?.filtros ?? this.filtros;
+    if (pObj) {
+      Object.assign(this, pObj);
+    }
+    this.filtros = this.filtros ?? [];
   }
 }

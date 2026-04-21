@@ -51,8 +51,14 @@ export default class PedidosCompraPendentesControlles {
 
         const classeFiltro = new CClasseFiltro<CPedidoCompraPendenteModel>(
           req.body,
-        );
+        ) as CClasseFiltro<CPedidoCompraPendenteModel>;
+
         console.log("ClasseFiltro:", classeFiltro);
+
+        query += ` AND dtemissao_pdc >= ? AND dtpreventrega_pdc <= ?`; 
+        params.push((classeFiltro.dataInicio));
+        params.push(new Date(classeFiltro.dataFim));
+
         for (const filtro of classeFiltro.filtros) {
             if (filtro.campo == "empresaId") {
               query += ` AND pedido_compra.empresa_pdc ${CFiltro.toOperadorSQL(filtro.operador)} ?`;
@@ -150,14 +156,13 @@ export default class PedidosCompraPendentesControlles {
                 params.push(`%${filtro.valor}%`);
               }
             }
+            // if (filtro.campo == "dataEmissao") {
+            //   query += ` AND pedido_compra.dtemissao_pdc ${CFiltro.toOperadorSQL(filtro.operador)} ?`;
+            // }
 
-            if (filtro.campo == "dataEmissao") {
-              query += ` AND pedido_compra.dtemissao_pdc ${CFiltro.toOperadorSQL(filtro.operador)} ?`;
-            }
-
-            if (filtro.campo == "dataPrevisaoEntrega") {
-              query += ` AND pedido_compra.dtpreventrega_pdc ${CFiltro.toOperadorSQL(filtro.operador)} ?`;
-            } 
+            // if (filtro.campo == "dataPrevisaoEntrega") {
+            //   query += ` AND pedido_compra.dtpreventrega_pdc ${CFiltro.toOperadorSQL(filtro.operador)} ?`;
+            // } 
           } 
         
 

@@ -15,6 +15,8 @@ export default class CPedidoCompraPendenteModel {
   descricaoAcabamento: string = "";
   quantidadeAberta: number = 0;
   valorUnitarioLiquido: number = 0;
+  dataInicio: Date = new Date();
+  dataFim: Date = new Date();
 
   private constructor(data: Partial<CPedidoCompraPendenteModel>) {
     Object.assign(this, data);
