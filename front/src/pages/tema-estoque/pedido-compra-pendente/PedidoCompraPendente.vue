@@ -2,7 +2,6 @@
     <Linha1-Cards />
     <Linha2-PedidoPendente-FornecedorAtraso />
     <Linha3-PedidoPendente-ItensPendentes />
-    {{ useLayoutDashboardStore().classeFiltro }}
 </template>
 
 <script setup lang="ts">
@@ -31,20 +30,5 @@ const classeFiltro = ref<CClasseFiltro<CPedidoCompraPendenteModel>>(
 );
 
 const dialog = ref(true);
-
-// Função chamada quando "Aplicar Filtro" é clicado
-function onAplicarFiltro(novoFiltro: CClasseFiltro<CPedidoCompraPendenteModel>) {
-    console.log("On Aplicar Filtro", novoFiltro);
-    classeFiltro.value = novoFiltro;
-    dialog.value = false;
-}
-
-//Função para buscar dados com os filtros atuais
-// Ela nao está sendo chamada ainda
-async function buscarDados() {
-    const comprasPendentes = await controller.listarComprasPendentes(classeFiltro.value);
-    listaCompras.value = comprasPendentes;
-    console.log("Buscou dados com filtro:", classeFiltro.value);
-}
 
 </script>

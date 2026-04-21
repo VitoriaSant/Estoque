@@ -230,16 +230,6 @@ async function buscarDados() {
     ];
     useLayoutDashboardStore().classeFiltro = classeFiltro.value;
 
-    console.log("Stores",useLayoutDashboardStore().classeFiltro);
-    //console.log("Filtros:", classeFiltro.value);
-
-    // Chama o controller para buscar os dados filtrados
-    const comprasPendentes = await controller.listarComprasPendentes(
-        classeFiltro.value,
-    );
-    listaCompras.value = comprasPendentes;
-
-    
     useLayoutDashboardStore().filtrar();
     
     emit("fechar");
