@@ -83,14 +83,27 @@ export default class PedidosCompraPendentesControlles {
             query += ` AND pedido_compra_item.variacao_pdcitem ${CFiltro.toOperadorSQL(filtro.operador)} ?`;
             params.push(filtro.valor);
           }
+          if (filtro.campo == "descricaoVariacao") {
+            query += ` AND variacao.descricao_variacao ${CFiltro.toOperadorSQL(filtro.operador)} ?`;
+            params.push(filtro.valor);
+          }
 
           if (filtro.campo == "corId") {
             query += ` AND pedido_compra_item.cor_pdcitem ${CFiltro.toOperadorSQL(filtro.operador)} ?`;
             params.push(filtro.valor);
           }
 
+          if (filtro.campo == "descricaoCor") {
+            query += ` AND cor.descricao_cor ${CFiltro.toOperadorSQL(filtro.operador)} ?`;
+            params.push(filtro.valor);
+          }
+
           if (filtro.campo == "acabamentoId") {
             query += ` AND pedido_compra_item.acabamento_pdcitem ${CFiltro.toOperadorSQL(filtro.operador)} ?`;
+            params.push(filtro.valor);
+          }
+          if (filtro.campo == "descricaoAcabamento") {
+            query += ` AND acabamento.descricao_acabamento ${CFiltro.toOperadorSQL(filtro.operador)} ?`;
             params.push(filtro.valor);
           }
 

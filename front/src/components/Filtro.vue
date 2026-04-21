@@ -228,6 +228,7 @@ async function buscarDados() {
             valor: valorConvertido,
         },
     ];
+    
     useLayoutDashboardStore().classeFiltro = classeFiltro.value;
 
     useLayoutDashboardStore().filtrar();
