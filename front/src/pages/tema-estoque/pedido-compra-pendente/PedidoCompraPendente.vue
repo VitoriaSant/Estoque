@@ -1,10 +1,8 @@
-<template> 
-    <!-- <Filtro @fechar="dialog = false" @aplicar="onAplicarFiltro" v-model:classe-filtro="classeFiltro" /> -->
-    <Filtro v-model:dialogFiltro="dialog" @fechar="dialog = false" @aplicar="onAplicarFiltro" v-model:classe-filtro="classeFiltro" />
-
+<template>
     <Linha1-Cards />
     <Linha2-PedidoPendente-FornecedorAtraso />
     <Linha3-PedidoPendente-ItensPendentes />
+    {{ useLayoutDashboardStore().classeFiltro }}
 </template>
 
 <script setup lang="ts">
@@ -16,11 +14,13 @@ import PedidoCompraPendenteController from "@/Service/tema-estoque/pedidos-compr
 import CPedidoCompraPendenteModel from '@/Service/tema-estoque/pedidos-compra-pendente/CPedidoCompraPendenteModel'
 import CClasseFiltro from "@/Service/base/CClasseFiltro";
 
+import { useLayoutDashboardStore } from "@/stores/LayoutDashboardStore";
+const layoutStore = useLayoutDashboardStore();
+
 // Coponentes
 import Linha1Cards from "./components/Linha1-Cards.vue";
 import Linha2PedidoPendenteFornecedorAtraso from "./components/Linha2-PedidoPendente-FornecedorAtraso.vue";
 import Linha3PedidoPendenteItensPendentes from "./components/Linha3-PedidoPendente-ItensPendentes.vue";
-import Filtro from "@/components/Filtro.vue";
 
 const controller = new PedidoCompraPendenteController();
 const listaCompras = ref<CPedidoCompraPendenteModel[]>([]);

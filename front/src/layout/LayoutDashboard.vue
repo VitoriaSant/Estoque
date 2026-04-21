@@ -19,8 +19,12 @@
   </v-navigation-drawer>
 
   <v-main>
-    
-      <!-- <Filtro v-model="dialog" @fechar="dialog = false" @aplicar="onAplicarFiltro" v-model:classe-filtro="classe"/> -->
+      <Filtro
+        v-model="layoutStore.exibirFiltro"
+        @fechar="layoutStore.exibirFiltro = false"
+        v-model:classeFiltro="layoutStore.classeFiltro"
+        @aplicar="layoutStore.filtrar"
+      />
     
     <RouterView />
   </v-main>
@@ -30,14 +34,18 @@
 import { ref } from "vue";
 
 const drawer = ref(false);
-const dialog = ref(false);
 const emit = defineEmits(["fechar"]);
 
-function filtrar() {
-  dialog.value = !dialog.value;
-}
+import { useLayoutDashboardStore } from "../stores/LayoutDashboardStore";
+const layoutStore = useLayoutDashboardStore();
 
-function fechar() {
-  emit("fechar");
+function filtrar() {
+  useLayoutDashboardStore().exibirFiltro = true;
 }
+console.log("Classe de Filtro:", layoutStore.classeFiltro);
+
+// function fechar() {
+//   emit("fechar");
+// }
+
 </script>

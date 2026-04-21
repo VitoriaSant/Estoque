@@ -1,12 +1,12 @@
 <template>
     <v-dialog v-model="dialogFiltro" max-width="800">
-        <v-card id="CardPrincipal" class="pa-6" elevation="0"> <v-card-title
-                class="text-h4 mb-6 text-center text-primary position-relative">
+        <v-card id="CardPrincipal" class="pa-6" elevation="0">
+            <v-card-title class="text-h4 mb-6 text-center text-primary position-relative">
                 Filtros
                 <v-btn icon="mdi-close" variant="text" class="position-absolute right-0 top-0" @click="fechar" />
             </v-card-title>
 
-            <v-row class="mb-2" no-gutters >
+            <v-row class="mb-2" no-gutters>
                 <v-col cols="12" md="6" class="pa-1">
                     <v-text-field v-model="dataInicio" label="Data início" type="date" variant="outlined" />
                 </v-col>
@@ -20,12 +20,13 @@
                 <v-col cols="12" md="6">
                     <v-card variant="outlined" class="pa-4" border="sm">
                         <div class="d-flex flex-column ga-2">
-                            <v-btn
-                                v-for="item in valoresParaFiltro"
-                                :key="item" block color="primary"
-                                :variant="filtroSelecionado === item ? 'elevated' : 'tonal'" class="justify-start text-none"
-                                @click="filtrar(item)">
-                                <v-icon start :icon="item.includes('Código') ? 'mdi-numeric' : 'mdi-text-box-outline'" />
+                            <v-btn v-for="item in valoresParaFiltro" :key="item" block color="primary"
+                                :variant="filtroSelecionado === item ? 'elevated' : 'tonal'"
+                                class="justify-start text-none" @click="filtrar(item)">
+                                <v-icon start :icon="item.includes('Código')
+                                        ? 'mdi-numeric'
+                                        : 'mdi-text-box-outline'
+                                    " />
                                 {{ item }}
                             </v-btn>
                         </div>
@@ -33,30 +34,18 @@
                 </v-col>
 
                 <v-col cols="12" md="6">
-                    <v-card variant="tonal" class="pa-4 d-flex flex-column " min-height="465" color="primary">
-
+                    <v-card variant="tonal" class="pa-4 d-flex flex-column" min-height="465" color="primary">
                         <div class="d-flex align-center mb-6">
                             <v-icon size="large" icon="mdi-filter-variant" class="mr-2" />
                             <span class="text-h5">{{ filtroSelecionado }}</span>
                         </div>
 
                         <v-card-text class="pa-0 flex-grow-1">
-                            <v-select 
-                                :items="operadores" 
-                                label="Operador" 
-                                variant="outlined" 
-                                item-title="title"
-                                item-value="value"
-                                v-model="operadorSelecionado" 
-                                class="mb-4"
-                            ></v-select>
+                            <v-select :items="operadores" label="Operador" variant="outlined" item-title="title"
+                                item-value="value" v-model="operadorSelecionado" class="mb-4"></v-select>
 
-                            <v-text-field
-                                v-model="valorDigitado"
-                                label="Descrição" 
-                                variant="outlined" 
-                                placeholder="Digite o valor para filtrar..."
-                                clearable></v-text-field>
+                            <v-text-field v-model="valorDigitado" label="Descrição" variant="outlined"
+                                placeholder="Digite o valor para filtrar..." clearable></v-text-field>
                         </v-card-text>
 
                         <div class="mt-auto pt-4">
@@ -69,11 +58,7 @@
                                             Consultar Valores
                                         </v-btn>
 
-                                        <v-btn 
-                                            color="primary" 
-                                            size="large" 
-                                            variant="elevated"
-                                            @click="buscarDados()">
+                                        <v-btn color="primary" size="large" variant="elevated" @click="buscarDados()">
                                             <v-icon start icon="mdi-check" />
                                             Aplicar Filtro
                                         </v-btn>
@@ -103,8 +88,8 @@
                                             <v-card-text>
                                                 <v-text-field :loading="loading" color="primary"
                                                     append-inner-icon="mdi-magnify" density="compact"
-                                                    label="Consultar Valores" variant="solo" hide-details
-                                                    single-line @click:append-inner="onPesquisar"></v-text-field>
+                                                    label="Consultar Valores" variant="solo" hide-details single-line
+                                                    @click:append-inner="onPesquisar"></v-text-field>
                                             </v-card-text>
 
                                             <v-divider></v-divider>
@@ -132,39 +117,38 @@
 
 <script setup lang="ts">
 //Vue
-import { ref, watch } from 'vue'
-import CClasseFiltro from '@/Service/base/CClasseFiltro'
-import CPedidoCompraPendenteModel from '@/Service/tema-estoque/pedidos-compra-pendente/CPedidoCompraPendenteModel'
+import { ref } from "vue";
+import CClasseFiltro from "@/Service/base/CClasseFiltro";
+import CPedidoCompraPendenteModel from "@/Service/tema-estoque/pedidos-compra-pendente/CPedidoCompraPendenteModel";
 
 //Services
 import PedidoCompraPendenteController from "@/Service/tema-estoque/pedidos-compra-pendente/PedidoCompraPendenteController";
+import { useLayoutDashboardStore } from "@/stores/LayoutDashboardStore";
+const layoutStore = useLayoutDashboardStore();
 
-const filtroSelecionado = ref('Item')
-const ConstValores = ref(false)
-const dialog = ref(false)
-const dialogPesquisa = ref(false)
-const loaded = ref(false)
-const loading = ref(false)
+const filtroSelecionado = ref("Item");
+const ConstValores = ref(false);
+const dialog = ref(false);
+const dialogPesquisa = ref(false);
+const loaded = ref(false);
+const loading = ref(false);
 
 // Define os eventos que este componente pode emitir
-const emit = defineEmits(['fechar', 'aplicar', 'update:dialogFiltro', 'update:classe-filtro'])
+const emit = defineEmits([
+    "fechar",
+    "aplicar",
+    "update:dialogFiltro",
+    "update:classe-filtro",
+]);
 
 const props = defineProps<{
-    classeFiltro: CClasseFiltro<CPedidoCompraPendenteModel>
-    dialogFiltro: boolean
-}>()
-const dialogFiltro = ref(props.dialogFiltro ?? false)
+    classeFiltro: CClasseFiltro<CPedidoCompraPendenteModel>;
+    dialogFiltro: boolean;
+}>();
+const dialogFiltro = ref(props.dialogFiltro ?? false);
 
-// watch(() => props.dialogFiltro, (value) => {
-//     dialogFiltro.value = value
-// })
-// watch(dialogFiltro, (value) => {
-//     emit('update:dialogFiltro', value)
-// })
-
-// Constantes
-const operadorSelecionado = ref('igual')
-const valorDigitado = ref('')
+const operadorSelecionado = ref("igual");
+const valorDigitado = ref("");
 const controller = new PedidoCompraPendenteController();
 const listaCompras = ref<CPedidoCompraPendenteModel[]>([]);
 
@@ -173,52 +157,66 @@ const classeFiltro = ref<CClasseFiltro<CPedidoCompraPendenteModel>>(
     new CClasseFiltro(),
 );
 
-const valoresParaFiltro = ['Código do Fornecedor', 'Fornecedor', 'Código do Item', 'Item', 'Código da Cor', 'Cor', 'Código da Variação', 'Variação', 'Código do Acabamento', 'Acabamento']
+const valoresParaFiltro = [
+    "Código do Fornecedor",
+    "Fornecedor",
+    "Código do Item",
+    "Item",
+    "Código da Cor",
+    "Cor",
+    "Código da Variação",
+    "Variação",
+    "Código do Acabamento",
+    "Acabamento",
+];
 
 const ConsultarValores = () => {
-    ConstValores.value = !ConstValores.value
-}
+    ConstValores.value = !ConstValores.value;
+};
 
 const operadores = [
-    { title: 'Igual', value: 'igual' },
-    { title: 'Diferente', value: 'diferente' },
-    { title: 'Contém', value: 'contem' },
-]
+    { title: "Igual", value: "igual" },
+    { title: "Diferente", value: "diferente" },
+    { title: "Contém", value: "contem" },
+];
 
 // Forçando data atual e data de 30 dias atrás para os campos de data
-const formatarDataParaInput = (data: Date) => {return data.toISOString().split('T')[0]}
-const dataAtual = new Date()
-const dataPassada = new Date() 
-dataPassada.setDate(dataAtual.getDate() - 30)
-const dataInicio = ref(formatarDataParaInput(dataPassada))
-const dataFim = ref(formatarDataParaInput(dataAtual))
+const formatarDataParaInput = (data: Date) => {
+    return data.toISOString().split("T")[0];
+};
+const dataAtual = new Date();
+const dataPassada = new Date();
+dataPassada.setDate(dataAtual.getDate() - 30);
+const dataInicio = ref(formatarDataParaInput(dataPassada));
+const dataFim = ref(formatarDataParaInput(dataAtual));
 
 function fechar() {
-    emit('fechar')
+    emit("fechar");
 }
 
 //Consultar Valores
 function onPesquisar() {
-    loading.value = true
+    loading.value = true;
     setTimeout(() => {
-        loading.value = false
-        loaded.value = true
-    }, 2000)
+        loading.value = false;
+        loaded.value = true;
+    }, 2000);
 }
 
 function filtrar(valor: string) {
-    filtroSelecionado.value = valor
+    filtroSelecionado.value = valor;
 }
 
 // Função para buscar dados com os filtros atuais
 async function buscarDados() {
     // Obtém o nome técnico do campo usando o mapeamento do modelo
     const mapaCampos = CPedidoCompraPendenteModel.getMapaCampos();
-    const campoTecnico = (mapaCampos[filtroSelecionado.value] || filtroSelecionado.value) as keyof CPedidoCompraPendenteModel;
+    const campoTecnico = (mapaCampos[filtroSelecionado.value] ||
+        filtroSelecionado.value) as keyof CPedidoCompraPendenteModel;
 
     // Converte valor para número se for um ID
     let valorConvertido: any = valorDigitado.value;
-    if (campoTecnico.toString().endsWith('Id')) {
+    if (campoTecnico.toString().endsWith("Id")) {
         valorConvertido = Number(valorDigitado.value);
     }
 
@@ -227,31 +225,26 @@ async function buscarDados() {
         {
             campo: campoTecnico,
             operador: operadorSelecionado.value.toUpperCase() as any,
-            valor: valorConvertido
-        }
+            valor: valorConvertido,
+        },
     ];
+    useLayoutDashboardStore().classeFiltro = classeFiltro.value;
 
+    console.log("Stores",useLayoutDashboardStore().classeFiltro);
     //console.log("Filtros:", classeFiltro.value);
 
     // Chama o controller para buscar os dados filtrados
-    const comprasPendentes = await controller.listarComprasPendentes(classeFiltro.value);
+    const comprasPendentes = await controller.listarComprasPendentes(
+        classeFiltro.value,
+    );
     listaCompras.value = comprasPendentes;
 
-    //Evemtos para enviar o filtro atualizado para o componente pai
-    emit('aplicar', classeFiltro.value);
-    //Emit para atualizar o valor do filtro no componente pai (se necessário)
-    emit('update:classe-filtro', classeFiltro.value);
-    //Emit para fechar o diálogo no componente pai
-    emit('fechar');
+    
+    useLayoutDashboardStore().filtrar();
+    
+    emit("fechar");
 }
 
-// Função chamada quando "Aplicar Filtro" é clicado
-// function onAplicarFiltro(novoFiltro: CClasseFiltro<CPedidoCompraPendenteModel>) {
-//     classeFiltro.value = novoFiltro;
-//     dialog.value = false;
-// }
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
