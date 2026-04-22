@@ -32,12 +32,16 @@ export class CFiltro<Classe> {
 
 export default class CClasseFiltro<Classe> {
   filtros: CFiltro<Classe>[] = [];
+  dataInicio?: Date;
+  dataFim?: Date;
 
-  constructor(pObj?: Partial<CClasseFiltro<Classe>>) {
+  constructor(pObj?: Partial<CClasseFiltro<Classe> & { dataInicio?: Date; dataFim?: Date }>) {
     if (pObj?.filtros && Array.isArray(pObj.filtros)) {
       this.filtros = pObj.filtros.map((item) => new CFiltro(item));
     }
     this.filtros = pObj?.filtros ?? this.filtros;
+    this.dataInicio = pObj?.dataInicio;
+    this.dataFim = pObj?.dataFim;
     console.log("Constructor CClasseFiltro:", this.filtros);
   }
 }

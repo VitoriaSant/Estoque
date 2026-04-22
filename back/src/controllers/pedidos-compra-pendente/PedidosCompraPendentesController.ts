@@ -55,9 +55,11 @@ export default class PedidosCompraPendentesControlles {
 
         console.log("ClasseFiltro:", classeFiltro);
 
-        query += ` AND dtemissao_pdc >= ? AND dtpreventrega_pdc <= ?`; 
-        params.push((classeFiltro.dataInicio));
-        params.push(new Date(classeFiltro.dataFim));
+        if (classeFiltro.dataInicio && classeFiltro.dataFim) {
+          query += ` AND dtemissao_pdc >= ? AND dtpreventrega_pdc <= ?`; 
+          params.push(classeFiltro.dataInicio);
+          params.push(new Date(classeFiltro.dataFim));
+        }
 
         for (const filtro of classeFiltro.filtros) {
             if (filtro.campo == "empresaId") {
