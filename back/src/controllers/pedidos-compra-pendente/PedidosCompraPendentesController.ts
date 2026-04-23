@@ -12,7 +12,7 @@ export default class PedidosCompraPendentesControlles {
           return res.status(500).json({ error: "Erro ao conectar" });
         }
         let query = `
-                    SELECT
+                SELECT
                     pedido_compra.codigo_pdc,
                     pedido_compra.empresa_pdc,
                     pedido_compra.dtemissao_pdc,
@@ -158,13 +158,6 @@ export default class PedidosCompraPendentesControlles {
                 params.push(`%${filtro.valor}%`);
               }
             }
-            // if (filtro.campo == "dataEmissao") {
-            //   query += ` AND pedido_compra.dtemissao_pdc ${CFiltro.toOperadorSQL(filtro.operador)} ?`;
-            // }
-
-            // if (filtro.campo == "dataPrevisaoEntrega") {
-            //   query += ` AND pedido_compra.dtpreventrega_pdc ${CFiltro.toOperadorSQL(filtro.operador)} ?`;
-            // } 
           } 
         
 
@@ -175,7 +168,37 @@ export default class PedidosCompraPendentesControlles {
             return res.status(500).json({ error: "Erro na query" });
           }
 
-          res.json(result);
+          //Calculos
+          const somaTotal = result.reduce((acc: number, item: any) => {
+            return acc + (item.VLRUNITARIOLIQUIDO_PDCITEMDET || 0);
+          }, 0);
+
+          const totalDePedidos = result.length;
+
+          const qntPedidoEmAtraso = result.reduce((acc: number, item: any) => {
+            if (item.DTPREVENTREGA_PDC && new Date(item.DTPREVENTREGA_PDC) < new Date()) {
+              return acc + 1;
+            }
+            return acc;
+          }, 0);
+
+          const somaPedidoEmAtraso = result.filter((item: any) => {
+            return item.DTPREVENTREGA_PDC && new Date(item.DTPREVENTREGA_PDC) < new Date();
+          }).reduce((acc: number, item: any) => {
+            return acc + (item.VLRUNITARIOLIQUIDO_PDCITEMDET || 0);
+          }, 0);
+          
+          const response = {
+            resumo: {
+              qntPedidoEmAtraso,
+              somaPedidoEmAtraso: Number(somaPedidoEmAtraso.toFixed(2)),
+              totalDePedidos,
+              somaTotal: Number(somaTotal.toFixed(2))
+            },
+            dados: result
+          };
+
+          res.json(response);
           db.detach();
         });
       },
