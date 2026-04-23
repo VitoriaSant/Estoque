@@ -7,7 +7,8 @@ class CFiltro<Classe> {
 }
 
 export default class CClasseFiltro<Classe> {
-
+  dataInicio?: Date;
+  dataFim?: Date;
   filtros: CFiltro<Classe>[] = [];
 
   constructor(pObj?: Partial<CClasseFiltro<Classe>>) {
@@ -15,5 +16,7 @@ export default class CClasseFiltro<Classe> {
       Object.assign(this, pObj);
     }
     this.filtros = this.filtros ?? [];
+    this.dataInicio = this.dataInicio ?? undefined;
+    this.dataFim = this.dataFim ?? undefined;
   }
 }

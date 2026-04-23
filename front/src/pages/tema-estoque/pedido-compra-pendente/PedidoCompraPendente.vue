@@ -2,6 +2,7 @@
     <Linha1-Cards />
     <Linha2-PedidoPendente-FornecedorAtraso />
     <Linha3-PedidoPendente-ItensPendentes />
+    {{ layoutStore.classeFiltro }}
 </template>
 
 <script setup lang="ts">

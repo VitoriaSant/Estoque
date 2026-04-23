@@ -7,7 +7,6 @@ export class CFiltro<Classe> {
   valor: any = "";
 
   constructor(pObj?: Partial<CFiltro<Classe>>) {
-    
     this.campo = pObj?.campo ?? this.campo;
     this.operador = pObj?.operador ?? this.operador;
     this.valor = pObj?.valor ?? this.valor;
@@ -31,17 +30,23 @@ export class CFiltro<Classe> {
 }
 
 export default class CClasseFiltro<Classe> {
-  filtros: CFiltro<Classe>[] = [];
   dataInicio?: Date;
   dataFim?: Date;
+  filtros: CFiltro<Classe>[] = [];
 
-  constructor(pObj?: Partial<CClasseFiltro<Classe> & { dataInicio?: Date; dataFim?: Date }>) {
+  constructor(
+    pObj?: Partial<
+      CClasseFiltro<Classe> & { dataInicio?: string | Date; dataFim?: string | Date }
+    >,
+  ) {
     if (pObj?.filtros && Array.isArray(pObj.filtros)) {
       this.filtros = pObj.filtros.map((item) => new CFiltro(item));
     }
     this.filtros = pObj?.filtros ?? this.filtros;
-    this.dataInicio = pObj?.dataInicio;
-    this.dataFim = pObj?.dataFim;
+    
+    this.dataInicio = pObj?.dataInicio ? new Date(pObj.dataInicio) : undefined;
+    this.dataFim = pObj?.dataFim ? new Date(pObj.dataFim) : undefined;
+    
     console.log("Constructor CClasseFiltro:", this.filtros);
   }
 }

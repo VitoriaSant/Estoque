@@ -221,6 +221,8 @@ async function buscarDados() {
     }
 
     // Preenche o objeto de filtro
+    classeFiltro.value.dataInicio = dataInicio.value ? new Date(dataInicio.value) : undefined;
+    classeFiltro.value.dataFim = dataFim.value ? new Date(dataFim.value) : undefined;
     classeFiltro.value.filtros = [
         {
             campo: campoTecnico,
