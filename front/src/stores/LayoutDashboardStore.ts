@@ -15,7 +15,7 @@ export const useLayoutDashboardStore = defineStore(
     );
   
     const controller = new PedidoCompraPendenteController();
-    const filtrar = ref<(...args: any) => Promise<CPedidoCompraPendenteModel[]>>(
+    const filtrarComprasPendentes = ref<(...args: any) => Promise<CPedidoCompraPendenteModel[]>>(
       async (...args: any) => {
         const comprasPendentes = await controller.listarComprasPendentes(
           args[0] || classeFiltro.value,
@@ -28,7 +28,7 @@ export const useLayoutDashboardStore = defineStore(
     return {
       exibirFiltro,
       classeFiltro,
-      filtrar,
+      filtrarComprasPendentes,
     };
   },
 );
