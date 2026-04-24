@@ -233,7 +233,7 @@ async function buscarDados() {
     
     useLayoutDashboardStore().classeFiltro = classeFiltro.value;
 
-    useLayoutDashboardStore().filtrar();
+    useLayoutDashboardStore().filtrarComprasPendentes();
     
     emit("fechar");
 }
