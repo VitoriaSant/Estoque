@@ -176,26 +176,134 @@ export default class PedidosCompraPendentesControlles {
           const totalDePedidos = result.length;
 
           const qntPedidoEmAtraso = result.reduce((acc: number, item: any) => {
-            if (item.DTPREVENTREGA_PDC && new Date(item.DTPREVENTREGA_PDC) < new Date()) {
+            if (
+              item.DTPREVENTREGA_PDC &&
+              new Date(item.DTPREVENTREGA_PDC) < new Date()
+            ) {
               return acc + 1;
             }
             return acc;
           }, 0);
 
-          const somaPedidoEmAtraso = result.filter((item: any) => {
-            return item.DTPREVENTREGA_PDC && new Date(item.DTPREVENTREGA_PDC) < new Date();
-          }).reduce((acc: number, item: any) => {
-            return acc + (item.VLRUNITARIOLIQUIDO_PDCITEMDET || 0);
-          }, 0);
-          
+          const somaPedidoEmAtraso = result
+            .filter((item: any) => {
+              return (
+                item.DTPREVENTREGA_PDC &&
+                new Date(item.DTPREVENTREGA_PDC) < new Date()
+              );
+            })
+            .reduce((acc: number, item: any) => {
+              return acc + (item.VLRUNITARIOLIQUIDO_PDCITEMDET || 0);
+            }, 0);
+
+          // Contagem de pedidos diferentes por fornecedor
+          const pedidosPorFornecedor = result.reduce((acc: any, item: any) => {
+            const fornecedorId = item.FORNECEDOR_PDC;
+            const fornecedorNome = item.RAZAOSOCIAL_PESSOA;
+            const pedidoId = item.CODIGO_PDC;
+            const valorTotal = item.VLRUNITARIOLIQUIDO_PDCITEMDET || 0;
+
+            if (!acc[fornecedorId]) {
+              acc[fornecedorId] = {
+                fornecedorId,
+                fornecedorNome,
+                pedidos: new Set(),
+                quantidadePedidos: 0,
+                valorTotal: 0,
+              };
+            }
+
+            acc[fornecedorId].pedidos.add(pedidoId);
+            acc[fornecedorId].quantidadePedidos =
+              acc[fornecedorId].pedidos.size;
+            acc[fornecedorId].valorTotal += valorTotal;
+
+            return acc;
+          }, {});
+
+          // Converter para array PedidoPorFornecedor
+          const listaPedidosPorFornecedor = Object.values(
+            pedidosPorFornecedor,
+          ).map((item: any) => ({
+            fornecedorId: item.fornecedorId,
+            fornecedorNome: item.fornecedorNome,
+            quantidadePedidos: item.quantidadePedidos,
+            valorTotal: Number(item.valorTotal.toFixed(2)),
+          }));
+
+          // Contagem de valor por pedido
+          const pedidosPendentes = result.reduce((acc: any, item: any) => {
+            const pedidoId = item.CODIGO_PDC;
+            const valorTotal = item.VLRUNITARIOLIQUIDO_PDCITEMDET || 0;
+
+            if (!acc[pedidoId]) {
+              acc[pedidoId] = {
+                pedidoId,
+                previsaoEntrega: item.PREVISAOENTREGA_PDC,
+                fornecedorNome: item.RAZAOSOCIAL_PESSOA,
+                valorTotal: 0,
+              };
+            }
+            acc[pedidoId].valorTotal += valorTotal;
+
+            return acc;
+          }, {});
+
+          //Transforma em Array Pedidopendente
+          const listaPedidosPendentes = Object.values(pedidosPendentes).map(
+            (item: any) => ({
+              pedidoId: item.pedidoId,
+              previsaoEntrega: item.previsaoEntrega,
+              fornecedorNome: item.fornecedorNome,
+              valorTotal: Number(item.valorTotal.toFixed(2)),
+            }),
+          );
+
+          //Contagem de valor por item
+          const ItensPendetes = result.reduce((acc: any, item: any) => {
+            const itemId = item.ITEM_PDCITEM; // Usar ITEM_PDCITEM em vez de CODIGO_PDCITEMDET
+            const valorTotal = (item.VLRUNITARIOLIQUIDO_PDCITEMDET || 0) * (item.QTDEABERTA_PDCITEMDET || 0);
+            const quantidadeItens = item.QTDEABERTA_PDCITEMDET || 0;
+
+            if (!acc[itemId]) {
+              acc[itemId] = {
+                itemId,
+                descricao: item.DESCRICAO_ITEM,
+                valorUnitario: 0,
+                valorTotal: 0,
+                quantidadeItens: 0,
+              };
+            }
+            acc[itemId].valorTotal += valorTotal;
+            acc[itemId].quantidadeItens += quantidadeItens;
+            acc[itemId].valorUnitario = valorTotal / quantidadeItens;
+
+            return acc;
+          }, {});
+
+          //Transforma em Array Itempendente
+          const listaItensPendentes = Object.values(ItensPendetes).map(
+            (item: any) => ({
+              itemId: item.itemId,
+              descricao: item.descricao,
+              valorTotal: Number(item.valorTotal.toFixed(2)),
+              quantidadeItens: item.quantidadeItens,
+              valorUnitario: Number(item.valorUnitario.toFixed(2)),
+            }),
+          );
+
+
           const response = {
             resumo: {
               qntPedidoEmAtraso,
               somaPedidoEmAtraso: Number(somaPedidoEmAtraso.toFixed(2)),
               totalDePedidos,
-              somaTotal: Number(somaTotal.toFixed(2))
+              somaTotal: Number(somaTotal.toFixed(2)),
             },
-            dados: result
+            // dados: result,
+            pedidosPorFornecedor: listaPedidosPorFornecedor,
+            pedidosPendentes: listaPedidosPendentes,
+            itensPendentes: listaItensPendentes,
           };
 
           res.json(response);
