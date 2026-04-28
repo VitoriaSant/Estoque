@@ -18,11 +18,11 @@
         prepend-icon="mdi-account-alert"
     >
         <Tabela 
-    :th="['Codigo', 'Fornecedor', 'Qtd. Pedido', 'Valor']" 
-    :campos="['CODIGO_PDC', 'RAZAOSOCIAL_PESSOA', 'QTDEABERTA_PDCITEMDET', 'VLRUNITARIOLIQUIDO_PDCITEMDET']"
-    :campoKey="'CODIGO_PDC'"
-    :dados="dados?.dados || []" 
-/>
+            :th="['Codigo', 'Fornecedor', 'Qtd. Pedidos', 'Valor Total']" 
+            :campos="['fornecedorId', 'fornecedorNome', 'quantidadePedidosFornecedor', 'valorTotalFornecedor']"
+            :campoKey="'fornecedorId'"
+            :dados="dados?.pedidosPorFornecedor || []" 
+        />
     </v-card>
     </v-col>
 </v-row>

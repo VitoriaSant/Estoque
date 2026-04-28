@@ -227,24 +227,24 @@ export default class PedidosCompraPendentesControlles {
           ).map((item: any) => ({
             fornecedorId: item.fornecedorId,
             fornecedorNome: item.fornecedorNome,
-            quantidadePedidos: item.quantidadePedidos,
-            valorTotal: Number(item.valorTotal.toFixed(2)),
+            quantidadePedidosFornecedor: item.quantidadePedidos,
+            valorTotalFornecedor: Number(item.valorTotal.toFixed(2)),
           }));
 
           // Contagem de valor por pedido
           const pedidosPendentes = result.reduce((acc: any, item: any) => {
             const pedidoId = item.CODIGO_PDC;
-            const valorTotal = item.VLRUNITARIOLIQUIDO_PDCITEMDET || 0;
+            const valorTotalPedido = item.VLRUNITARIOLIQUIDO_PDCITEMDET || 0;
 
             if (!acc[pedidoId]) {
               acc[pedidoId] = {
                 pedidoId,
-                previsaoEntrega: item.PREVISAOENTREGA_PDC,
+                previsaoEntregaPedido: new Date(item.DTPREVENTREGA_PDC).toLocaleDateString('pt-BR'),
                 fornecedorNome: item.RAZAOSOCIAL_PESSOA,
-                valorTotal: 0,
+                valorTotalPedido: 0,
               };
             }
-            acc[pedidoId].valorTotal += valorTotal;
+            acc[pedidoId].valorTotalPedido += valorTotalPedido;
 
             return acc;
           }, {});
@@ -253,30 +253,32 @@ export default class PedidosCompraPendentesControlles {
           const listaPedidosPendentes = Object.values(pedidosPendentes).map(
             (item: any) => ({
               pedidoId: item.pedidoId,
-              previsaoEntrega: item.previsaoEntrega,
+              previsaoEntregaPedido: item.previsaoEntregaPedido,
               fornecedorNome: item.fornecedorNome,
-              valorTotal: Number(item.valorTotal.toFixed(2)),
+              valorTotalPedido: Number(item.valorTotalPedido.toFixed(2)),
             }),
           );
 
           //Contagem de valor por item
           const ItensPendetes = result.reduce((acc: any, item: any) => {
-            const itemId = item.ITEM_PDCITEM; // Usar ITEM_PDCITEM em vez de CODIGO_PDCITEMDET
-            const valorTotal = (item.VLRUNITARIOLIQUIDO_PDCITEMDET || 0) * (item.QTDEABERTA_PDCITEMDET || 0);
+            const IdItem = item.ITEM_PDCITEM;
+            const valorTotalItem =
+              (item.VLRUNITARIOLIQUIDO_PDCITEMDET || 0) *
+              (item.QTDEABERTA_PDCITEMDET || 0);
             const quantidadeItens = item.QTDEABERTA_PDCITEMDET || 0;
 
-            if (!acc[itemId]) {
-              acc[itemId] = {
-                itemId,
-                descricao: item.DESCRICAO_ITEM,
-                valorUnitario: 0,
-                valorTotal: 0,
+            if (!acc[IdItem]) {
+              acc[IdItem] = {
+                IdItem,
+                descricaoItem: item.DESCRICAO_ITEM,
+                valorUnitarioItem: 0,
+                valorTotalItem: 0,
                 quantidadeItens: 0,
               };
             }
-            acc[itemId].valorTotal += valorTotal;
-            acc[itemId].quantidadeItens += quantidadeItens;
-            acc[itemId].valorUnitario = valorTotal / quantidadeItens;
+            acc[IdItem].valorTotalItem += valorTotalItem;
+            acc[IdItem].quantidadeItens += quantidadeItens;
+            acc[IdItem].valorUnitarioItem = valorTotalItem / quantidadeItens;
 
             return acc;
           }, {});
@@ -284,11 +286,11 @@ export default class PedidosCompraPendentesControlles {
           //Transforma em Array Itempendente
           const listaItensPendentes = Object.values(ItensPendetes).map(
             (item: any) => ({
-              itemId: item.itemId,
-              descricao: item.descricao,
-              valorTotal: Number(item.valorTotal.toFixed(2)),
+              IdItem: item.IdItem,
+              descricaoItem: item.descricaoItem,
+              valorTotalItem: Number(item.valorTotalItem.toFixed(2)),
               quantidadeItens: item.quantidadeItens,
-              valorUnitario: Number(item.valorUnitario.toFixed(2)),
+              valorUnitarioItem: Number(item.valorUnitarioItem.toFixed(2)),
             }),
           );
 

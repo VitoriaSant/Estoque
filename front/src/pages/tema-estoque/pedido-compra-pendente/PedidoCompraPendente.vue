@@ -1,8 +1,9 @@
 <template>
-    <Linha1-Cards />
-    <Linha2-PedidoPendente-FornecedorAtraso />
-    <Linha3-PedidoPendente-ItensPendentes />
-    {{ layoutStore.classeFiltro }}
+    <div>
+        <Linha1-Cards :key="`cards-${layoutStore.classeFiltro?.dataInicio || 'default'}`" />
+        <Linha2-PedidoPendente-FornecedorAtraso :key="`itens-${layoutStore.classeFiltro?.dataInicio || 'default'}`"/>
+        <Linha3-PedidoPendente-ItensPendentes :key="`itens-${layoutStore.classeFiltro?.dataInicio || 'default'}`" />
+    </div>
 </template>
 
 <script setup lang="ts">

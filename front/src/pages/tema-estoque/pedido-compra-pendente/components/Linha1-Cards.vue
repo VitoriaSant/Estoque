@@ -38,8 +38,9 @@
 </template> 
 
 <script setup lang="ts">
-import { onMounted, ref, watch} from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import { useLayoutDashboardStore } from "@/stores/LayoutDashboardStore";
+
 
 const layoutStore = useLayoutDashboardStore();
 const dados = ref<any>(null);
@@ -48,6 +49,7 @@ const carregarDados = async () => {
     try {
         const resultado = await layoutStore.filtrarComprasPendentes();
         dados.value = resultado;
+        console.log("Dados recebidos nos cards:", resultado);
     } catch (error) {
         console.error("Erro ao carregar dados:", error);
     }
