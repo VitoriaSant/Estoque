@@ -6,20 +6,37 @@ const router = createRouter({
 
   routes: [
     {
+      path: "/login",
+      name: "Login",
+      component: () => import("@/pages/login/Login.vue"),
+    },
+    {
+      path: "/",
+      redirect: "/login",
+    },
+
+    {
       path: "/",
       name: "LayoutDashboard",
       component: () => import("@/layout/LayoutDashboard.vue"),
       children: [
         {
-          path: "/home",
-          name: "Home",
-          component: () => import("@/pages/index.vue"),
-        },
-        {
           path: "/pedido-compra-pendente",
-          name: "PedidoCompraPendente",
+          name: "Pedido de compra pendente",
           component: () =>
             import("@/pages/tema-estoque/pedido-compra-pendente/PedidoCompraPendente.vue"),
+        },
+        {
+          path: "/ponto-compra",
+          name: "Ponto de compra",
+          component: () =>
+            import("@/pages/tema-estoque/ponto-compra/PontoCompra.vue"),
+        },
+        {
+          path: "/consumo-material",
+          name: "Consumo de material",
+          component: () =>
+            import("@/pages/tema-estoque/consumo-material/ConsumoMaterial.vue"),
         },
       ],
     },

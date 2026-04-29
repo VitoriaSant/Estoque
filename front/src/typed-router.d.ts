@@ -19,10 +19,18 @@ declare module 'vue-router/auto-routes' {
    */
   export interface RouteNamedMap {
     '/': RouteRecordInfo<'/', '/', Record<never, never>, Record<never, never>>,
-    '/tema-estoque/pedido-compra-pendente/components/Linha1-Cards': RouteRecordInfo<'/tema-estoque/pedido-compra-pendente/components/Linha1-Cards', '/tema-estoque/pedido-compra-pendente/components/Linha1-Cards', Record<never, never>, Record<never, never>>,
+    '/login/Login': RouteRecordInfo<'/login/Login', '/login/Login', Record<never, never>, Record<never, never>>,
+    '/tema-estoque/consumo-material/components/Linha1-': RouteRecordInfo<'/tema-estoque/consumo-material/components/Linha1-', '/tema-estoque/consumo-material/components/Linha1-', Record<never, never>, Record<never, never>>,
+    '/tema-estoque/consumo-material/components/Linha2-': RouteRecordInfo<'/tema-estoque/consumo-material/components/Linha2-', '/tema-estoque/consumo-material/components/Linha2-', Record<never, never>, Record<never, never>>,
+    '/tema-estoque/consumo-material/ConsumoMaterial': RouteRecordInfo<'/tema-estoque/consumo-material/ConsumoMaterial', '/tema-estoque/consumo-material/ConsumoMaterial', Record<never, never>, Record<never, never>>,
+    '/tema-estoque/pedido-compra-pendente/components/Linha1-Cards-PedidoPendente': RouteRecordInfo<'/tema-estoque/pedido-compra-pendente/components/Linha1-Cards-PedidoPendente', '/tema-estoque/pedido-compra-pendente/components/Linha1-Cards-PedidoPendente', Record<never, never>, Record<never, never>>,
     '/tema-estoque/pedido-compra-pendente/components/Linha2-PedidoPendente-FornecedorAtraso': RouteRecordInfo<'/tema-estoque/pedido-compra-pendente/components/Linha2-PedidoPendente-FornecedorAtraso', '/tema-estoque/pedido-compra-pendente/components/Linha2-PedidoPendente-FornecedorAtraso', Record<never, never>, Record<never, never>>,
     '/tema-estoque/pedido-compra-pendente/components/Linha3-PedidoPendente-ItensPendentes': RouteRecordInfo<'/tema-estoque/pedido-compra-pendente/components/Linha3-PedidoPendente-ItensPendentes', '/tema-estoque/pedido-compra-pendente/components/Linha3-PedidoPendente-ItensPendentes', Record<never, never>, Record<never, never>>,
     '/tema-estoque/pedido-compra-pendente/PedidoCompraPendente': RouteRecordInfo<'/tema-estoque/pedido-compra-pendente/PedidoCompraPendente', '/tema-estoque/pedido-compra-pendente/PedidoCompraPendente', Record<never, never>, Record<never, never>>,
+    '/tema-estoque/ponto-compra/components/Linha1-CardPontoCompra': RouteRecordInfo<'/tema-estoque/ponto-compra/components/Linha1-CardPontoCompra', '/tema-estoque/ponto-compra/components/Linha1-CardPontoCompra', Record<never, never>, Record<never, never>>,
+    '/tema-estoque/ponto-compra/components/Linha2-': RouteRecordInfo<'/tema-estoque/ponto-compra/components/Linha2-', '/tema-estoque/ponto-compra/components/Linha2-', Record<never, never>, Record<never, never>>,
+    '/tema-estoque/ponto-compra/components/Linhas3-': RouteRecordInfo<'/tema-estoque/ponto-compra/components/Linhas3-', '/tema-estoque/ponto-compra/components/Linhas3-', Record<never, never>, Record<never, never>>,
+    '/tema-estoque/ponto-compra/PontoCompra': RouteRecordInfo<'/tema-estoque/ponto-compra/PontoCompra', '/tema-estoque/ponto-compra/PontoCompra', Record<never, never>, Record<never, never>>,
   }
 
   /**
@@ -40,8 +48,24 @@ declare module 'vue-router/auto-routes' {
       routes: '/'
       views: never
     }
-    'src/pages/tema-estoque/pedido-compra-pendente/components/Linha1-Cards.vue': {
-      routes: '/tema-estoque/pedido-compra-pendente/components/Linha1-Cards'
+    'src/pages/login/Login.vue': {
+      routes: '/login/Login'
+      views: never
+    }
+    'src/pages/tema-estoque/consumo-material/components/Linha1-.vue': {
+      routes: '/tema-estoque/consumo-material/components/Linha1-'
+      views: never
+    }
+    'src/pages/tema-estoque/consumo-material/components/Linha2-.vue': {
+      routes: '/tema-estoque/consumo-material/components/Linha2-'
+      views: never
+    }
+    'src/pages/tema-estoque/consumo-material/ConsumoMaterial.vue': {
+      routes: '/tema-estoque/consumo-material/ConsumoMaterial'
+      views: never
+    }
+    'src/pages/tema-estoque/pedido-compra-pendente/components/Linha1-Cards-PedidoPendente.vue': {
+      routes: '/tema-estoque/pedido-compra-pendente/components/Linha1-Cards-PedidoPendente'
       views: never
     }
     'src/pages/tema-estoque/pedido-compra-pendente/components/Linha2-PedidoPendente-FornecedorAtraso.vue': {
@@ -54,6 +78,22 @@ declare module 'vue-router/auto-routes' {
     }
     'src/pages/tema-estoque/pedido-compra-pendente/PedidoCompraPendente.vue': {
       routes: '/tema-estoque/pedido-compra-pendente/PedidoCompraPendente'
+      views: never
+    }
+    'src/pages/tema-estoque/ponto-compra/components/Linha1-CardPontoCompra.vue': {
+      routes: '/tema-estoque/ponto-compra/components/Linha1-CardPontoCompra'
+      views: never
+    }
+    'src/pages/tema-estoque/ponto-compra/components/Linha2-.vue': {
+      routes: '/tema-estoque/ponto-compra/components/Linha2-'
+      views: never
+    }
+    'src/pages/tema-estoque/ponto-compra/components/Linhas3-.vue': {
+      routes: '/tema-estoque/ponto-compra/components/Linhas3-'
+      views: never
+    }
+    'src/pages/tema-estoque/ponto-compra/PontoCompra.vue': {
+      routes: '/tema-estoque/ponto-compra/PontoCompra'
       views: never
     }
   }

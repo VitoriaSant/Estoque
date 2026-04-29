@@ -1,6 +1,6 @@
 <template>
 <v-row no-gutters>
-    <v-col cols="4" class="pa-1">
+    <v-col cols="12" md="4" class="pa-1">
     <v-card
         variant="elevated"
         class="mx-auto"
@@ -10,7 +10,7 @@
         <Pizza />
     </v-card>
     </v-col>
-    <v-col cols="8" class="pa-1">
+    <v-col cols="12" md="8" class="pa-1">
     <v-card
         variant="elevated"
         class="mx-auto"
