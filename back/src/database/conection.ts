@@ -1,9 +1,10 @@
 const Firebird = require("node-firebird");
+require('dotenv').config();
 
 export default {
-    host: "DESKTOP-OTFSD0S",
-    port: 3050,
-    database: "C:/Users/Vitoria/Desktop/Tek/DADOSMC.FDB",
-    user: "SYSDBA",
-    password: "masterkey",
+    host: process.env.host,
+    port: process.env.port ? parseInt(process.env.port, 10) : undefined,
+    database: process.env.database,
+    user: process.env.user,
+    password: process.env.password,
 };
