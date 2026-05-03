@@ -25,11 +25,13 @@ export default class PontoDeCompraController {
                 item_saldo.acabamento_item_saldo,
                 acabamento.descricao_acabamento,
                 item_saldo.saldoatual_item_saldo,
+                item_saldo.custocompraatual_item_saldo,
                 item_saldo.estoqueminimo_item_saldo,
                 item_saldo.estoquemaximo_item_saldo,
                 pedido_compra.codigo_pdc,
-                pedido_compra.empresa_pdc,
+                pedido_compra.dtemissao_pdc,
                 pedido_compra.dtpreventrega_pdc,
+                pedido_compra_item.item_pdcitem,
                 pedido_compra_item_detalhe.qtdeaberta_pdcitemdet,
                 pedido_compra_item_detalhe.vlrunitarioliquido_pdcitemdet,
                 requisicaoestoque_item.qtderequisicao_itemreq,
@@ -142,8 +144,6 @@ export default class PontoDeCompraController {
                 }
             }
 
-
-
             db.query(query, params, (err: any, result: any) => {
                 if (err) {
                     console.error(err);
@@ -151,7 +151,101 @@ export default class PontoDeCompraController {
                     return res.status(500).json({ error: "Erro na query" });
                 }
 
-            res.json(result);
+//----------------------------------------------------------------------------------------------------
+// Contagem de valores: Valor todol em estoque, Valor de pedido pendente, Valor total
+//----------------------------------------------------------------------------------------------------
+                const valorTotalEmEstoque = result.reduce((acc: number, item: any) => {
+                    return acc + (item.CUSTOCOMPRAATUAL_ITEM_SALDO * item.SALDOATUAL_ITEM_SALDO || 0);
+                }, 0);
+
+                const valorTotalDePedidosPendentes = result.reduce((acc: number, item: any) => {
+                    return acc + (item.QTDEABERTA_PDCITEMDET * item.VLRUNITARIOLIQUIDO_PDCITEMDET || 0);
+                }, 0);
+
+                const valorTotal = valorTotalEmEstoque + valorTotalDePedidosPendentes;
+
+//----------------------------------------------------------------------------------------------------
+// Relatorio de ponto de compra
+//----------------------------------------------------------------------------------------------------
+                const pontoDeCompra = result.reduce((acc: any, item: any) => {
+                    const itemId = item.ITEM_ITEM_SALDO;
+                    const descricaoItem = item.DESCRICAO_ITEM;
+                    const saldoDisponivel = item.SALDOATUAL_ITEM_SALDO;
+                    const saldoMinimo = item.ESTOQUEMINIMO_ITEM_SALDO;
+                    const saldoMaximo = item.ESTOQUEMAXIMO_ITEM_SALDO;
+                    const quantidadePedido = item.QTDEABERTA_PDCITEMDET || 0;
+
+                    //Pedido de compra pendente por item
+                    if (!acc[itemId]) {
+                        acc[itemId] = {
+                        itemId,
+                        descricaoItem,
+                        saldoDisponivel,
+                        saldoMinimo,
+                        saldoMaximo,
+                        pedidoCompraPendente: 0,
+                        prazoEntrega: 0,
+                        consumoDiario: 0,
+                        diasDeDuracao: 0
+                        };
+                    }
+
+                    // Somar quantidade do pedido pendente
+                    acc[itemId].pedidoCompraPendente += quantidadePedido;
+                    
+                    // Calcular prazo de entrega em dias
+                    const dataEmissao = new Date(item.DTEMISSAO_PDC);
+                    const dataPrevisaoEntrega = new Date(item.DTPREVENTREGA_PDC);
+                    const diferencaTempo = Math.abs(dataPrevisaoEntrega.getTime() - dataEmissao.getTime());
+                    const prazoEntregaDias = Math.ceil(diferencaTempo / (1000 * 60 * 60 * 24));
+                    
+                    acc[itemId].prazoEntrega = prazoEntregaDias;
+
+                    //Calculo do consumo diario - soma quantidade de requisições dos ultimos 90 dias
+                    const dataRequisicao = new Date(item.DATA_REQEST);
+                    const dataLimite = new Date();
+                    dataLimite.setDate(dataLimite.getDate() - 90); // 90 dias atrás
+                    
+                    if (dataRequisicao >= dataLimite) {
+                        acc[itemId].consumoDiario += (item.QTDEREQUISICAO_ITEMREQ || 0);
+                    }
+
+                    // Calcular dias de duração
+                    const diasDeDuracao = acc[itemId].saldoDisponivel / acc[itemId].consumoDiario;
+                    acc[itemId].diasDeDuracao = diasDeDuracao;
+
+                    return acc;
+                }, {});
+
+//----------------------------------------------------------------------------------------------------
+// Transforma o Relatorio de ponto de compra em array
+//----------------------------------------------------------------------------------------------------
+                const listaPontoDeCompra = Object.values(pontoDeCompra).map((item: any) => ({
+                    itemId: item.itemId,
+                    descricaoItem: item.descricaoItem,
+                    saldoDisponivel: Number((item.saldoDisponivel || 0).toFixed(2)),
+                    saldoMinimo: Number((item.saldoMinimo || 0).toFixed(2)),
+                    saldoMaximo: Number((item.saldoMaximo || 0).toFixed(2)),
+                    pedidoCompraPendente: Number((item.pedidoCompraPendente || 0).toFixed(2)),
+                    prazoEntrega: Number((item.prazoEntrega || 0).toFixed(2)),
+                    consumoDiario: Number(((item.consumoDiario || 0) / 90).toFixed(2)),
+                    diasDeDuracao: Number((item.diasDeDuracao || 0).toFixed(2)),
+                }));
+
+//----------------------------------------------------------------------------------------------------
+// Response
+//----------------------------------------------------------------------------------------------------
+                const response = {
+                    resumo: {
+                        valorTotalEmEstoque: Number((valorTotalEmEstoque || 0).toFixed(2)),
+                        valorTotalDePedidosPendentes: Number((valorTotalDePedidosPendentes || 0).toFixed(2)),
+                        valorTotal: Number((valorTotal || 0).toFixed(2)),
+                    },
+                    //dados: result,
+                    pontoDeCompra: listaPontoDeCompra,
+                };
+
+            res.json(response);
             db.detach();
             });
         }

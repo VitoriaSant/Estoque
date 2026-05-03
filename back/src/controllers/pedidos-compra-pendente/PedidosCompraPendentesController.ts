@@ -168,7 +168,10 @@ export default class PedidosCompraPendentesControlles {
             return res.status(500).json({ error: "Erro na query" });
           }
 
-          //Calculos
+//----------------------------------------------------------------------------------------------------
+//Contagem de valores: Pedidos e Valores pendetes e Pedidos e valores pendentes em atrado
+//----------------------------------------------------------------------------------------------------
+
           const somaTotal = result.reduce((acc: number, item: any) => {
             return acc + (item.VLRUNITARIOLIQUIDO_PDCITEMDET || 0);
           }, 0);
@@ -195,8 +198,11 @@ export default class PedidosCompraPendentesControlles {
             .reduce((acc: number, item: any) => {
               return acc + (item.VLRUNITARIOLIQUIDO_PDCITEMDET || 0);
             }, 0);
+            
+//----------------------------------------------------------------------------------------------------
+//Contagem de pedidos diferentes por fornecedor
+//----------------------------------------------------------------------------------------------------
 
-          // Contagem de pedidos diferentes por fornecedor
           const pedidosPorFornecedor = result.reduce((acc: any, item: any) => {
             const fornecedorId = item.FORNECEDOR_PDC;
             const fornecedorNome = item.RAZAOSOCIAL_PESSOA;
@@ -220,7 +226,10 @@ export default class PedidosCompraPendentesControlles {
             return acc;
           }, {});
 
-          // Converter para array PedidoPorFornecedor
+//----------------------------------------------------------------------------------------------------
+//Converter para array Pedido Por Fornecedor
+//----------------------------------------------------------------------------------------------------
+
           const listaPedidosPorFornecedor = Object.values(
             pedidosPorFornecedor,
           ).map((item: any) => ({
@@ -230,7 +239,10 @@ export default class PedidosCompraPendentesControlles {
             valorTotalFornecedor: Number(item.valorTotal.toFixed(2)),
           }));
 
-          // Contagem de valor por pedido
+//----------------------------------------------------------------------------------------------------
+//Contagem de valor por pedido
+//----------------------------------------------------------------------------------------------------
+
           const pedidosPendentes = result.reduce((acc: any, item: any) => {
             const pedidoId = item.CODIGO_PDC;
             const valorTotalPedido = item.VLRUNITARIOLIQUIDO_PDCITEMDET || 0;
@@ -238,7 +250,9 @@ export default class PedidosCompraPendentesControlles {
             if (!acc[pedidoId]) {
               acc[pedidoId] = {
                 pedidoId,
-                previsaoEntregaPedido: new Date(item.DTPREVENTREGA_PDC).toLocaleDateString('pt-BR'),
+                previsaoEntregaPedido: new Date(
+                  item.DTPREVENTREGA_PDC,
+                ).toLocaleDateString("pt-BR"),
                 fornecedorNome: item.RAZAOSOCIAL_PESSOA,
                 valorTotalPedido: 0,
               };
@@ -248,7 +262,10 @@ export default class PedidosCompraPendentesControlles {
             return acc;
           }, {});
 
-          //Transforma em Array Pedidopendente
+//----------------------------------------------------------------------------------------------------
+//Transforma em Array Pedido Pendente
+//----------------------------------------------------------------------------------------------------
+
           const listaPedidosPendentes = Object.values(pedidosPendentes).map(
             (item: any) => ({
               pedidoId: item.pedidoId,
@@ -258,7 +275,10 @@ export default class PedidosCompraPendentesControlles {
             }),
           );
 
-          //Contagem de valor por item
+//----------------------------------------------------------------------------------------------------
+//Contagem de valor por item
+//----------------------------------------------------------------------------------------------------
+
           const ItensPendetes = result.reduce((acc: any, item: any) => {
             const IdItem = item.ITEM_PDCITEM;
             const valorTotalItem =
@@ -282,7 +302,10 @@ export default class PedidosCompraPendentesControlles {
             return acc;
           }, {});
 
-          //Transforma em Array Itempendente
+//----------------------------------------------------------------------------------------------------
+//Transforma em Array Item Pendente
+//----------------------------------------------------------------------------------------------------
+
           const listaItensPendentes = Object.values(ItensPendetes).map(
             (item: any) => ({
               IdItem: item.IdItem,
@@ -293,6 +316,9 @@ export default class PedidosCompraPendentesControlles {
             }),
           );
 
+//----------------------------------------------------------------------------------------------------
+//Response
+//----------------------------------------------------------------------------------------------------
 
           const response = {
             resumo: {

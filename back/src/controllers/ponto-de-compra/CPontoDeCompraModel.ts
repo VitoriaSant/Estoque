@@ -11,6 +11,7 @@ export default class CPontoDeCompraModel {
     acabamentoId: number = 0;
     descricaoAcabamento: string = "";
     saldoAtual: number = 0;
+    custoCompraAtual: number = 0;
     estoqueMinimo: number = 0;
     estoqueMaximo: number = 0;
     pdcId: number = 0;
@@ -20,4 +21,5 @@ export default class CPontoDeCompraModel {
     valorUnitarioLiquido: number = 0;
     quantidadeRequisicao: number = 0;
     dataRequisicao: string = "";
+    dataEmissao: string = "";
 }
