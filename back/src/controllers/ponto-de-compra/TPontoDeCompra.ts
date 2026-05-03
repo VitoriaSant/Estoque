@@ -1,0 +1,21 @@
+export type TPontoDeCompra = {
+    ITEM_ITEM_SALDO: number;
+    DESCRICAO_ITEM: string;
+    VARIACAO_ITEM_SALDO: number;
+    DESCRICAO_VARIACAO: string;
+    COR_ITEM_SALDO: number;
+    DESCRICAO_COR: string;
+    ACABAMENTO_ITEM_SALDO: number;
+    DESCRICAO_ACABAMENTO: string;
+    SALDOATUAL_ITEM_SALDO: number;
+    ESTOQUEMINIMO_ITEM_SALDO: number;
+    ESTOQUEMAXIMO_ITEM_SALDO: number;
+    CODIGO_PDC: number;
+    EMPRESA_PDC: number;
+    DTPREVENTREGA_PDC: string;
+    ITEM_PDCITEM: number;
+    QTDEABERTA_PDCITEMDET: number;
+    VLRUNITARIOLIQUIDO_PDCITEMDET: number;
+    QTDEREQUISICAO_ITEMREQ: number;
+    DATA_REQEST: string;
+};

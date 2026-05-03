@@ -5,7 +5,7 @@ import CClasseFiltro, { CFiltro } from "../base/CClasseFiltro";
 import CPedidoCompraPendenteModel from "./CPedidoCompraPendenteModel";
 
 export default class PedidosCompraPendentesControlles {
-  public post(req: Request, res: Response): void {
+  public pedidoCompraPendente(req: Request, res: Response): void {
         Firebird.attach(options, (err: any, db: Database) => {
         if (err) {
           console.error(err);
@@ -214,8 +214,7 @@ export default class PedidosCompraPendentesControlles {
             }
 
             acc[fornecedorId].pedidos.add(pedidoId);
-            acc[fornecedorId].quantidadePedidos =
-              acc[fornecedorId].pedidos.size;
+            acc[fornecedorId].quantidadePedidos = acc[fornecedorId].pedidos.size;
             acc[fornecedorId].valorTotal += valorTotal;
 
             return acc;

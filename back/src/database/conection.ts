@@ -1,5 +1,5 @@
-const Firebird = require("node-firebird");
-require('dotenv').config();
+import * as dotenv from 'dotenv';
+dotenv.config();
 
 export default {
     host: process.env.host,
@@ -7,4 +7,4 @@ export default {
     database: process.env.database,
     user: process.env.user,
     password: process.env.password,
-};
+};  
