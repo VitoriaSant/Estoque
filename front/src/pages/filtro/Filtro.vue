@@ -15,19 +15,11 @@
 
             <v-row no-gutters>
                 <v-col cols="12" md="6">
-                    <v-card variant="outlined" class="pa-4" border="sm">
-                        <div class="d-flex flex-column ga-2">
-                            <v-btn v-for="item in valoresParaFiltro" :key="item" block color="primary"
-                                :variant="filtroSelecionado === item ? 'elevated' : 'tonal'"
-                                class="justify-start text-none" @click="filtrar(item)">
-                                <v-icon start :icon="item.includes('Código')
-                                        ? 'mdi-numeric'
-                                        : 'mdi-text-box-outline'
-                                    " />
-                                {{ item }}
-                            </v-btn>
-                        </div>
-                    </v-card>
+                    <OpcoesFiltro 
+                        :classeFiltro="classeFiltro" 
+                        :dialogFiltro="dialogFiltro"
+                        @update:filtroSelecionado="filtroSelecionado = $event"
+                    />
                 </v-col>
 
                 <v-col cols="12" md="6">
@@ -119,6 +111,7 @@ import CClasseFiltro from "@/Service/base/CClasseFiltro";
 import CPedidoCompraPendenteModel from "@/Service/tema-estoque/pedidos-compra-pendente/CPedidoCompraPendenteModel";
 
 import DatasFiltro from "./Components/datasFiltro.vue"; 
+import OpcoesFiltro from "./Components/opcoesFiltro.vue";
 
 //Services
 import PedidoCompraPendenteController from "@/Service/tema-estoque/pedidos-compra-pendente/PedidoCompraPendenteController";

@@ -38,7 +38,6 @@ const dataFim = ref(
         ? formatarDataParaInput(props.classeFiltro.dataFim) : ''
 );
 
-// Watch para emitir as datas quando alteradas
 watch(dataInicio, (newValue) => {
     if (newValue) {
         emit('update:dataInicio', newValue as string);
