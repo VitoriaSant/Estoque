@@ -37,6 +37,7 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
+import Filtro from "../pages/filtro/Filtro.vue";
 
 const drawer = ref(false);
 const emit = defineEmits(["fechar"]);

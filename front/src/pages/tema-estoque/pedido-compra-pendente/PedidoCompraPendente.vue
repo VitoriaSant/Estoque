@@ -4,6 +4,7 @@
         <Linha2-PedidoPendente-FornecedorAtraso :key="`itens-${layoutStore.classeFiltro?.dataInicio || 'default'}`"/>
         <Linha3-PedidoPendente-ItensPendentes :key="`itens-${layoutStore.classeFiltro?.dataInicio || 'default'}`" />
     </div>
+    {{ layoutStore.classeFiltro }}
 </template>
 
 <script setup lang="ts">

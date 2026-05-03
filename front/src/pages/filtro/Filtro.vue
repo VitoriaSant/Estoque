@@ -6,15 +6,12 @@
                 <v-btn icon="mdi-close" variant="text" class="position-absolute right-0 top-0" @click="fechar" />
             </v-card-title>
 
-            <v-row class="mb-2" no-gutters>
-                <v-col cols="12" md="6" class="pa-1">
-                    <v-text-field v-model="dataInicio" label="Data início" type="date" variant="outlined" />
-                </v-col>
-
-                <v-col cols="12" md="6" class="pa-1">
-                    <v-text-field v-model="dataFim" label="Data fim" type="date" variant="outlined" />
-                </v-col>
-            </v-row>
+            <DatasFiltro 
+                :classeFiltro="classeFiltro" 
+                :dialogFiltro="dialogFiltro"
+                @update:dataInicio="dataInicio = $event"
+                @update:dataFim="dataFim = $event"
+            />
 
             <v-row no-gutters>
                 <v-col cols="12" md="6">
@@ -117,9 +114,11 @@
 
 <script setup lang="ts">
 //Vue
-import { ref } from "vue";
+import { ref, toRef } from "vue";
 import CClasseFiltro from "@/Service/base/CClasseFiltro";
 import CPedidoCompraPendenteModel from "@/Service/tema-estoque/pedidos-compra-pendente/CPedidoCompraPendenteModel";
+
+import DatasFiltro from "./Components/datasFiltro.vue"; 
 
 //Services
 import PedidoCompraPendenteController from "@/Service/tema-estoque/pedidos-compra-pendente/PedidoCompraPendenteController";
@@ -145,7 +144,7 @@ const props = defineProps<{
     classeFiltro: CClasseFiltro<CPedidoCompraPendenteModel>;
     dialogFiltro: boolean;
 }>();
-const dialogFiltro = ref(props.dialogFiltro ?? false);
+const dialogFiltro = toRef(props, 'dialogFiltro');
 
 const operadorSelecionado = ref("igual");
 const valorDigitado = ref("");
@@ -153,9 +152,7 @@ const controller = new PedidoCompraPendenteController();
 const listaCompras = ref<CPedidoCompraPendenteModel[]>([]);
 
 //Reativas
-const classeFiltro = ref<CClasseFiltro<CPedidoCompraPendenteModel>>(
-    new CClasseFiltro(),
-);
+const classeFiltro = toRef(props, 'classeFiltro');
 
 const valoresParaFiltro = [
     "Código do Fornecedor",
@@ -220,10 +217,11 @@ async function buscarDados() {
         valorConvertido = Number(valorDigitado.value);
     }
 
-    // Preenche o objeto de filtro
-    classeFiltro.value.dataInicio = dataInicio.value ? new Date(dataInicio.value) : undefined;
-    classeFiltro.value.dataFim = dataFim.value ? new Date(dataFim.value) : undefined;
-    classeFiltro.value.filtros = [
+    // Criar uma cópia do objeto de filtro para modificar
+    const filtroAtualizado = new CClasseFiltro();
+    filtroAtualizado.dataInicio = dataInicio.value ? new Date(dataInicio.value) : undefined;
+    filtroAtualizado.dataFim = dataFim.value ? new Date(dataFim.value) : undefined;
+    filtroAtualizado.filtros = [
         {
             campo: campoTecnico,
             operador: operadorSelecionado.value.toUpperCase() as any,
@@ -231,9 +229,10 @@ async function buscarDados() {
         },
     ];
     
-    useLayoutDashboardStore().classeFiltro = classeFiltro.value;
-
-    useLayoutDashboardStore().filtrarComprasPendentes();
+    console.log("Aplicando filtro:", filtroAtualizado);
+    useLayoutDashboardStore().classeFiltro = filtroAtualizado;
+    const resultado = await useLayoutDashboardStore().filtrarComprasPendentes();
+    console.log("Resultado da filtragem:", resultado);
     
     emit("fechar");
 }

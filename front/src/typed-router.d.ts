@@ -19,6 +19,10 @@ declare module 'vue-router/auto-routes' {
    */
   export interface RouteNamedMap {
     '/': RouteRecordInfo<'/', '/', Record<never, never>, Record<never, never>>,
+    '/filtro/Components/DatasFiltro': RouteRecordInfo<'/filtro/Components/DatasFiltro', '/filtro/Components/DatasFiltro', Record<never, never>, Record<never, never>>,
+    '/filtro/Components/OpcoesFiltro': RouteRecordInfo<'/filtro/Components/OpcoesFiltro', '/filtro/Components/OpcoesFiltro', Record<never, never>, Record<never, never>>,
+    '/filtro/Components/PesquisaFiltro': RouteRecordInfo<'/filtro/Components/PesquisaFiltro', '/filtro/Components/PesquisaFiltro', Record<never, never>, Record<never, never>>,
+    '/filtro/Filtro': RouteRecordInfo<'/filtro/Filtro', '/filtro/Filtro', Record<never, never>, Record<never, never>>,
     '/login/Login': RouteRecordInfo<'/login/Login', '/login/Login', Record<never, never>, Record<never, never>>,
     '/tema-estoque/consumo-material/components/Linha1-': RouteRecordInfo<'/tema-estoque/consumo-material/components/Linha1-', '/tema-estoque/consumo-material/components/Linha1-', Record<never, never>, Record<never, never>>,
     '/tema-estoque/consumo-material/components/Linha2-': RouteRecordInfo<'/tema-estoque/consumo-material/components/Linha2-', '/tema-estoque/consumo-material/components/Linha2-', Record<never, never>, Record<never, never>>,
@@ -46,6 +50,22 @@ declare module 'vue-router/auto-routes' {
   export interface _RouteFileInfoMap {
     'src/pages/index.vue': {
       routes: '/'
+      views: never
+    }
+    'src/pages/filtro/Components/DatasFiltro.vue': {
+      routes: '/filtro/Components/DatasFiltro'
+      views: never
+    }
+    'src/pages/filtro/Components/OpcoesFiltro.vue': {
+      routes: '/filtro/Components/OpcoesFiltro'
+      views: never
+    }
+    'src/pages/filtro/Components/PesquisaFiltro.vue': {
+      routes: '/filtro/Components/PesquisaFiltro'
+      views: never
+    }
+    'src/pages/filtro/Filtro.vue': {
+      routes: '/filtro/Filtro'
       views: never
     }
     'src/pages/login/Login.vue': {
