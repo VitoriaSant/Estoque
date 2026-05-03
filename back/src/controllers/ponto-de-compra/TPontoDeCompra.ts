@@ -1,6 +1,9 @@
 export type TPontoDeCompra = {
     ITEM_ITEM_SALDO: number;
     DESCRICAO_ITEM: string;
+    EMPRESA_ITEM_SALDO: number;
+    EMPRESA_PDC: number;
+    EMPRESA_REQEST: number;
     VARIACAO_ITEM_SALDO: number;
     DESCRICAO_VARIACAO: string;
     COR_ITEM_SALDO: number;
@@ -11,7 +14,6 @@ export type TPontoDeCompra = {
     ESTOQUEMINIMO_ITEM_SALDO: number;
     ESTOQUEMAXIMO_ITEM_SALDO: number;
     CODIGO_PDC: number;
-    EMPRESA_PDC: number;
     DTPREVENTREGA_PDC: string;
     ITEM_PDCITEM: number;
     QTDEABERTA_PDCITEMDET: number;

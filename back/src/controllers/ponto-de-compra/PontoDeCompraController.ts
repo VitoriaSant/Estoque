@@ -2,6 +2,7 @@ import Firebird, { Database } from "node-firebird";
 import options from "../../database/conection";
 import { Request, response, Response } from "express";
 import CClasseFiltro, { CFiltro } from "../base/CClasseFiltro";
+import CPontoDeCompraModel from "./CPontoDeCompraModel";
 
 export default class PontoDeCompraController {
     public pontoDeCompra(req: Request, res: Response): void {
@@ -14,6 +15,9 @@ export default class PontoDeCompraController {
             Select
                 item_saldo.item_item_saldo,
                 item.descricao_item,
+                item_saldo.empresa_item_saldo,
+                pedido_compra.empresa_pdc,
+                requisicaoestoque.empresa_reqest,
                 item_saldo.variacao_item_saldo,
                 variacao.descricao_variacao,
                 item_saldo.cor_item_saldo,
@@ -26,7 +30,6 @@ export default class PontoDeCompraController {
                 pedido_compra.codigo_pdc,
                 pedido_compra.empresa_pdc,
                 pedido_compra.dtpreventrega_pdc,
-                pedido_compra_item.item_pdcitem,
                 pedido_compra_item_detalhe.qtdeaberta_pdcitemdet,
                 pedido_compra_item_detalhe.vlrunitarioliquido_pdcitemdet,
                 requisicaoestoque_item.qtderequisicao_itemreq,
@@ -45,7 +48,103 @@ export default class PontoDeCompraController {
             /*and requisicaoestoque.ordemproducao_reqest <> 0*/
             `;
 
-            db.query(query, [], (err: any, result: any) => {
+            const params: any[] = [];
+
+            const classeFiltro = new CClasseFiltro<CPontoDeCompraModel>(
+                req.body,
+            ) as CClasseFiltro<CPontoDeCompraModel>;
+
+            console.log("ClasseFiltro:", classeFiltro);
+
+            for (const filtro of classeFiltro.filtros) {
+                if (filtro.campo == "empresaItem") {
+                    query += ` AND item_saldo.empresa_item_saldo ${CFiltro.toOperadorSQL(filtro.operador)} ?
+                                AND pedido_compra.empresa_pdc ${CFiltro.toOperadorSQL(filtro.operador)} ?
+                                AND requisicaoestoque.empresa_reqest ${CFiltro.toOperadorSQL(filtro.operador)} ?
+                            `;
+                    if (filtro.operador != "CONTEM") {
+                        params.push(filtro.valor);
+                    } else {
+                        params.push(`%${filtro.valor}%`);
+                    }
+                }
+
+                if(filtro.campo == "itemId") {
+                    query += ` AND item_saldo.item_item_saldo ${CFiltro.toOperadorSQL(filtro.operador)} ?`;
+                    if (filtro.operador != "CONTEM") {
+                        params.push(filtro.valor);
+                    } else {
+                        params.push(`%${filtro.valor}%`);
+                    }
+                }
+
+                if(filtro.campo == "descricaoItem") {
+                    query += ` AND item.descricao_item ${CFiltro.toOperadorSQL(filtro.operador)} ?`;
+                    if (filtro.operador != "CONTEM") {
+                        params.push(filtro.valor);
+                    } else {
+                        params.push(`%${filtro.valor}%`);
+                    }
+                }
+
+                if(filtro.campo == "corId") {
+                    query += ` AND item_saldo.cor_item_saldo ${CFiltro.toOperadorSQL(filtro.operador)} ?`;
+                    if (filtro.operador != "CONTEM") {
+                        params.push(filtro.valor);
+                    } else {
+                        params.push(`%${filtro.valor}%`);
+                    }
+                }
+
+                if (filtro.campo == "descricaoCor") {
+                    query += ` AND cor.descricao_cor ${CFiltro.toOperadorSQL(filtro.operador)} ?`;
+                    if (filtro.operador != "CONTEM") {
+                        params.push(filtro.valor);
+                    } else {
+                        params.push(`%${filtro.valor}%`);
+                    }
+                }
+
+                if (filtro.campo == "variacaoId") {
+                    query += ` AND item_saldo.variacao_item_saldo ${CFiltro.toOperadorSQL(filtro.operador)} ?`;
+                    if (filtro.operador != "CONTEM") {
+                        params.push(filtro.valor);
+                    } else {
+                        params.push(`%${filtro.valor}%`);
+                    }
+                }
+
+                if (filtro.campo == "descricaoVariacao") {
+                    query += ` AND variacao.descricao_variacao ${CFiltro.toOperadorSQL(filtro.operador)} ?`;
+                    if (filtro.operador != "CONTEM") {
+                        params.push(filtro.valor);
+                    } else {
+                        params.push(`%${filtro.valor}%`);
+                    }
+                }
+
+                if (filtro.campo == "acabamentoId") {
+                    query += ` AND item_saldo.acabamento_item_saldo ${CFiltro.toOperadorSQL(filtro.operador)} ?`;
+                    if (filtro.operador != "CONTEM") {
+                        params.push(filtro.valor);
+                    } else {
+                        params.push(`%${filtro.valor}%`);
+                    }
+                }
+
+                if (filtro.campo == "descricaoAcabamento") {
+                    query += ` AND acabamento.descricao_acabamento ${CFiltro.toOperadorSQL(filtro.operador)} ?`;
+                    if (filtro.operador != "CONTEM") {
+                        params.push(filtro.valor);
+                    } else {
+                        params.push(`%${filtro.valor}%`);
+                    }
+                }
+            }
+
+
+
+            db.query(query, params, (err: any, result: any) => {
                 if (err) {
                     console.error(err);
                     db.detach();

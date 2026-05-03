@@ -1,6 +1,9 @@
-export default class CPontoDeCompra {
+export default class CPontoDeCompraModel {
     itemId: number = 0;
     descricaoItem: string = "";
+    empresaItem: number = 0;
+    empresaPDC: number = 0;
+    empresaReqest: number = 0;
     variacaoId: number = 0;
     descricaoVariacao: string = "";
     corId: number = 0;
@@ -11,7 +14,6 @@ export default class CPontoDeCompra {
     estoqueMinimo: number = 0;
     estoqueMaximo: number = 0;
     pdcId: number = 0;
-    empresaPDC: number = 0;
     dataPrevisaoEntrega: string = "";
     itemPDC: number = 0;
     quantidadeAberta: number = 0;

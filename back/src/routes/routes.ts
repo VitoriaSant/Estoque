@@ -10,6 +10,6 @@ const teste = new Teste();
 
 router.get("/", teste.get);
 router.post("/compraPendente", comprasPendentesController.pedidoCompraPendente);
-router.get("/pontoDeCompra", pontoDeCompraController.pontoDeCompra);
+router.post("/pontoDeCompra", pontoDeCompraController.pontoDeCompra);
 
 export default router;
