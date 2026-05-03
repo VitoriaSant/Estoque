@@ -1,7 +1,9 @@
 <template>
-    <Linha1-CardPontoCompra />
-    <Linha2 />
-    <Linha3 />
+    <div>
+        <Linha1-CardPontoCompra />
+        <Linha2 />
+        <Linha3 />
+    </div>
 </template>
 
 <script setup lang="ts">

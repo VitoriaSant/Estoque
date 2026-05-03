@@ -23,7 +23,7 @@
     </v-list>
   </v-navigation-drawer>
 
-  <v-main>
+  <v-main class="bg-accent">
       <Filtro
         v-model="layoutStore.exibirFiltro"
         @fechar="layoutStore.exibirFiltro = false"

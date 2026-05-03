@@ -198,6 +198,8 @@ export default class PedidosCompraPendentesControlles {
             .reduce((acc: number, item: any) => {
               return acc + (item.VLRUNITARIOLIQUIDO_PDCITEMDET || 0);
             }, 0);
+
+            const pedidoEmDia = totalDePedidos - qntPedidoEmAtraso;
             
 //----------------------------------------------------------------------------------------------------
 //Contagem de pedidos diferentes por fornecedor
@@ -323,6 +325,7 @@ export default class PedidosCompraPendentesControlles {
           const response = {
             resumo: {
               qntPedidoEmAtraso,
+              pedidoEmDia,
               somaPedidoEmAtraso: Number(somaPedidoEmAtraso.toFixed(2)),
               totalDePedidos,
               somaTotal: Number(somaTotal.toFixed(2)),

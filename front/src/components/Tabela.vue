@@ -1,6 +1,6 @@
 <template>
     <div>
-        <v-table height="300px">
+        <v-table class="tabela-padrao">
             <thead>
                 <tr>
                     <th v-for="header in th" :key="header">

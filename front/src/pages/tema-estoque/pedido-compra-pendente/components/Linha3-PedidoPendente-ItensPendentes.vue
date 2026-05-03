@@ -1,22 +1,7 @@
 <template>
 <v-row no-gutters>
-    <v-col class="pa-1">
-    <v-card
-        variant="elevated"
-        class="mx-auto"
-        title="Pedidos Pendentes"
-        prepend-icon="mdi-archive-alert"
-    >
-        <Tabela 
-            :th="['Codigo', 'Fornecedor', 'Prev. Entrega', 'Valor']" 
-            :campos="['pedidoId', 'fornecedorNome', 'previsaoEntregaPedido', 'valorTotalPedido']"
-            :campoKey="'pedidoId'"
-            :dados="dados?.pedidosPendentes || []" 
-        />
-    </v-card>
-    </v-col>
-    <v-col class="pa-1">
-    <v-card
+    <v-col cols="12" md="7" class="pa-1">
+        <v-card
         variant="elevated"
         class="mx-auto"
         title="Itens Pendentes"
@@ -24,7 +9,7 @@
     >
         <Tabela
             :th="[
-                'Código Item',
+                'Código',
                 'Descrição',
                 'Quantidade',
                 'Valor Unitário',
@@ -35,6 +20,21 @@
             :dados="dados?.itensPendentes || []"
         />
     </v-card>
+    </v-col>
+    <v-col cols="12" md="5" class="pa-1">
+        <v-card
+            variant="elevated"
+            class="mx-auto"
+            title="Pedidos Pendentes"
+            prepend-icon="mdi-archive-alert"
+        >
+            <Tabela 
+                :th="['Codigo', 'Prev. Entrega', 'Valor']" 
+                :campos="['pedidoId', 'previsaoEntregaPedido', 'valorTotalPedido']"
+                :campoKey="'pedidoId'"
+                :dados="dados?.pedidosPendentes || []" 
+            />
+        </v-card>
     </v-col>
 </v-row>
 </template>

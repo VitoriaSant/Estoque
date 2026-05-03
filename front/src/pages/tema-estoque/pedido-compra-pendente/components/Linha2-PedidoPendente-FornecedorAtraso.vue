@@ -2,12 +2,16 @@
 <v-row no-gutters>
     <v-col cols="12" md="4" class="pa-1">
     <v-card
+        style="height: 476px"
         variant="elevated"
         class="mx-auto"
         title="Pedidos Pendentes"
         prepend-icon="mdi-text-box-edit"
     >
-        <Pizza />
+        <Pizza 
+            :options="['Pedidos em Atraso', 'Pedidos no Prazo']"
+            :dados="[dados?.resumo?.qntPedidoEmAtraso || 0, dados?.resumo?.pedidoEmDia || 0]"
+        />
     </v-card>
     </v-col>
     <v-col cols="12" md="8" class="pa-1">

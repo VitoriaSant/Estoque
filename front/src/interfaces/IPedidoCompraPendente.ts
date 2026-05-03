@@ -1,6 +1,7 @@
 export interface IPedidoCompraPendenteResponse {
   resumo: {
     qntPedidoEmAtraso: number;
+    pedidoEmDia: number;
     somaPedidoEmAtraso: number;
     totalDePedidos: number;
     somaTotal: number;

@@ -1,22 +1,27 @@
 <template>
-    <div>
+    <div class="pizza-container">
         <apexchart 
             width="380" 
             type="donut" 
-            :options="options" 
-            :series="series" 
+            :options="chartOptions" 
+            :series="dados" 
         />
-    </div>
+    </div>  
 </template>
 
 <script lang="ts" setup>
-import { ref } from "vue";
+import { computed } from "vue";
 import VueApexCharts from "vue3-apexcharts";
-
+import type { ApexOptions } from "apexcharts";
 const apexchart = VueApexCharts;
 
-const options = ref({
-    labels: ["Apple", "Mango", "Orange", "Watermelon"],
+const props = defineProps<{
+    options: string[];
+    dados: number[];
+}>();
+
+const chartOptions = computed((): ApexOptions => ({
+    labels: props.options,
     plotOptions: {
         pie: {
             donut: {
@@ -24,7 +29,17 @@ const options = ref({
             }
         }
     },
-});
-const series = ref([44, 55, 13, 43]);
+    legend: {
+        position: 'bottom',
+        horizontalAlign: 'center',
+        floating: false,
+        fontSize: '12px',
+        offsetY: 10
+    },
+    chart: {
+        width: 300,
+        height: 280
+    }
+}));
 
 </script>

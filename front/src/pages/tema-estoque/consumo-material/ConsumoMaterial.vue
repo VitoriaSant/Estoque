@@ -1,6 +1,8 @@
 <template>
-    <Linha1 />
-    <Linha2 />
+    <div>
+        <Linha1 />
+        <Linha2 />
+    </div>
 </template>
 
 <script setup lang="ts">
