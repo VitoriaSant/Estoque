@@ -13,6 +13,6 @@ const teste = new Teste();
 router.get("/", teste.get);
 router.post("/compraPendente", comprasPendentesController.pedidoCompraPendente);
 router.post("/pontoDeCompra", pontoDeCompraController.pontoDeCompra);
-router.get("/consumoDeMaterial", consumoDeMaterialController.consumoDeMaterial);
+router.post("/consumoDeMaterial", consumoDeMaterialController.consumoDeMaterial);
 
 export default router;

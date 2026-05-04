@@ -2,6 +2,7 @@ import Firebird, { Database } from "node-firebird";
 import options from "../../database/conection";
 import { Request, response, Response } from "express";
 import CClasseFiltro, { CFiltro } from "../base/CClasseFiltro";
+import CConsumDeMaterialModel from "./CConsumDeMaterialModel";
 
 export default class ConsumoDeMaterialController {
     public consumoDeMaterial(req: Request, res: Response): void {
@@ -30,8 +31,90 @@ export default class ConsumoDeMaterialController {
                 left join requisicaoestoque on (requisicaoestoque.autoinc_reqest = requisicaoestoque_item.autoincrequisicao_itemreq)
             where requisicaoestoque.ordemproducao_reqest <> 0
         `;
-        
-            db.query(query, [], (err: any, result: any) => {
+
+            const params: any[] = [];
+
+            const classeFiltro = new CClasseFiltro<CConsumDeMaterialModel>(
+                req.body,
+            ) as CClasseFiltro<CConsumDeMaterialModel>;    
+            
+            console.log("ClasseFiltro:", classeFiltro);
+
+            for (const filtro of classeFiltro.filtros) {
+                if (filtro.campo === "itemId") {
+                    query += ' AND requisicaoestoque_item.item_itemreq = ?';
+                    if (filtro.operador !== "CONTEM"){
+                        params.push(filtro.valor);
+                    }else{
+                        params.push(`%${filtro.valor}%`);
+                    }
+                }
+
+                if (filtro.campo === "descricaoItem") {
+                    query += ' AND item.descricao_item LIKE ?';
+                    if (filtro.operador !== "CONTEM"){
+                        params.push(filtro.valor);
+                    }else{
+                        params.push(`%${filtro.valor}%`);
+                    }
+                }
+
+                if (filtro.campo === "variacaoId") {
+                    query += ' AND requisicaoestoque_item.variacao_itemreq = ?';
+                    if (filtro.operador !== "CONTEM"){
+                        params.push(filtro.valor);
+                    }else{
+                        params.push(`%${filtro.valor}%`);
+                    }
+                }
+
+                if (filtro.campo === "descricaoVariacao") {
+                    query += ' AND variacao.descricao_variacao LIKE ?';
+                    if (filtro.operador !== "CONTEM"){
+                        params.push(filtro.valor);
+                    }else{
+                        params.push(`%${filtro.valor}%`);
+                    }
+                }
+
+                if (filtro.campo === "corId") {
+                    query += ' AND requisicaoestoque_item.cor_itemreq = ?';
+                    if (filtro.operador !== "CONTEM"){
+                        params.push(filtro.valor);
+                    }else{
+                        params.push(`%${filtro.valor}%`);
+                    }
+                }
+
+                if (filtro.campo === "descricaoCor") {
+                    query += ' AND cor.descricao_cor LIKE ?';
+                    if (filtro.operador !== "CONTEM"){
+                        params.push(filtro.valor);
+                    }else{
+                        params.push(`%${filtro.valor}%`);
+                    }
+                }
+
+                if (filtro.campo === "acabamentoId") {
+                    query += ' AND requisicaoestoque_item.acabamento_itemreq = ?';
+                    if (filtro.operador !== "CONTEM"){
+                        params.push(filtro.valor);
+                    }else{
+                        params.push(`%${filtro.valor}%`);
+                    }
+                }
+
+                if (filtro.campo === "descricaoAcabamento") {
+                    query += ' AND acabamento.descricao_acabamento LIKE ?';
+                    if (filtro.operador !== "CONTEM"){
+                        params.push(filtro.valor);
+                    }else{
+                        params.push(`%${filtro.valor}%`);
+                    }
+                }
+            }
+            
+            db.query(query, params, (err: any, result: any) => {
                 if (err) {
                     console.error(err);
                     db.detach();
