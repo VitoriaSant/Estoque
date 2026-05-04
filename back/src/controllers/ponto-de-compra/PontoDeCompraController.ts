@@ -151,6 +151,8 @@ export default class PontoDeCompraController {
                     return res.status(500).json({ error: "Erro na query" });
                 }
 
+                try {
+
 //----------------------------------------------------------------------------------------------------
 // Contagem de valores: Valor todol em estoque, Valor de pedido pendente, Valor total
 //----------------------------------------------------------------------------------------------------
@@ -245,8 +247,14 @@ export default class PontoDeCompraController {
                     pontoDeCompra: listaPontoDeCompra,
                 };
 
-            res.json(response);
-            db.detach();
+                } catch (error) {
+                    console.error('Error processing data:', error);
+                    db.detach();
+                    return res.status(500).json({ error: "Erro ao processar dados" });
+                }
+
+                res.json(response);
+                db.detach();
             });
         }
         );
