@@ -26,6 +26,7 @@ const props = defineProps<{
     dialogFiltro: boolean;
 }>();
 
+//Necessario para que apareca nos inputs
 const formatarDataParaInput = (data: Date) => {
     return data.toISOString().split("T")[0];
 };

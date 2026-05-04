@@ -19,6 +19,7 @@ declare module 'vue-router/auto-routes' {
    */
   export interface RouteNamedMap {
     '/': RouteRecordInfo<'/', '/', Record<never, never>, Record<never, never>>,
+    '/filtro/Components/ConsultarValores': RouteRecordInfo<'/filtro/Components/ConsultarValores', '/filtro/Components/ConsultarValores', Record<never, never>, Record<never, never>>,
     '/filtro/Components/DatasFiltro': RouteRecordInfo<'/filtro/Components/DatasFiltro', '/filtro/Components/DatasFiltro', Record<never, never>, Record<never, never>>,
     '/filtro/Components/OpcoesFiltro': RouteRecordInfo<'/filtro/Components/OpcoesFiltro', '/filtro/Components/OpcoesFiltro', Record<never, never>, Record<never, never>>,
     '/filtro/Components/PesquisaFiltro': RouteRecordInfo<'/filtro/Components/PesquisaFiltro', '/filtro/Components/PesquisaFiltro', Record<never, never>, Record<never, never>>,
@@ -50,6 +51,10 @@ declare module 'vue-router/auto-routes' {
   export interface _RouteFileInfoMap {
     'src/pages/index.vue': {
       routes: '/'
+      views: never
+    }
+    'src/pages/filtro/Components/ConsultarValores.vue': {
+      routes: '/filtro/Components/ConsultarValores'
       views: never
     }
     'src/pages/filtro/Components/DatasFiltro.vue': {

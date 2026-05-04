@@ -14,7 +14,7 @@
             />
 
             <v-row no-gutters>
-                <v-col cols="12" md="6">
+                <v-col cols="12" md="6" class="pr-1">
                     <OpcoesFiltro 
                         :classeFiltro="classeFiltro" 
                         :dialogFiltro="dialogFiltro"
@@ -23,81 +23,14 @@
                 </v-col>
 
                 <v-col cols="12" md="6">
-                    <v-card variant="tonal" class="pa-4 d-flex flex-column" min-height="465" color="primary">
-                        <div class="d-flex align-center mb-6">
-                            <v-icon size="large" icon="mdi-filter-variant" class="mr-2" />
-                            <span class="text-h5">{{ filtroSelecionado }}</span>
-                        </div>
-
-                        <v-card-text class="pa-0 flex-grow-1">
-                            <v-select :items="operadores" label="Operador" variant="outlined" item-title="title"
-                                item-value="value" v-model="operadorSelecionado" class="mb-4"></v-select>
-
-                            <v-text-field v-model="valorDigitado" label="Descrição" variant="outlined"
-                                placeholder="Digite o valor para filtrar..." clearable></v-text-field>
-                        </v-card-text>
-
-                        <div class="mt-auto pt-4">
-                            <v-dialog v-model="dialogPesquisa" max-width="400">
-                                <template v-slot:activator="{ props: activatorProps }">
-                                    <div class="d-flex flex-column ga-3">
-                                        <v-btn v-bind="activatorProps" color="secondary" size="large" variant="flat"
-                                            @click="ConsultarValores">
-                                            <v-icon start icon="mdi-magnify" />
-                                            Consultar Valores
-                                        </v-btn>
-
-                                        <v-btn color="primary" size="large" variant="elevated" @click="buscarDados()">
-                                            <v-icon start icon="mdi-check" />
-                                            Aplicar Filtro
-                                        </v-btn>
-                                    </div>
-                                </template>
-
-                                <!--CONSULTAR VALORES-->
-                                <div class="pa-4 text-center">
-                                    <v-dialog v-model="dialog" max-width="600">
-                                        <template v-slot:activator="{ props: activatorProps }">
-                                            <!-- BOTÃO CONSULTAR VALORES-->
-                                            <div id="consultar-valores-btn" class="d-flex flex-column ga-2">
-                                                <v-btn v-bind="activatorProps" color="secondary"
-                                                    @click="ConsultarValores">
-                                                    Consultar Valores
-                                                </v-btn>
-
-                                                <!-- FILTRAR -->
-                                                <div class="d-flex flex-column ga-2">
-                                                    <v-btn color="primary"> Filtrar </v-btn>
-                                                </div>
-                                            </div>
-                                        </template>
-
-                                        <!--CARD/PESQUISA CONSULTAR VALORES-->
-                                        <v-card>
-                                            <v-card-text>
-                                                <v-text-field :loading="loading" color="primary"
-                                                    append-inner-icon="mdi-magnify" density="compact"
-                                                    label="Consultar Valores" variant="solo" hide-details single-line
-                                                    @click:append-inner="onPesquisar"></v-text-field>
-                                            </v-card-text>
-
-                                            <v-divider></v-divider>
-
-                                            <v-card-actions>
-                                                <v-spacer></v-spacer>
-
-                                                <v-btn color="secondary" text="Fechar" variant="plain"
-                                                    @click="dialog = false"></v-btn>
-
-                                                <v-btn color="primary" text="Confirmar" variant="tonal"
-                                                    @click="dialog = false"></v-btn>
-                                            </v-card-actions>
-                                        </v-card>
-                                    </v-dialog>
-                                </div>
-                            </v-dialog>
-                        </div>
-                    </v-card>
+                    <PesquisaFiltro 
+                        :filtroSelecionado="filtroSelecionado"  
+                        :classeFiltro="classeFiltro"
+                        :dialogFiltro="dialogFiltro"
+                        @update:operadorSelecionado="operadorSelecionado = $event"
+                        @update:valorDigitado="valorDigitado = $event"
+                        @buscarDados="buscarDados"
+                    />
                 </v-col>
             </v-row>
         </v-card>
@@ -110,18 +43,14 @@ import { ref, toRef } from "vue";
 import CClasseFiltro from "@/Service/base/CClasseFiltro";
 import CPedidoCompraPendenteModel from "@/Service/tema-estoque/pedidos-compra-pendente/CPedidoCompraPendenteModel";
 
-import DatasFiltro from "./Components/datasFiltro.vue"; 
-import OpcoesFiltro from "./Components/opcoesFiltro.vue";
+import DatasFiltro from "./Components/DatasFiltro.vue"; 
+import OpcoesFiltro from "./Components/OpcoesFiltro.vue";
+import PesquisaFiltro from "./Components/PesquisaFiltro.vue";
 
 //Services
-import PedidoCompraPendenteController from "@/Service/tema-estoque/pedidos-compra-pendente/PedidoCompraPendenteController";
 import { useLayoutDashboardStore } from "@/stores/LayoutDashboardStore";
-const layoutStore = useLayoutDashboardStore();
 
 const filtroSelecionado = ref("Item");
-const ConstValores = ref(false);
-const dialog = ref(false);
-const dialogPesquisa = ref(false);
 const loaded = ref(false);
 const loading = ref(false);
 
@@ -139,46 +68,24 @@ const props = defineProps<{
 }>();
 const dialogFiltro = toRef(props, 'dialogFiltro');
 
-const operadorSelecionado = ref("igual");
+const operadorSelecionado = ref("IGUAL");
 const valorDigitado = ref("");
-const controller = new PedidoCompraPendenteController();
-const listaCompras = ref<CPedidoCompraPendenteModel[]>([]);
 
 //Reativas
 const classeFiltro = toRef(props, 'classeFiltro');
 
-const valoresParaFiltro = [
-    "Código do Fornecedor",
-    "Fornecedor",
-    "Código do Item",
-    "Item",
-    "Código da Cor",
-    "Cor",
-    "Código da Variação",
-    "Variação",
-    "Código do Acabamento",
-    "Acabamento",
-];
-
-const ConsultarValores = () => {
-    ConstValores.value = !ConstValores.value;
-};
-
-const operadores = [
-    { title: "Igual", value: "igual" },
-    { title: "Diferente", value: "diferente" },
-    { title: "Contém", value: "contem" },
-];
-
-// Forçando data atual e data de 30 dias atrás para os campos de data
+//Necessario para que o filtro de datas funcione corretamente
 const formatarDataParaInput = (data: Date) => {
     return data.toISOString().split("T")[0];
 };
-const dataAtual = new Date();
-const dataPassada = new Date();
-dataPassada.setDate(dataAtual.getDate() - 30);
-const dataInicio = ref(formatarDataParaInput(dataPassada));
-const dataFim = ref(formatarDataParaInput(dataAtual));
+const dataInicio = ref(
+    props.classeFiltro.dataInicio 
+        ? formatarDataParaInput(props.classeFiltro.dataInicio) : ''
+);
+const dataFim = ref(
+    props.classeFiltro.dataFim 
+        ? formatarDataParaInput(props.classeFiltro.dataFim) : ''
+);
 
 function fechar() {
     emit("fechar");
@@ -217,15 +124,12 @@ async function buscarDados() {
     filtroAtualizado.filtros = [
         {
             campo: campoTecnico,
-            operador: operadorSelecionado.value.toUpperCase() as any,
+            operador: operadorSelecionado.value as any,
             valor: valorConvertido,
         },
     ];
-    
-    console.log("Aplicando filtro:", filtroAtualizado);
     useLayoutDashboardStore().classeFiltro = filtroAtualizado;
-    const resultado = await useLayoutDashboardStore().filtrarComprasPendentes();
-    console.log("Resultado da filtragem:", resultado);
+    //const resultado = await useLayoutDashboardStore().filtrarComprasPendentes();
     
     emit("fechar");
 }
