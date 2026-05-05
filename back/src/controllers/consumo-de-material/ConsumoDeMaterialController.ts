@@ -29,7 +29,8 @@ export default class ConsumoDeMaterialController {
                 left join cor on (cor.codigo_cor = requisicaoestoque_item.cor_itemreq)
                 left join acabamento on (acabamento.codigo_acabamento= requisicaoestoque_item.acabamento_itemreq)
                 left join requisicaoestoque on (requisicaoestoque.autoinc_reqest = requisicaoestoque_item.autoincrequisicao_itemreq)
-            where requisicaoestoque.ordemproducao_reqest <> 0
+            WHERE requisicaoestoque.ordemproducao_reqest = 0
+            /*WHERE requisicaoestoque.ordemproducao_reqest <> 0*/
         `;
 
             const params: any[] = [];
@@ -42,7 +43,7 @@ export default class ConsumoDeMaterialController {
 
             for (const filtro of classeFiltro.filtros) {
                 if (filtro.campo === "itemId") {
-                    query += ' AND requisicaoestoque_item.item_itemreq = ?';
+                    query += ` AND requisicaoestoque_item.item_itemreq ${CFiltro.toOperadorSQL(filtro.operador)} ?`;
                     if (filtro.operador !== "CONTEM"){
                         params.push(filtro.valor);
                     }else{
@@ -51,7 +52,7 @@ export default class ConsumoDeMaterialController {
                 }
 
                 if (filtro.campo === "descricaoItem") {
-                    query += ' AND item.descricao_item LIKE ?';
+                    query += ` AND item.descricao_item ${CFiltro.toOperadorSQL(filtro.operador)} ?`;
                     if (filtro.operador !== "CONTEM"){
                         params.push(filtro.valor);
                     }else{
@@ -60,7 +61,7 @@ export default class ConsumoDeMaterialController {
                 }
 
                 if (filtro.campo === "variacaoId") {
-                    query += ' AND requisicaoestoque_item.variacao_itemreq = ?';
+                    query += ` AND requisicaoestoque_item.variacao_itemreq ${CFiltro.toOperadorSQL(filtro.operador)} ?`;
                     if (filtro.operador !== "CONTEM"){
                         params.push(filtro.valor);
                     }else{
@@ -69,7 +70,7 @@ export default class ConsumoDeMaterialController {
                 }
 
                 if (filtro.campo === "descricaoVariacao") {
-                    query += ' AND variacao.descricao_variacao LIKE ?';
+                    query +=' AND variacao.descricao_variacao ' + CFiltro.toOperadorSQL(filtro.operador) + ' ?';
                     if (filtro.operador !== "CONTEM"){
                         params.push(filtro.valor);
                     }else{
@@ -78,7 +79,7 @@ export default class ConsumoDeMaterialController {
                 }
 
                 if (filtro.campo === "corId") {
-                    query += ' AND requisicaoestoque_item.cor_itemreq = ?';
+                    query += ' AND requisicaoestoque_item.cor_itemreq ' + CFiltro.toOperadorSQL(filtro.operador) + ' ?';
                     if (filtro.operador !== "CONTEM"){
                         params.push(filtro.valor);
                     }else{
@@ -87,7 +88,7 @@ export default class ConsumoDeMaterialController {
                 }
 
                 if (filtro.campo === "descricaoCor") {
-                    query += ' AND cor.descricao_cor LIKE ?';
+                    query += ' AND cor.descricao_cor ' + CFiltro.toOperadorSQL(filtro.operador) + ' ?';
                     if (filtro.operador !== "CONTEM"){
                         params.push(filtro.valor);
                     }else{
@@ -96,7 +97,7 @@ export default class ConsumoDeMaterialController {
                 }
 
                 if (filtro.campo === "acabamentoId") {
-                    query += ' AND requisicaoestoque_item.acabamento_itemreq = ?';
+                    query += ' AND requisicaoestoque_item.acabamento_itemreq ' + CFiltro.toOperadorSQL(filtro.operador) + ' ?';
                     if (filtro.operador !== "CONTEM"){
                         params.push(filtro.valor);
                     }else{
@@ -105,7 +106,7 @@ export default class ConsumoDeMaterialController {
                 }
 
                 if (filtro.campo === "descricaoAcabamento") {
-                    query += ' AND acabamento.descricao_acabamento LIKE ?';
+                    query += ' AND acabamento.descricao_acabamento ' + CFiltro.toOperadorSQL(filtro.operador) + ' ?';
                     if (filtro.operador !== "CONTEM"){
                         params.push(filtro.valor);
                     }else{
@@ -121,15 +122,14 @@ export default class ConsumoDeMaterialController {
                     return res.status(500).json({ error: "Erro na query" });
                 }
 
-                try {
-            
-        
+            try {
             const response = {
                 dados: result
             };
 
             res.json(response);
             db.detach();
+            
             } catch (error) {
                 db.detach();
                 return res.status(500).json({ error: "Erro ao processar dados" });
