@@ -1,7 +1,7 @@
 import { api } from "@/Service/base/Axios";
 import type CClasseFiltro from "@/Service/base/CClasseFiltro";
 import CPedidoCompraPendenteModel from "./CPedidoCompraPendenteModel";
-import type { IPedidoCompraPendenteResponse } from "@/interfaces/IPedidoCompraPendente";
+import type { IPedidoCompraPendenteResponse } from "@/interfaces/IPedidoCompraPendenteResonse";
 
 export default class PedidoCompraPendenteController {
   async listarComprasPendentes(

@@ -128,6 +128,7 @@ async function buscarDados() {
             valor: valorConvertido,
         },
     ];
+    
     useLayoutDashboardStore().classeFiltro = filtroAtualizado;
     //const resultado = await useLayoutDashboardStore().filtrarComprasPendentes();
     

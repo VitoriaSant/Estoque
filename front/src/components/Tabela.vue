@@ -18,7 +18,6 @@
         </v-table>
         
         <v-pagination
-            v-if="totalPaginas > 1"
             v-model="paginaAtual"
             :length="totalPaginas"
             :total-visible="7"
@@ -42,10 +41,12 @@ const paginaAtual = ref(1);
 
 // Computados para paginação
 const totalPaginas = computed(() => {
+    if (!props.dados || !Array.isArray(props.dados)) return 0;
     return Math.ceil(props.dados.length / itensPorPagina);
 });
 
 const itensPaginados = computed(() => {
+    if (!props.dados || !Array.isArray(props.dados)) return [];
     const inicio = (paginaAtual.value - 1) * itensPorPagina;
     const fim = inicio + itensPorPagina;
     return props.dados.slice(inicio, fim);

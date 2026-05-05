@@ -43,7 +43,6 @@ const carregarDados = async () => {
     try {
         const resultado = await layoutStore.filtrarComprasPendentes();
         dados.value = resultado;
-        console.log("Dados recebidos nos cards:", resultado);
     } catch (error) {
         console.error("Erro ao carregar dados:", error);
     }

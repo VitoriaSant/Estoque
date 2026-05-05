@@ -48,7 +48,6 @@ const layoutStore = useLayoutDashboardStore();
 function filtrar() {
   useLayoutDashboardStore().exibirFiltro = true;
 }
-console.log("Classe de Filtro:", layoutStore.classeFiltro);
 
 // function fechar() {
 //   emit("fechar");

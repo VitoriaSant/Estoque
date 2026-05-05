@@ -34,7 +34,7 @@ declare module 'vue-router/auto-routes' {
     '/tema-estoque/pedido-compra-pendente/PedidoCompraPendente': RouteRecordInfo<'/tema-estoque/pedido-compra-pendente/PedidoCompraPendente', '/tema-estoque/pedido-compra-pendente/PedidoCompraPendente', Record<never, never>, Record<never, never>>,
     '/tema-estoque/ponto-compra/components/Linha1-CardPontoCompra': RouteRecordInfo<'/tema-estoque/ponto-compra/components/Linha1-CardPontoCompra', '/tema-estoque/ponto-compra/components/Linha1-CardPontoCompra', Record<never, never>, Record<never, never>>,
     '/tema-estoque/ponto-compra/components/Linha2-': RouteRecordInfo<'/tema-estoque/ponto-compra/components/Linha2-', '/tema-estoque/ponto-compra/components/Linha2-', Record<never, never>, Record<never, never>>,
-    '/tema-estoque/ponto-compra/components/Linhas3-': RouteRecordInfo<'/tema-estoque/ponto-compra/components/Linhas3-', '/tema-estoque/ponto-compra/components/Linhas3-', Record<never, never>, Record<never, never>>,
+    '/tema-estoque/ponto-compra/components/Linhas3-PontoDeCompra': RouteRecordInfo<'/tema-estoque/ponto-compra/components/Linhas3-PontoDeCompra', '/tema-estoque/ponto-compra/components/Linhas3-PontoDeCompra', Record<never, never>, Record<never, never>>,
     '/tema-estoque/ponto-compra/PontoCompra': RouteRecordInfo<'/tema-estoque/ponto-compra/PontoCompra', '/tema-estoque/ponto-compra/PontoCompra', Record<never, never>, Record<never, never>>,
   }
 
@@ -113,8 +113,8 @@ declare module 'vue-router/auto-routes' {
       routes: '/tema-estoque/ponto-compra/components/Linha2-'
       views: never
     }
-    'src/pages/tema-estoque/ponto-compra/components/Linhas3-.vue': {
-      routes: '/tema-estoque/ponto-compra/components/Linhas3-'
+    'src/pages/tema-estoque/ponto-compra/components/Linhas3-PontoDeCompra.vue': {
+      routes: '/tema-estoque/ponto-compra/components/Linhas3-PontoDeCompra'
       views: never
     }
     'src/pages/tema-estoque/ponto-compra/PontoCompra.vue': {

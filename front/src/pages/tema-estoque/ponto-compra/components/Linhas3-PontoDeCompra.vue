@@ -1,28 +1,19 @@
 <template>
 <v-row>
-    <v-col cols="12" md="4" class="pa-1">
-        <Card
-        title="Estoque em valor"
-        subtitle="Valor total do estoque"
-        icon="mdi-text-box-edit"
-        :valor=dados?.resumo?.valorTotalEmEstoque
+    <v-col cols="12" md="12" class="pa-1">
+    <v-card
+        variant="elevated"
+        class="mx-auto"
+        title="Ponto de Compra"
+        prepend-icon="mdi-cash-multiple"
+    >
+        <Tabela 
+            :th="['Cod. Item', 'Descrição', 'Saldo Disponível', 'Saldo Mínimo', 'Saldo Máximo', 'Pedido de Compra Pendente', 'Prazo de Entrega', 'Consumo Diário', 'Dias de Duração']" 
+            :campos="['itemId', 'descricaoItem', 'saldoDisponivel', 'saldoMinimo', 'saldoMaximo', 'pedidoCompraPendente', 'prazoEntrega', 'consumoDiario', 'diasDeDuracao']"
+            :campoKey="'itemId'"
+            :dados="dados?.pontoDeCompra" 
         />
-    </v-col>
-    <v-col cols="12" md="4" class="pa-1">
-        <Card
-        title="Pedido pendente em valor"
-        subtitle="Valor total dos pedidos pendentes"
-        icon="mdi-text-box-edit"
-        :valor=dados?.resumo?.valorTotalDePedidosPendentes
-        />
-    </v-col>
-    <v-col cols="12" md="4" class="pa-1">
-        <Card
-        title="Saldo em futuros"
-        subtitle="Soma do estoque e saldo em futuros"
-        icon="mdi-text-box-edit"
-        :valor=dados?.resumo?.valorTotal
-        />
+    </v-card>
     </v-col>
 </v-row>
 </template>
@@ -54,4 +45,4 @@ onMounted(() => {
 </script>
 
 <style scoped>
-</style>
+</style>    
