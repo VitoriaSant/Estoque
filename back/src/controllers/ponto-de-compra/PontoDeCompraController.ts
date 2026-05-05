@@ -51,18 +51,14 @@ export default class PontoDeCompraController {
             `;
 
             const params: any[] = [];
-
+            
             const classeFiltro = new CClasseFiltro<CPontoDeCompraModel>(
                 req.body,
             ) as CClasseFiltro<CPontoDeCompraModel>;
 
-            console.log("ClasseFiltro:", classeFiltro);
-
             for (const filtro of classeFiltro.filtros) {
                 if (filtro.campo == "empresaItem") {
                     query += ` AND item_saldo.empresa_item_saldo ${CFiltro.toOperadorSQL(filtro.operador)} ?
-                                AND pedido_compra.empresa_pdc ${CFiltro.toOperadorSQL(filtro.operador)} ?
-                                AND requisicaoestoque.empresa_reqest ${CFiltro.toOperadorSQL(filtro.operador)} ?
                             `;
                     if (filtro.operador != "CONTEM") {
                         params.push(filtro.valor);
@@ -247,14 +243,14 @@ export default class PontoDeCompraController {
                     pontoDeCompra: listaPontoDeCompra,
                 };
 
+                res.json(response);
+                db.detach();
+
                 } catch (error) {
                     console.error('Error processing data:', error);
                     db.detach();
                     return res.status(500).json({ error: "Erro ao processar dados" });
                 }
-
-                res.json(response);
-                db.detach();
             });
         }
         );
