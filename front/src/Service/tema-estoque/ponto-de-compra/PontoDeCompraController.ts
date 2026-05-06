@@ -9,7 +9,7 @@ export default class PontoDeCompraController {
         pFiltro: CClasseFiltro<CPontoDeCompraModel>,
     ): Promise<IPontoDeCompraResponse> {
         const response = await api.post<IPontoDeCompraResponse>(
-            `http://localhost:3002/pontoDeCompra`,
+            `http://localhost:3003/pontoDeCompra`,
             pFiltro,
         );
         return response.data;

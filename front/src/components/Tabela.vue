@@ -9,7 +9,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="item in itensPaginados" :key="item[campoKey]">
+                <tr v-for="item in itensPaginados" :key="item[campoKey]" :class="alerta(item)">
                     <td v-for="campo in campos" :key="campo">
                         {{ formatarValor(item[campo], campo) }}
                     </td>
@@ -72,6 +72,16 @@ const formatarValor = (valor, campo) => {
     
     return valor;
 };
+
+const alerta = (item) => {
+    const corDeAlerta = item.corDeAlerta;
+    if (corDeAlerta == 'Vermelho') {
+        return 'linha-vermelha';
+    } else if (corDeAlerta == 'Amarelo') {
+        return 'linha-amarela';
+    }
+    return '';
+};
 </script>
 
 <style scoped>
@@ -80,5 +90,27 @@ const formatarValor = (valor, campo) => {
     top: 0;
     background-color: #f7f3f3 !important;
 }
+
+.linha-vermelha {
+    background-color: #ffebee !important;
+    color: #c62828 !important;
+    font-weight: bold;
+}
+
+/* .linha-vermelha td {
+    background-color: #ffebee !important;
+    color: #c62828 !important;
+} */
+
+.linha-amarela {
+    background-color: #fff9c4 !important;
+    color: #f57f17 !important;
+    font-weight: bold;
+}
+
+/* .linha-amarela td {
+    background-color: #fff9c4 !important;
+    color: #f57f17 !important;
+} */
 
 </style>

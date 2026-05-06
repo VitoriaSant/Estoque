@@ -184,7 +184,8 @@ export default class PontoDeCompraController {
                         pedidoCompraPendente: 0,
                         prazoEntrega: 0,
                         consumoDiario: 0,
-                        diasDeDuracao: 0
+                        diasDeDuracao: 0,
+                        corDeAlerta: ''
                         };
                     }
 
@@ -212,6 +213,14 @@ export default class PontoDeCompraController {
                     const diasDeDuracao = acc[itemId].saldoDisponivel / acc[itemId].consumoDiario;
                     acc[itemId].diasDeDuracao = diasDeDuracao;
 
+                    //Valida cor de alerta
+                    const metadeDoMaximo = acc[itemId].saldoMaximo / 2;
+                    if (acc[itemId].saldoDisponivel < acc[itemId].saldoMinimo) {
+                        acc[itemId].corDeAlerta = 'Vermelho';
+                    } else if (acc[itemId].saldoDisponivel < metadeDoMaximo) {
+                        acc[itemId].corDeAlerta = 'Amarelo';
+                    }
+
                     return acc;
                 }, {});
 
@@ -228,7 +237,10 @@ export default class PontoDeCompraController {
                     prazoEntrega: Number((item.prazoEntrega || 0).toFixed(2)),
                     consumoDiario: Number(((item.consumoDiario || 0) / 90).toFixed(2)),
                     diasDeDuracao: Number((item.diasDeDuracao || 0).toFixed(2)),
+                    corDeAlerta: item.corDeAlerta || '',
                 }));
+
+                console.log("Dados com corDeAlerta:", JSON.stringify(listaPontoDeCompra.slice(0, 3), null, 2));
 
 //----------------------------------------------------------------------------------------------------
 // Response

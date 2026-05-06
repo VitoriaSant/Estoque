@@ -14,5 +14,6 @@ export interface IPontoDeCompraResponse {
         prazoEntrega: number;
         consumoDiario: number;
         diasDeDuracao: number | null;
+        corDeAlerta: string;
     }>;
 }

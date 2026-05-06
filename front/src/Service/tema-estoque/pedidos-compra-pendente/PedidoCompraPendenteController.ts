@@ -8,7 +8,7 @@ export default class PedidoCompraPendenteController {
     pFiltros: CClasseFiltro<CPedidoCompraPendenteModel>,
   ): Promise<IPedidoCompraPendenteResponse> {
     const response = await api.post<IPedidoCompraPendenteResponse>(
-      `http://localhost:3002/compraPendente`,
+      `http://localhost:3003/compraPendente`,
       pFiltros,
     );
     return response.data;
