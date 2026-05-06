@@ -18,6 +18,7 @@
             :campos="['IdItem', 'descricaoItem', 'quantidadeItens', 'valorUnitarioItem', 'valorTotalItem']"
             :campoKey="'IdItem'"
             :dados="dados?.itensPendentes || []"
+            :height="'350px'"
         />
     </v-card>
     </v-col>
@@ -33,6 +34,7 @@
                 :campos="['pedidoId', 'previsaoEntregaPedido', 'valorTotalPedido']"
                 :campoKey="'pedidoId'"
                 :dados="dados?.pedidosPendentes || []" 
+                :height="'350px'"
             />
         </v-card>
     </v-col>

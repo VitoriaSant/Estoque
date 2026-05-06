@@ -14,6 +14,7 @@
         subtitle="Valor total dos pedidos pendentes"
         icon="mdi-text-box-edit"
         :valor=dados?.resumo?.valorTotalDePedidosPendentes
+        cor="error"
         />
     </v-col>
     <v-col cols="12" md="4" class="pa-1">

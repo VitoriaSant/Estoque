@@ -1,6 +1,6 @@
 <template>
     <div>
-        <v-table class="tabela-padrao">
+        <v-table :style="{ height: height }" class="tabela-cabecalho-fixo">
             <thead>
                 <tr>
                     <th v-for="header in th" :key="header">
@@ -32,11 +32,13 @@ import { ref, computed } from 'vue';
 const props = defineProps({
     th: Array,
     dados: Array,
-    campos: Array, // Array com nomes dos campos a exibir
-    campoKey: String // Campo único para key (ex: 'CODIGO_PDC')
+    campos: Array, 
+    campoKey: String,
+    height: String,
+    itensPorPagina: Number
 });
 
-const itensPorPagina = 10;
+const itensPorPagina = props.itensPorPagina || 10;
 const paginaAtual = ref(1);
 
 // Computados para paginação
@@ -68,13 +70,15 @@ const formatarValor = (valor, campo) => {
         return new Date(valor).toLocaleDateString('pt-BR');
     }
     
-    // Retornar valor padrão
     return valor;
 };
 </script>
 
 <style scoped>
-.v-table th {
-    height: 20px !important;
+.tabela-cabecalho-fixo :deep(thead th) {
+    position: sticky;
+    top: 0;
+    background-color: #f7f3f3 !important;
 }
+
 </style>

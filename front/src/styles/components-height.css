@@ -7,11 +7,6 @@
     align-items: stretch !important;
 }
 
-/* Altura para tabelas */
-.tabela-padrao {
-    height: 350px !important;
-}
-
 /* Altura para gráficos */
 .grafico-padrao {
     height: 350px !important;

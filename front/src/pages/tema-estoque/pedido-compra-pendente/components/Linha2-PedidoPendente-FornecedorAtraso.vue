@@ -25,7 +25,8 @@
             :th="['Codigo', 'Fornecedor', 'Qtd. Pedidos', 'Valor Total']" 
             :campos="['fornecedorId', 'fornecedorNome', 'quantidadePedidosFornecedor', 'valorTotalFornecedor']"
             :campoKey="'fornecedorId'"
-            :dados="dados?.pedidosPorFornecedor || []" 
+            :dados="dados?.pedidosPorFornecedor || []"
+            :height="'350px'"
         />
     </v-card>
     </v-col>

@@ -7,14 +7,16 @@
         title="Ponto de Compra"
         prepend-icon="mdi-cash-multiple"
     >
-        <Tabela 
+        <Tabela
             :th="['Cod. Item', 'Descrição', 'Saldo Disponível', 'Saldo Mínimo', 'Saldo Máximo', 'Pedido de Compra Pendente', 'Prazo de Entrega', 'Consumo Diário', 'Dias de Duração']" 
             :campos="['itemId', 'descricaoItem', 'saldoDisponivel', 'saldoMinimo', 'saldoMaximo', 'pedidoCompraPendente', 'prazoEntrega', 'consumoDiario', 'diasDeDuracao']"
             :campoKey="'itemId'"
             :dados="dados?.pontoDeCompra" 
+            :height="'700px'"
+            :itensPorPagina="20"
         />
-    </v-card>
-    </v-col>
+        </v-card>
+        </v-col>
 </v-row>
 </template>
 

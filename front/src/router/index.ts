@@ -33,10 +33,10 @@ const router = createRouter({
             import("@/pages/tema-estoque/ponto-compra/PontoCompra.vue"),
         },
         {
-          path: "/consumo-material",
-          name: "Consumo de material",
+          path: "/exemplo-graficos",
+          name: "Exemplo de Gráficos",
           component: () =>
-            import("@/pages/tema-estoque/consumo-material/ConsumoMaterial.vue"),
+            import("@/pages/tema-estoque/exemplo-graficos/ExemploGraficos.vue"),
         },
       ],
     },
