@@ -75,7 +75,7 @@ const formatarValor = (valor, campo) => {
 };
 
 const alerta = (item) => {
-    const corDeAlerta = item[props.corDeAlerta];
+    const corDeAlerta = item.corDeAlerta;
     if (corDeAlerta == 'Vermelho') {
         return 'linha-vermelha';
     } else if (corDeAlerta == 'Amarelo') {
@@ -94,14 +94,14 @@ const alerta = (item) => {
 
 .linha-vermelha {
     background-color: #ffebee !important;
-    color: #c62828 !important;
+    color:#a55050 !important;
     font-weight: bold;
 }
 
-/* .linha-vermelha td {
+.linha-vermelha td {
     background-color: #ffebee !important;
-    color: #c62828 !important;
-} */
+    color: #a55050 !important;
+}
 
 .linha-amarela {
     background-color: #fff9c4 !important;
