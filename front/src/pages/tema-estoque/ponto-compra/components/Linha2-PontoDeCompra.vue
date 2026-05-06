@@ -8,12 +8,13 @@
         prepend-icon="mdi-cash-multiple"
     >
         <Tabela
-            :th="['Cod. Item', 'Descrição', 'Saldo Disponível', 'Saldo Mínimo', 'Saldo Máximo', 'Pedido de Compra Pendente', 'Prazo de Entrega', 'Consumo Diário', 'Dias de Duração', 'Cor Alerta']" 
-            :campos="['itemId', 'descricaoItem', 'saldoDisponivel', 'saldoMinimo', 'saldoMaximo', 'pedidoCompraPendente', 'prazoEntrega', 'consumoDiario', 'diasDeDuracao', 'corDeAlerta', 'corDeAlerta']"
+            :th="['Cod. Item', 'Descrição', 'Saldo Disponível', 'Saldo Mínimo', 'Saldo Máximo', 'Pedido de Compra Pendente', 'Prazo de Entrega', 'Consumo Diário', 'Dias de Duração']" 
+            :campos="['itemId', 'descricaoItem', 'saldoDisponivel', 'saldoMinimo', 'saldoMaximo', 'pedidoCompraPendente', 'prazoEntrega', 'consumoDiario', 'diasDeDuracao']"
             :campoKey="'itemId'"
             :dados="dados?.pontoDeCompra" 
             :height="'700px'"
             :itensPorPagina="20"
+            :corDeAlerta="'corDeAlerta'"
         />
         </v-card>
         </v-col>

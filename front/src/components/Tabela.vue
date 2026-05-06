@@ -35,7 +35,8 @@ const props = defineProps({
     campos: Array, 
     campoKey: String,
     height: String,
-    itensPorPagina: Number
+    itensPorPagina: Number,
+    corDeAlerta: String
 });
 
 const itensPorPagina = props.itensPorPagina || 10;
@@ -74,7 +75,7 @@ const formatarValor = (valor, campo) => {
 };
 
 const alerta = (item) => {
-    const corDeAlerta = item.corDeAlerta;
+    const corDeAlerta = item[props.corDeAlerta];
     if (corDeAlerta == 'Vermelho') {
         return 'linha-vermelha';
     } else if (corDeAlerta == 'Amarelo') {
