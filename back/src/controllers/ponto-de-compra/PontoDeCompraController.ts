@@ -1,177 +1,150 @@
-import Firebird, { Database } from "node-firebird";
-import options from "../../database/conection";
 import { Request, response, Response } from "express";
 import CClasseFiltro, { CFiltro } from "../base/CClasseFiltro";
 import CPontoDeCompraModel from "./CPontoDeCompraModel";
+import * as fs from 'fs';
+import * as path from 'path';
+
+// Função auxiliar para converter strings no formato brasileiro para números
+function convertBrasilianStringToNumber(value: any): number {
+    if (value === null || value === undefined || value === '') return 0;
+    if (typeof value === 'number') return value;
+    // Remove pontos de milhar e substitui vírgula decimal por ponto
+    const cleanValue = value.toString().replace(/\./g, '').replace(',', '.');
+    const numValue = parseFloat(cleanValue);
+    return isNaN(numValue) ? 0 : numValue;
+}
 
 export default class PontoDeCompraController {
     public pontoDeCompra(req: Request, res: Response): void {
-        Firebird.attach(options, (err: any, db: Database) => {
-        if (err) {
-            console.error(err);
-            return res.status(500).json({ error: "Erro ao conectar" });
-        }
-        let query = `
-            Select
-                item_saldo.item_item_saldo,
-                item.descricao_item,
-                item_saldo.empresa_item_saldo,
-                pedido_compra.empresa_pdc,
-                requisicaoestoque.empresa_reqest,
-                item_saldo.variacao_item_saldo,
-                variacao.descricao_variacao,
-                item_saldo.cor_item_saldo,
-                cor.descricao_cor,
-                item_saldo.acabamento_item_saldo,
-                acabamento.descricao_acabamento,
-                item_saldo.saldoatual_item_saldo,
-                item_saldo.custocompraatual_item_saldo,
-                item_saldo.estoqueminimo_item_saldo,
-                item_saldo.estoquemaximo_item_saldo,
-                pedido_compra.codigo_pdc,
-                pedido_compra.dtemissao_pdc,
-                pedido_compra.dtpreventrega_pdc,
-                pedido_compra_item.item_pdcitem,
-                pedido_compra_item_detalhe.qtdeaberta_pdcitemdet,
-                pedido_compra_item_detalhe.vlrunitarioliquido_pdcitemdet,
-                requisicaoestoque_item.qtderequisicao_itemreq,
-                requisicaoestoque.data_reqest
-            from item
-                left join item_saldo on (item_saldo.item_item_saldo = item.codigo_item)
-                left join variacao on (variacao.codigo_variacao = item_saldo.variacao_item_saldo)
-                left join cor on (cor.codigo_cor = item_saldo.cor_item_saldo)
-                left join acabamento on (acabamento.codigo_acabamento= item_saldo.acabamento_item_saldo)
-                left join pedido_compra_item on (pedido_compra_item.item_pdcitem = item.codigo_item)
-                left join pedido_compra on(pedido_compra.codigo_pdc = pedido_compra_item.autoincpedido_pdcitem)
-                left join pedido_compra_item_detalhe on (pedido_compra_item_detalhe.autoincpdcitem_pdcitemdet = pedido_compra_item.autoinc_pdcitem)
-                left join requisicaoestoque_item on (requisicaoestoque_item.item_original_itemreq = item.codigo_item)
-                left join requisicaoestoque on (requisicaoestoque.autoinc_reqest = requisicaoestoque_item.autoincrequisicao_itemreq)
-            where pedido_compra_item_detalhe.qtdeaberta_pdcitemdet > 0
-            /*and requisicaoestoque.ordemproducao_reqest <> 0*/
-            `;
+        try {
+            // Ler o arquivo JSON de dados
+            const jsonPath = path.join(__dirname, '../../database/ponto-de-compra/PontoDeCompra.json');
+            const jsonData = fs.readFileSync(jsonPath, 'utf8');
+            let result = JSON.parse(jsonData);
 
-            const params: any[] = [];
-            
+            console.log("Leu arquivo json");
+
+            // Aplicar filtros se existirem
             const classeFiltro = new CClasseFiltro<CPontoDeCompraModel>(
                 req.body,
             ) as CClasseFiltro<CPontoDeCompraModel>;
 
+            console.log("Aplicando filtros");
+
             for (const filtro of classeFiltro.filtros) {
                 if (filtro.campo == "empresaItem") {
-                    query += ` AND item_saldo.empresa_item_saldo ${CFiltro.toOperadorSQL(filtro.operador)} ?
-                            `;
-                    if (filtro.operador != "CONTEM") {
-                        params.push(filtro.valor);
-                    } else {
-                        params.push(`%${filtro.valor}%`);
-                    }
+                    result = result.filter((item: any) => {
+                        const valor = filtro.operador == "CONTEM" 
+                            ? item.EMPRESA_ITEM_SALDO?.toString().includes(filtro.valor)
+                            : item.EMPRESA_ITEM_SALDO == filtro.valor;
+                        return valor;
+                    });
                 }
 
                 if(filtro.campo == "itemId") {
-                    query += ` AND item_saldo.item_item_saldo ${CFiltro.toOperadorSQL(filtro.operador)} ?`;
-                    if (filtro.operador != "CONTEM") {
-                        params.push(filtro.valor);
-                    } else {
-                        params.push(`%${filtro.valor}%`);
-                    }
+                    result = result.filter((item: any) => {
+                        const valor = filtro.operador == "CONTEM" 
+                            ? item.ITEM_ITEM_SALDO?.toString().includes(filtro.valor)
+                            : item.ITEM_ITEM_SALDO == filtro.valor;
+                        return valor;
+                    });
                 }
 
                 if(filtro.campo == "descricaoItem") {
-                    query += ` AND item.descricao_item ${CFiltro.toOperadorSQL(filtro.operador)} ?`;
-                    if (filtro.operador != "CONTEM") {
-                        params.push(filtro.valor);
-                    } else {
-                        params.push(`%${filtro.valor}%`);
-                    }
+                    result = result.filter((item: any) => {
+                        const valor = filtro.operador == "CONTEM" 
+                            ? item.DESCRICAO_ITEM?.toString().toLowerCase().includes(filtro.valor.toLowerCase())
+                            : item.DESCRICAO_ITEM == filtro.valor;
+                        return valor;
+                    });
                 }
 
                 if(filtro.campo == "corId") {
-                    query += ` AND item_saldo.cor_item_saldo ${CFiltro.toOperadorSQL(filtro.operador)} ?`;
-                    if (filtro.operador != "CONTEM") {
-                        params.push(filtro.valor);
-                    } else {
-                        params.push(`%${filtro.valor}%`);
-                    }
+                    result = result.filter((item: any) => {
+                        const valor = filtro.operador == "CONTEM" 
+                            ? item.COR_ITEM_SALDO?.toString().includes(filtro.valor)
+                            : item.COR_ITEM_SALDO == filtro.valor;
+                        return valor;
+                    });
                 }
 
                 if (filtro.campo == "descricaoCor") {
-                    query += ` AND cor.descricao_cor ${CFiltro.toOperadorSQL(filtro.operador)} ?`;
-                    if (filtro.operador != "CONTEM") {
-                        params.push(filtro.valor);
-                    } else {
-                        params.push(`%${filtro.valor}%`);
-                    }
+                    result = result.filter((item: any) => {
+                        const valor = filtro.operador == "CONTEM" 
+                            ? item.DESCRICAO_COR?.toString().toLowerCase().includes(filtro.valor.toLowerCase())
+                            : item.DESCRICAO_COR == filtro.valor;
+                        return valor;
+                    });
                 }
 
                 if (filtro.campo == "variacaoId") {
-                    query += ` AND item_saldo.variacao_item_saldo ${CFiltro.toOperadorSQL(filtro.operador)} ?`;
-                    if (filtro.operador != "CONTEM") {
-                        params.push(filtro.valor);
-                    } else {
-                        params.push(`%${filtro.valor}%`);
-                    }
+                    result = result.filter((item: any) => {
+                        const valor = filtro.operador == "CONTEM" 
+                            ? item.VARIACAO_ITEM_SALDO?.toString().includes(filtro.valor)
+                            : item.VARIACAO_ITEM_SALDO == filtro.valor;
+                        return valor;
+                    });
                 }
 
                 if (filtro.campo == "descricaoVariacao") {
-                    query += ` AND variacao.descricao_variacao ${CFiltro.toOperadorSQL(filtro.operador)} ?`;
-                    if (filtro.operador != "CONTEM") {
-                        params.push(filtro.valor);
-                    } else {
-                        params.push(`%${filtro.valor}%`);
-                    }
+                    result = result.filter((item: any) => {
+                        const valor = filtro.operador == "CONTEM" 
+                            ? item.DESCRICAO_VARIACAO?.toString().toLowerCase().includes(filtro.valor.toLowerCase())
+                            : item.DESCRICAO_VARIACAO == filtro.valor;
+                        return valor;
+                    });
                 }
 
                 if (filtro.campo == "acabamentoId") {
-                    query += ` AND item_saldo.acabamento_item_saldo ${CFiltro.toOperadorSQL(filtro.operador)} ?`;
-                    if (filtro.operador != "CONTEM") {
-                        params.push(filtro.valor);
-                    } else {
-                        params.push(`%${filtro.valor}%`);
-                    }
+                    result = result.filter((item: any) => {
+                        const valor = filtro.operador == "CONTEM" 
+                            ? item.ACABAMENTO_ITEM_SALDO?.toString().includes(filtro.valor)
+                            : item.ACABAMENTO_ITEM_SALDO == filtro.valor;
+                        return valor;
+                    });
                 }
 
                 if (filtro.campo == "descricaoAcabamento") {
-                    query += ` AND acabamento.descricao_acabamento ${CFiltro.toOperadorSQL(filtro.operador)} ?`;
-                    if (filtro.operador != "CONTEM") {
-                        params.push(filtro.valor);
-                    } else {
-                        params.push(`%${filtro.valor}%`);
-                    }
+                    result = result.filter((item: any) => {
+                        const valor = filtro.operador == "CONTEM" 
+                            ? item.DESCRICAO_ACABAMENTO?.toString().toLowerCase().includes(filtro.valor.toLowerCase())
+                            : item.DESCRICAO_ACABAMENTO == filtro.valor;
+                        return valor;
+                    });
                 }
             }
 
-            db.query(query, params, (err: any, result: any) => {
-                if (err) {
-                    console.error(err);
-                    db.detach();
-                    return res.status(500).json({ error: "Erro na query" });
-                }
-
-                try {
+            try {
+                console.log("Tratando dados");
 
 //----------------------------------------------------------------------------------------------------
 // Contagem de valores: Valor todol em estoque, Valor de pedido pendente, Valor total
 //----------------------------------------------------------------------------------------------------
                 const valorTotalEmEstoque = result.reduce((acc: number, item: any) => {
-                    return acc + (item.CUSTOCOMPRAATUAL_ITEM_SALDO * item.SALDOATUAL_ITEM_SALDO || 0);
+                    const custo = convertBrasilianStringToNumber(item.CUSTOCOMPRAATUAL_ITEM_SALDO);
+                    const saldo = convertBrasilianStringToNumber(item.SALDOATUAL_ITEM_SALDO);
+                    return acc + (custo * saldo);
                 }, 0);
 
                 const valorTotalDePedidosPendentes = result.reduce((acc: number, item: any) => {
-                    return acc + (item.QTDEABERTA_PDCITEMDET * item.VLRUNITARIOLIQUIDO_PDCITEMDET || 0);
+                    const qtde = convertBrasilianStringToNumber(item.QTDEABERTA_PDCITEMDET);
+                    const valor = convertBrasilianStringToNumber(item.VLRUNITARIOLIQUIDO_PDCITEMDET);
+                    return acc + (qtde * valor);
                 }, 0);
 
                 const valorTotal = valorTotalEmEstoque + valorTotalDePedidosPendentes;
 
+                console.log("valor total:", valorTotal);
 //----------------------------------------------------------------------------------------------------
 // Relatorio de ponto de compra
 //----------------------------------------------------------------------------------------------------
                 const pontoDeCompra = result.reduce((acc: any, item: any) => {
                     const itemId = item.ITEM_ITEM_SALDO;
                     const descricaoItem = item.DESCRICAO_ITEM;
-                    const saldoDisponivel = item.SALDOATUAL_ITEM_SALDO;
-                    const saldoMinimo = item.ESTOQUEMINIMO_ITEM_SALDO;
-                    const saldoMaximo = item.ESTOQUEMAXIMO_ITEM_SALDO;
-                    const quantidadePedido = item.QTDEABERTA_PDCITEMDET || 0;
+                    const saldoDisponivel = convertBrasilianStringToNumber(item.SALDOATUAL_ITEM_SALDO);
+                    const saldoMinimo = convertBrasilianStringToNumber(item.ESTOQUEMINIMO_ITEM_SALDO);
+                    const saldoMaximo = convertBrasilianStringToNumber(item.ESTOQUEMAXIMO_ITEM_SALDO);
+                    const quantidadePedido = convertBrasilianStringToNumber(item.QTDEABERTA_PDCITEMDET);
 
                     //Pedido de compra pendente por item
                     if (!acc[itemId]) {
@@ -206,11 +179,11 @@ export default class PontoDeCompraController {
                     dataLimite.setDate(dataLimite.getDate() - 90); // 90 dias atrás
                     
                     if (dataRequisicao >= dataLimite) {
-                        acc[itemId].consumoDiario += (item.QTDEREQUISICAO_ITEMREQ || 0);
+                        acc[itemId].consumoDiario += convertBrasilianStringToNumber(item.QTDEREQUISICAO_ITEMREQ);
                     }
 
                     // Calcular dias de duração
-                    const diasDeDuracao = acc[itemId].saldoDisponivel / acc[itemId].consumoDiario;
+                    const diasDeDuracao = acc[itemId].consumoDiario > 0 ? acc[itemId].saldoDisponivel / acc[itemId].consumoDiario : 0;
                     acc[itemId].diasDeDuracao = diasDeDuracao;
 
                     //Valida cor de alerta
@@ -223,6 +196,8 @@ export default class PontoDeCompraController {
 
                     return acc;
                 }, {});
+
+                console.log("ponto de compra:", pontoDeCompra);
 
 //----------------------------------------------------------------------------------------------------
 // Transforma o Relatorio de ponto de compra em array
@@ -256,17 +231,14 @@ export default class PontoDeCompraController {
                 };
 
                 res.json(response);
-                db.detach();
 
-                } catch (error) {
-                    console.error('Error processing data:', error);
-                    db.detach();
-                    return res.status(500).json({ error: "Erro ao processar dados" });
-                }
-            });
+            } catch (error) {
+                console.error('Error processing data:', error);
+                res.status(500).json({ error: "Erro ao processar dados" });
+            }
+        } catch (error) {
+            console.error('Error reading file:', error);
+            res.status(500).json({ error: "Erro ao ler arquivo de dados" });
         }
-        );
     }
 }
-
-
