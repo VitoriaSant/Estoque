@@ -17,7 +17,7 @@ import VueApexCharts from "vue3-apexcharts";
 const apexchart = VueApexCharts;
 
 const options = ref({
-    colors: ['#755640', '#8B6F5B', '#A18A73', '#B8A58B'],
+    colors: ['#755640', '#8B6F5B', '#A18A73', '#B8A58B', '#D0C0A5', '#E8DBCA', '#FFF5F0'],
     legend: {
         show: false
     },

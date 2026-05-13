@@ -21,6 +21,12 @@ const options: any = ref({
     labels: ["PRODUTO A", "PRODUTO B", "PRODUTO C", "PRODUTO D", "PRODUTO E"],
     chart: {
         type: 'polarArea' as any,
+        toolbar: {
+            show: true,
+            tools: {
+                download: true,
+            }
+        }
     },
     fill: {
         opacity: 1
