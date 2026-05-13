@@ -93,19 +93,16 @@ const alerta = (item) => {
 }
 
 .linha-vermelha {
-    background-color: #ffebee !important;
     color:#a55050 !important;
     font-weight: bold;
 }
 
 .linha-vermelha td {
-    background-color: #ffebee !important;
     color: #a55050 !important;
 }
 
 .linha-amarela {
-    background-color: #fff9c4 !important;
-    color: #f57f17 !important;
+    color: #e28635 !important;
     font-weight: bold;
 }
 
