@@ -21,6 +21,8 @@ declare module 'vue' {
     Donuts: typeof import('./components/Donuts.vue')['default']
     Filtro: typeof import('./components/Filtro.vue')['default']
     HelloWorld: typeof import('./components/HelloWorld.vue')['default']
+    Informativo: typeof import('./components/Informativo.vue')['default']
+    Instrucao: typeof import('./components/Instrucao.vue')['default']
     Linhas: typeof import('./components/Linhas.vue')['default']
     MapaDeArea: typeof import('./components/MapaDeArea.vue')['default']
     NavBar: typeof import('./components/NavBar.vue')['default']

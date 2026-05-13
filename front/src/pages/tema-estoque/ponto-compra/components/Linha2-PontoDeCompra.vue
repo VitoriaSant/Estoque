@@ -7,6 +7,19 @@
         title="Ponto de Compra"
         prepend-icon="mdi-cash-multiple"
     >
+        <template v-slot:append>
+            <v-btn variant="text" icon="mdi-information-outline" @click="infoStore.mostrarInformacoes()"></v-btn>
+        </template>
+
+        <Informativo 
+        :dialogInfo="infoStore.exibirInformativo"
+        @fechar="infoStore.exibirInformativo = false"
+        :titulo="'💡 Entenda as Cores da Tabela'"
+        :subtitulo="'Para facilitar o seu controle de estoque, as linhas da tabela mudam de cor automaticamente conforme o saldo:'"
+        style="white-space: pre-line;"
+        :descricao="`🔴 Vermelho: Atenção crítica! O saldo atual está abaixo do saldo mínimo. É hora de repor.\n🟡 Amarelo: Alerta de estoque baixo. O saldo atual está abaixo da metade do saldo máximo.`"
+        />
+        
         <Tabela
             :th="['Cod. Item', 'Descrição', 'Saldo Disponível', 'Saldo Mínimo', 'Saldo Máximo', 'Pedido de Compra Pendente', 'Prazo de Entrega', 'Consumo Diário', 'Dias de Duração']" 
             :campos="['itemId', 'descricaoItem', 'saldoDisponivel', 'saldoMinimo', 'saldoMaximo', 'pedidoCompraPendente', 'prazoEntrega', 'consumoDiario', 'diasDeDuracao']"
@@ -16,16 +29,19 @@
             :itensPorPagina="20"
             :corDeAlerta="'corDeAlerta'"
         />
-        </v-card>
-        </v-col>
+    </v-card>
+    </v-col>
 </v-row>
 </template>
 
 <script setup lang="ts">
 import { useLayoutDashboardStore } from '@/stores/LayoutDashboardStore';
+import { useApresentarInformativosStore } from '@/stores/ApresentarInformativosStore';
 import { ref, onMounted, watch } from 'vue';
+import Informativo from '@/components/Informativo.vue';
 
 const layoutStore = useLayoutDashboardStore();
+const infoStore = useApresentarInformativosStore();
 const dados = ref<any>(null);
 
 const carregarDados = async () => {

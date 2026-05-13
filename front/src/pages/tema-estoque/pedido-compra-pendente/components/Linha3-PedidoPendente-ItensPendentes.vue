@@ -30,6 +30,17 @@
             title="Pedidos Pendentes"
             prepend-icon="mdi-archive-alert"
         >
+        <template v-slot:append>
+            <v-btn variant="text" icon="mdi-information-outline" @click="infoStore.mostrarInformacoes()"></v-btn>
+        </template>
+        <Informativo 
+        :dialogInfo="infoStore.exibirInformativo"
+        @fechar="infoStore.exibirInformativo = false"
+        :titulo="'💡 Entenda as Cores da Tabela'"
+        :subtitulo="'Para facilitar a vizualização, as linhas da tabela mudam de cor automaticamente:'"
+        style="white-space: pre-line;"
+        :descricao="`🔴  Vermelho: Pedidos com a previsão de entrega menos que o dia atual`"
+        />
             <Tabela 
                 :th="['Codigo', 'Prev. Entrega', 'Valor']" 
                 :campos="['pedidoId', 'previsaoEntregaPedido', 'valorTotalPedido']"
@@ -45,8 +56,11 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue';
 import { useLayoutDashboardStore } from "@/stores/LayoutDashboardStore";
+import { useApresentarInformativosStore } from '@/stores/ApresentarInformativosStore';
+import Informativo from "@/components/Informativo.vue";
 
 const layoutStore = useLayoutDashboardStore();
+const infoStore = useApresentarInformativosStore();
 const dados = ref<any>(null);
 
 const carregarDados = async () => {
