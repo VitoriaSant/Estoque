@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar app color="primary">
+  <v-app-bar app color="primary" height="55">
     <v-app-bar-nav-icon @click="drawer = !drawer" />
     <v-toolbar-title>{{ $route.name }}</v-toolbar-title>
     <v-btn

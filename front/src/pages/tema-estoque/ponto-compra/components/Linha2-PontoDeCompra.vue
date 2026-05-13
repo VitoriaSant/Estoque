@@ -36,12 +36,12 @@
 
 <script setup lang="ts">
 import { useLayoutDashboardStore } from '@/stores/LayoutDashboardStore';
-import { useApresentarInformativosStore } from '@/stores/ApresentarInformativosStore';
+import { useInformativosStore } from '@/stores/InformativosStore';
 import { ref, onMounted, watch } from 'vue';
 import Informativo from '@/components/Informativo.vue';
 
 const layoutStore = useLayoutDashboardStore();
-const infoStore = useApresentarInformativosStore();
+const infoStore = useInformativosStore();
 const dados = ref<any>(null);
 
 const carregarDados = async () => {

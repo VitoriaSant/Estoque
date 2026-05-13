@@ -8,10 +8,10 @@
                     </th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody >
                 <tr v-for="item in itensPaginados" :key="item[campoKey]" :class="alerta(item)">
                     <td v-for="campo in campos" :key="campo">
-                        {{ formatarValor(item[campo], campo) }}
+                        {{ formatarValorStore.formatarValor(item[campo], campo) }}
                     </td>
                 </tr>
             </tbody>
@@ -28,6 +28,9 @@
 
 <script setup>
 import { ref, computed } from 'vue';
+import { useFormatarValorStore } from '@/stores/FormatarValorStore';
+
+const formatarValorStore = useFormatarValorStore();
 
 const props = defineProps({
     th: Array,
@@ -54,25 +57,6 @@ const itensPaginados = computed(() => {
     const fim = inicio + itensPorPagina;
     return props.dados.slice(inicio, fim);
 });
-
-const formatarValor = (valor, campo) => {
-    if (!valor) return '';
-    
-    // Formatar moeda para campos de valor
-    if (campo.includes('VLR') || campo.toLowerCase().includes('valor')) {
-        return new Intl.NumberFormat('pt-BR', {
-            style: 'currency',
-            currency: 'BRL'
-        }).format(valor);
-    }
-    
-    // Formatar data para campos de data
-    if (campo.includes('DATA') || campo.toLowerCase().includes('dtemissao') || campo.toLowerCase().includes('dtpreventrega')) {
-        return new Date(valor).toLocaleDateString('pt-BR');
-    }
-    
-    return valor;
-};
 
 const alerta = (item) => {
     const corDeAlerta = item.corDeAlerta;
@@ -104,6 +88,13 @@ const alerta = (item) => {
 .linha-amarela {
     color: #e28635 !important;
     font-weight: bold;
+}
+
+th {
+    height: 50px !important;
+}
+tr {
+    height: 50px !important;
 }
 
 /* .linha-amarela td {

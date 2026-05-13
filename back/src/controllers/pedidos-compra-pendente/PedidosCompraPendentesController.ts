@@ -262,7 +262,7 @@ export default class PedidosCompraPendentesControlles {
             acc[pedidoId].valorTotalPedido += valorTotalPedido;
 
             //Valida cor de alerta
-            if (acc[pedidoId].previsaoEntregaPedido > new Date().toLocaleDateString("pt-BR")) {
+            if (acc[pedidoId].previsaoEntregaPedido < new Date().toLocaleDateString("pt-BR")) {
               acc[pedidoId].corDeAlerta = 'Vermelho';
             }
 

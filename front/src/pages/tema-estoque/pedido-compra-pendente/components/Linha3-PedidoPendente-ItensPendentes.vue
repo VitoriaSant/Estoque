@@ -56,11 +56,12 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue';
 import { useLayoutDashboardStore } from "@/stores/LayoutDashboardStore";
-import { useApresentarInformativosStore } from '@/stores/ApresentarInformativosStore';
+import { useInformativosStore} from '@/stores/InformativosStore';
 import Informativo from "@/components/Informativo.vue";
+import { use } from 'apexcharts';
 
 const layoutStore = useLayoutDashboardStore();
-const infoStore = useApresentarInformativosStore();
+const infoStore = useInformativosStore();
 const dados = ref<any>(null);
 
 const carregarDados = async () => {
