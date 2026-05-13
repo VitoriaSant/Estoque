@@ -19,6 +19,7 @@
             :campoKey="'IdItem'"
             :dados="dados?.itensPendentes || []"
             :height="'350px'"
+            :corDeAlerta="'corDeAlerta'"
         />
     </v-card>
     </v-col>
