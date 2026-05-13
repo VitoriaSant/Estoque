@@ -1,7 +1,8 @@
 <template>
     <div class="pizza-container">
         <apexchart 
-            width="380" 
+            width="100%" 
+            height="300"
             type="donut" 
             :options="chartOptions" 
             :series="dados" 

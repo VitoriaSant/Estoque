@@ -1,7 +1,8 @@
 <template>
     <div>
         <apexchart 
-            width="380" 
+            width="100%" 
+            height="300"
             type="donut" 
             :options="options" 
             :series="series" 
@@ -16,7 +17,8 @@ import VueApexCharts from "vue3-apexcharts";
 const apexchart = VueApexCharts;
 
 const options = ref({
-    labels: ["Apple", "Mango", "Orange", "Watermelon"],
+    colors: ['#755640', '#8B6F5B', '#A18A73', '#B8A58B'],
+    labels: ["PRODUTO A", "PRODUTO B", "PRODUTO C", "PRODUTO D"],
 });
 const series = ref([44, 55, 13, 43]);
 

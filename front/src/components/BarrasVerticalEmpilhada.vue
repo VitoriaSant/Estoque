@@ -16,11 +16,14 @@ import VueApexCharts from "vue3-apexcharts";
 
 const apexchart = VueApexCharts;
 
-const options = ref({
+const options: any = ref({
     chart: {
-        id: "vuechart-example",
+        type: 'bar',
+        height: 350,
+        stacked: true,
+        stackType: '100%'
     },
-    colors: ['#755640'],
+    colors: ['#5a4031', '#8b6b5a', '#a88a75'],
     xaxis: {
         categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998],
     },
@@ -28,8 +31,14 @@ const options = ref({
 
 const series = ref([
     {
-        name: "PRODUTO A",
-        data: [30, 40, 45, 50, 49, 60, 70, 91],
-    },
-]);
+            name: 'PRODUTO A',
+            data: [44, 55, 41, 67, 22, 43, 21, 49]
+            }, {
+            name: 'PRODUTO B',
+            data: [13, 23, 20, 8, 13, 27, 33, 12]
+            }, {
+            name: 'PRODUTO C',
+            data: [11, 17, 15, 15, 21, 14, 15, 13]
+            }
+    ]);
 </script>

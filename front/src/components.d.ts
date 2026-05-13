@@ -11,13 +11,18 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    AreaPolar: typeof import('./components/AreaPolar.vue')['default']
     BarrasHorizontal: typeof import('./components/BarrasHorizontal.vue')['default']
     BarrasVertical: typeof import('./components/BarrasVertical.vue')['default']
+    BarrasVerticalEmpilhada: typeof import('./components/BarrasVerticalEmpilhada.vue')['default']
+    Bolhas: typeof import('./components/Bolhas.vue')['default']
     Card: typeof import('./components/Card.vue')['default']
+    ColunaLinhaArea: typeof import('./components/ColunaLinhaArea.vue')['default']
     Donuts: typeof import('./components/Donuts.vue')['default']
     Filtro: typeof import('./components/Filtro.vue')['default']
     HelloWorld: typeof import('./components/HelloWorld.vue')['default']
     Linhas: typeof import('./components/Linhas.vue')['default']
+    MapaDeArea: typeof import('./components/MapaDeArea.vue')['default']
     NavBar: typeof import('./components/NavBar.vue')['default']
     Pizza: typeof import('./components/Pizza.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']

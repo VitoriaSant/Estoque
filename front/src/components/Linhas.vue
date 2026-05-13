@@ -1,6 +1,12 @@
 <template>
     <div>
-        <apexchart width="500" type="line" :options="options" :series="series"></apexchart>
+        <apexchart 
+            width="100%" 
+            height="300"
+            type="line" 
+            :options="options" 
+            :series="series"
+        ></apexchart>
     </div>
 </template>
 
@@ -14,6 +20,17 @@ const options = ref({
     chart: {
         id: "vuechart-example",
     },
+    colors: ['#755640'],
+    stroke: {
+        width: 3,
+        curve: 'straight' as const
+    },
+    markers: {
+        size: 6,
+        colors: ['#5a4031', '#8b6b5a', '#a88a75'],
+        strokeColors: '#fff',
+        strokeWidth: 2,
+    },
     xaxis: {
         categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998],
     },
@@ -21,8 +38,16 @@ const options = ref({
 
 const series = ref([
     {
-        name: "series-1",
+        name: "PRODUTO A",
         data: [30, 40, 45, 50, 49, 60, 70, 91],
+    },
+    {
+        name: "PRODUTO B",
+        data: [20, 30, 35, 40, 39, 50, 60, 81],
+    },
+    {
+        name: "PRODUTO C",
+        data: [10, 20, 25, 30, 29, 40, 50, 71],
     },
 ]);
 </script>

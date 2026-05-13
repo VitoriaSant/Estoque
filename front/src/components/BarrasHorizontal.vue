@@ -1,7 +1,8 @@
 <template>
     <div>
         <apexchart 
-            width="500" 
+            width="100%" 
+            height="300"
             type="bar" 
             :options="options" 
             :series="series" 
@@ -19,6 +20,7 @@ const options = ref({
     chart: {
         id: "vuechart-example",
     },
+    colors: ['#755640'],
     plotOptions: {
         bar: {
             horizontal: true,
@@ -31,7 +33,7 @@ const options = ref({
 
 const series = ref([
     {
-        name: "series-1",
+        name: "PRODUTO A",
         data: [30, 40, 45, 50, 49, 60, 70, 91],
     },
 ]);
