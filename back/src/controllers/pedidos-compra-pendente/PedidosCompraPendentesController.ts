@@ -242,7 +242,7 @@ export default class PedidosCompraPendentesControlles {
           }));
 
 //----------------------------------------------------------------------------------------------------
-//Contagem de valor por pedido
+//Contagem de Pedido Pendente
 //----------------------------------------------------------------------------------------------------
 
           const pedidosPendentes = result.reduce((acc: any, item: any) => {
@@ -261,6 +261,11 @@ export default class PedidosCompraPendentesControlles {
             }
             acc[pedidoId].valorTotalPedido += valorTotalPedido;
 
+            //Valida cor de alerta
+            if (acc[pedidoId].previsaoEntregaPedido > new Date().toLocaleDateString("pt-BR")) {
+              acc[pedidoId].corDeAlerta = 'Vermelho';
+            }
+
             return acc;
           }, {});
 
@@ -274,6 +279,7 @@ export default class PedidosCompraPendentesControlles {
               previsaoEntregaPedido: item.previsaoEntregaPedido,
               fornecedorNome: item.fornecedorNome,
               valorTotalPedido: Number(item.valorTotalPedido.toFixed(2)),
+              corDeAlerta: item.corDeAlerta || '',
             }),
           );
 
