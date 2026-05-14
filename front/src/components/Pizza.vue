@@ -23,6 +23,7 @@ const props = defineProps<{
 
 const chartOptions = computed((): ApexOptions => ({
     labels: props.options,
+    colors: ['#a55050','#755640'],
     plotOptions: {
         pie: {
             donut: {

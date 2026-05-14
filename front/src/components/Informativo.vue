@@ -1,9 +1,11 @@
 <template> 
     <v-dialog v-model="dialogInfo" width="600">
         <v-card>
-            <v-btn icon="mdi-close" variant="text" class="position-absolute right-0 top-0" @click="fechar" />
+            <v-btn icon="mdi-close" variant="text" class="position-absolute right-0 top-0 text-white" @click="fechar" />
+            <v-card-title class="text-h5 bg-primary">
+                <h3> {{ titulo }} </h3>   
+            </v-card-title>
             <v-card-text>
-                <h2> {{ titulo }} </h2>   
                 <h4>{{ subtitulo }}</h4>
                 <p>{{ descricao }}</p>
             </v-card-text>
@@ -36,13 +38,15 @@ function fechar() {
 .v-card-text {
     padding: 20px;
 }
-h2 {
-    margin-top: 10px;
-}
 h4 {
     margin-top: 10px;
 }
 p {
     margin-top: 10px;
+}
+
+.v-card{
+  border-radius: 24px !important;
+  overflow: hidden;
 }
 </style>
