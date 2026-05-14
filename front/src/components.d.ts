@@ -17,6 +17,7 @@ declare module 'vue' {
     BarrasVerticalEmpilhada: typeof import('./components/BarrasVerticalEmpilhada.vue')['default']
     Bolhas: typeof import('./components/Bolhas.vue')['default']
     Card: typeof import('./components/Card.vue')['default']
+    CardParaComportarGraf: typeof import('./components/CardParaComportarGraf.vue')['default']
     ColunaLinhaArea: typeof import('./components/ColunaLinhaArea.vue')['default']
     Donuts: typeof import('./components/Donuts.vue')['default']
     Filtro: typeof import('./components/Filtro.vue')['default']

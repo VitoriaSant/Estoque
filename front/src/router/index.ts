@@ -38,6 +38,12 @@ const router = createRouter({
           component: () =>
             import("@/pages/tema-estoque/exemplo-graficos/ExemploGraficos.vue"),
         },
+        {
+          path: "/testeex/teste",
+          name: "Exemplo de Card",
+          component: () =>
+            import("@/pages/tema-estoque/testeex/teste.vue"),
+        },
       ],
     },
   ],

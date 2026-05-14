@@ -20,6 +20,7 @@
       <v-list-item title="Compras Pendentes" to="/pedido-compra-pendente" />
       <v-list-item title="Ponto de Compra" to="/ponto-compra" />
       <v-list-item title="Exemplo de Gráficos" to="/exemplo-graficos" />
+      <v-list-item title="Exemplo de Card" to="/testeex/teste" />
     </v-list>
   </v-navigation-drawer>
 
