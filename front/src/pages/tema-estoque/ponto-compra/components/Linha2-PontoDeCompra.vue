@@ -14,12 +14,17 @@
         <Informativo 
         :dialogInfo="infoStore.exibirInformativo"
         @fechar="infoStore.exibirInformativo = false"
-        :titulo="'💡 Entenda as Cores da Tabela'"
-        :subtitulo="'Para facilitar o seu controle de estoque, as linhas da tabela mudam de cor automaticamente conforme o saldo:'"
+        :titulo="'💡 Informativo'"
+        :subtitulo="''"
         style="white-space: pre-line;"
-        :descricao="`🔴 Vermelho: Atenção crítica! O saldo atual está abaixo do saldo mínimo. É hora de repor.\n🟡 Amarelo: Alerta de estoque baixo. O saldo atual está abaixo da metade do saldo máximo.`"
+        :descricao="`Para facilitar o seu controle de estoque, as linhas da tabela mudam de cor automaticamente conforme o saldo:\n
+            🔴 Vermelho: Atenção crítica! O saldo atual está abaixo do saldo mínimo. É hora de repor.\n
+            🟡 Amarelo: Alerta de estoque baixo. O saldo atual está abaixo da metade do saldo máximo.\n
+            Ponto de compra: \n
+            📅 Prazo de Entrega: Indica o tempo restante para o recebimento do próximo pedido. O sistema calcula a diferença entre a data atual e a previsão de entrega, informando com precisão quantos dias faltam para o material chegar ao estoque.\n
+            📊 Consumo Diário: Representa a força de saída do item. É obtido através da média aritmética de todas as requisições atendidas nos últimos 90 dias, oferecendo uma visão realista da demanda atual.\n
+            ⏳ Dias de Duração: Projeta a autonomia do seu estoque. Este indicador revela para quantos dias o saldo atual é suficiente, cruzando a quantidade disponível com o ritmo de consumo dos últimos três meses.`"
         />
-        
         <Tabela
             :th="['Cod. Item', 'Descrição', 'Saldo Disponível', 'Saldo Mínimo', 'Saldo Máximo', 'Pedido de Compra Pendente', 'Prazo de Entrega', 'Consumo Diário', 'Dias de Duração']" 
             :campos="['itemId', 'descricaoItem', 'saldoDisponivel', 'saldoMinimo', 'saldoMaximo', 'pedidoCompraPendente', 'prazoEntrega', 'consumoDiario', 'diasDeDuracao']"

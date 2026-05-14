@@ -141,10 +141,14 @@ export default class PontoDeCompraController {
                 const pontoDeCompra = result.reduce((acc: any, item: any) => {
                     const itemId = item.ITEM_ITEM_SALDO;
                     const descricaoItem = item.DESCRICAO_ITEM;
+                    const reqId = item.AUTOINC_REQEST;
                     const saldoDisponivel = convertBrasilianStringToNumber(item.SALDOATUAL_ITEM_SALDO);
                     const saldoMinimo = convertBrasilianStringToNumber(item.ESTOQUEMINIMO_ITEM_SALDO);
                     const saldoMaximo = convertBrasilianStringToNumber(item.ESTOQUEMAXIMO_ITEM_SALDO);
                     const quantidadePedido = convertBrasilianStringToNumber(item.QTDEABERTA_PDCITEMDET);
+
+                    const hoje = new Date();
+                    hoje.setHours(0, 0, 0, 0);
 
                     //Pedido de compra pendente por item
                     if (!acc[itemId]) {
@@ -158,35 +162,71 @@ export default class PontoDeCompraController {
                         prazoEntrega: 0,
                         consumoDiario: 0,
                         diasDeDuracao: 0,
-                        corDeAlerta: ''
+                        corDeAlerta: '',
+                        requisicoesProcessadas: new Set(),
+                        _valorAcumulado: 0,
+                        _contagemReq: 0,
                         };
                     }
 
-                    // Somar quantidade do pedido pendente
+//----------------------------------------------------------------------------------------------------
+// Somar quantidade do pedido pendente
+//----------------------------------------------------------------------------------------------------
                     acc[itemId].pedidoCompraPendente += quantidadePedido;
                     
-                    // Calcular prazo de entrega em dias
-                    const dataEmissao = new Date(item.DTEMISSAO_PDC);
-                    const dataPrevisaoEntrega = new Date(item.DTPREVENTREGA_PDC);
-                    const diferencaTempo = Math.abs(dataPrevisaoEntrega.getTime() - dataEmissao.getTime());
-                    const prazoEntregaDias = Math.ceil(diferencaTempo / (1000 * 60 * 60 * 24));
-                    
-                    acc[itemId].prazoEntrega = prazoEntregaDias;
+//----------------------------------------------------------------------------------------------------
+// Calcular prazo de entrega em dias
+//----------------------------------------------------------------------------------------------------
+                    let prazoEntregaDias = 0;
 
-                    //Calculo do consumo diario - soma quantidade de requisições dos ultimos 90 dias
-                    const dataRequisicao = new Date(item.DATA_REQEST);
-                    const dataLimite = new Date();
-                    dataLimite.setDate(dataLimite.getDate() - 90); // 90 dias atrás
-                    
-                    if (dataRequisicao >= dataLimite) {
-                        acc[itemId].consumoDiario += convertBrasilianStringToNumber(item.QTDEREQUISICAO_ITEMREQ);
+                    if (item.DTEMISSAO_PDC) {
+                        // Tratando a string "23.10.2026 00:00"
+                        const partes = item.DTEMISSAO_PDC.split(/[. ]/);
+                        const dataValida = new Date(`${partes[2]}-${partes[1]}-${partes[0]}T${partes[3]}`);
+                        // Verifica se a conversão deu certo
+                        if (!isNaN(dataValida.getTime())) {
+                            const diferencaTempo = Math.abs(hoje.getTime() - dataValida.getTime());
+                            prazoEntregaDias = Math.ceil(diferencaTempo / (1000 * 60 * 60 * 24));
+                        }
                     }
 
-                    // Calcular dias de duração
+                    acc[itemId].prazoEntrega = prazoEntregaDias;
+
+//----------------------------------------------------------------------------------------------------
+// Calcular consumo diario nos ultimos 90 dias
+//----------------------------------------------------------------------------------------------------
+                    const noventaDiasAtras = new Date(hoje);
+                    noventaDiasAtras.setDate(hoje.getDate() - 90);                
+                    const dataString = item.DATA_REQEST;
+
+                    if (dataString) {
+                        const partes = dataString.split(/[. ]/);
+                        const dataValida = new Date(`${partes[2]}-${partes[1]}-${partes[0]}T${partes[3] || '00:00'}`);
+
+                        if (!isNaN(dataValida.getTime())) {
+                            if (dataValida >= noventaDiasAtras) {
+                                if (!acc[itemId].requisicoesProcessadas.has(reqId)) {
+                                    //acc[itemId].requisicoesProcessadas.add(reqId);
+
+                                    const valorAtual = convertBrasilianStringToNumber(item.QTDEREQUISICAO_ITEMREQ);
+                                    acc[itemId]._valorAcumulado += valorAtual;
+                                    acc[itemId]._contagemReq += 1;
+
+                                    acc[itemId].consumoDiario = acc[itemId]._valorAcumulado / 90;
+                                }
+                            }
+                        }
+                    }
+
+//----------------------------------------------------------------------------------------------------
+// Calcular dias de duração
+//----------------------------------------------------------------------------------------------------
                     const diasDeDuracao = acc[itemId].consumoDiario > 0 ? acc[itemId].saldoDisponivel / acc[itemId].consumoDiario : 0;
                     acc[itemId].diasDeDuracao = diasDeDuracao;
 
-                    //Valida cor de alerta
+//----------------------------------------------------------------------------------------------------
+// Validar cor de alerta
+//----------------------------------------------------------------------------------------------------
                     const metadeDoMaximo = acc[itemId].saldoMaximo / 2;
                     if (acc[itemId].saldoDisponivel < acc[itemId].saldoMinimo) {
                         acc[itemId].corDeAlerta = 'Vermelho';
@@ -210,7 +250,7 @@ export default class PontoDeCompraController {
                     saldoMaximo: Number((item.saldoMaximo || 0).toFixed(2)),
                     pedidoCompraPendente: Number((item.pedidoCompraPendente || 0).toFixed(2)),
                     prazoEntrega: Number((item.prazoEntrega || 0).toFixed(2)),
-                    consumoDiario: Number(((item.consumoDiario || 0) / 90).toFixed(2)),
+                    consumoDiario: Number(((item.consumoDiario || 0)).toFixed(2)),
                     diasDeDuracao: Number((item.diasDeDuracao || 0).toFixed(2)),
                     corDeAlerta: item.corDeAlerta || '',
                 }));
