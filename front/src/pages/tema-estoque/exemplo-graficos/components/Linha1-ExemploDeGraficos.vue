@@ -5,8 +5,8 @@
         :titulo="'Gráfico de Barras Horizontal'"
         :icone="'mdi-chart-bar'"
         >
-            <template #grafico>
-                <BarrasHorizontal />
+            <template #grafico="{ expandido }">
+                <BarrasHorizontal :expandido="expandido"/>
             </template>
         </CardParaComportarGraf>
     </v-col>
@@ -16,8 +16,8 @@
         :titulo="'Gráfico de Barras Vertical'"
         :icone="'mdi-chart-bar'"
         >
-            <template #grafico>
-                <BarrasVertical />
+            <template #grafico="{ expandido }">
+                <BarrasVertical :expandido="expandido"/>
             </template>
         </CardParaComportarGraf>
     </v-col>
@@ -27,8 +27,8 @@
         :titulo="'Gráfico de Linhas'"
         :icone="'mdi-chart-line'"
         >
-            <template #grafico>
-                <Linhas />
+            <template #grafico="{ expandido }">
+                <Linhas :expandido="expandido"/>
             </template>
         </CardParaComportarGraf>
     </v-col>

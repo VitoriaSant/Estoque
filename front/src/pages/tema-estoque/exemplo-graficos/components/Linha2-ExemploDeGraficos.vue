@@ -5,8 +5,8 @@
         :titulo="'Gráfico de Donuts'"
         :icone="'mdi-chart-arc'"
         >
-            <template #grafico>
-                <Donuts />
+            <template #grafico="{ expandido }">
+                <Donuts :expandido="expandido"/>
             </template>
         </CardParaComportarGraf>
     </v-col>
@@ -16,8 +16,8 @@
         :titulo="'Gráfico Polar'"
         :icone="'mdi-chart-pie-outline'"
         >
-            <template #grafico>
-                <AreaPolar />
+            <template #grafico="{ expandido }">
+                <AreaPolar :expandido="expandido"/>
             </template>
         </CardParaComportarGraf>
     </v-col>
@@ -27,8 +27,8 @@
         :titulo="'Gráfico de Barras Vertical Empilhada'"
         :icone="'mdi-chart-waterfall'"
         >
-            <template #grafico>
-                <BarrasVerticalEmpilhada />
+            <template #grafico="{ expandido }">
+                <BarrasVerticalEmpilhada :expandido="expandido"/>
             </template>
         </CardParaComportarGraf>
     </v-col>

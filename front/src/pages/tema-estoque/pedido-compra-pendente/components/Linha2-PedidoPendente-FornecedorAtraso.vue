@@ -5,10 +5,11 @@
             :titulo="'Pedidos Pendentes'"
             :icon="'mdi-text-box-edit'"
         >
-            <template #grafico>
+            <template #grafico="{ expandido }">
                 <Pizza 
                     :options="['Pedidos em Atraso', 'Pedidos no Prazo']"
                     :dados="[dados?.resumo?.qntPedidoEmAtraso || 0, dados?.resumo?.pedidoEmDia || 0]"
+                    :expandido="expandido"
                 />
             </template>
         </CardParaComportarGraf>
@@ -18,13 +19,14 @@
             :titulo="'Fornecedor em atraso'"
             :icon="'mdi-account-alert'"
         >
-            <template #grafico>
+            <template #grafico="{ expandido }">
                 <Tabela 
                     :th="['Codigo', 'Fornecedor', 'Qtd. Pedidos', 'Valor Total']" 
                     :campos="['fornecedorId', 'fornecedorNome', 'quantidadePedidosFornecedor', 'valorTotalFornecedor']"
                     :campoKey="'fornecedorId'"
                     :dados="dados?.pedidosPorFornecedor || []"
                     :height="'350px'"
+                    :expandido="expandido"
                 />
             </template>
         </CardParaComportarGraf>

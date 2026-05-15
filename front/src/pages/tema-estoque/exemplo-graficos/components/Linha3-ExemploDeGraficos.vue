@@ -5,8 +5,8 @@
         :titulo="'Gráfico de Mapa de Área'"
         :icone="'mdi-chart-histogram'"
         >
-            <template #grafico>
-                <MapaDeArea />
+            <template #grafico="{ expandido }">
+                <MapaDeArea :expandido="expandido" />
             </template>
         </CardParaComportarGraf>
     </v-col>
@@ -16,8 +16,8 @@
         :titulo="'Gráfico de Bolhas'"
         :icone="'mdi-chart-scatter-plot-hexbin'"
         >
-            <template #grafico>
-                <Bolhas />
+            <template #grafico="{ expandido }">
+                <Bolhas :expandido="expandido" />
             </template>
         </CardParaComportarGraf>
     </v-col>
@@ -27,8 +27,8 @@
         :titulo="'Gráfico de Coluna, Linha e Área'"
         :icone="'mdi-chart-bar'"
         >
-            <template #grafico>
-                <ColunaLinhaArea />
+            <template #grafico="{ expandido }">
+                <ColunaLinhaArea :expandido="expandido" />
             </template>
         </CardParaComportarGraf>
     </v-col>

@@ -1,6 +1,11 @@
 <template>
-    <div class="pizza-container" style="height: 100vh; width: 100%;">
-        <apexchart 
+    <div 
+        class="chart-container"
+        :class="{ fullscreen: expandido }"
+    >
+        <apexchart
+            width="100%"
+            height="100%"
             type="donut" 
             :options="chartOptions" 
             :series="dados" 
@@ -17,6 +22,7 @@ const apexchart = VueApexCharts;
 const props = defineProps<{
     options: string[];
     dados: number[];
+    expandido?: boolean
 }>();
 
 const chartOptions = computed((): ApexOptions => ({
@@ -43,3 +49,13 @@ const chartOptions = computed((): ApexOptions => ({
 }));
 
 </script>
+<style scoped>
+.chart-container {
+  width: 100%;
+  height: 300px;
+}
+
+.chart-container.fullscreen {
+  height: 100%;
+}
+</style>

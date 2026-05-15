@@ -33,7 +33,7 @@
     </v-card-item>
 
     <v-card-text>
-      <slot name="grafico"></slot>
+      <slot name="grafico" :expandido="false"></slot>
     </v-card-text>
   </v-card>
 
@@ -46,8 +46,8 @@
         <v-btn icon="mdi-fullscreen-exit" @click="expandir = false"></v-btn>
       </v-toolbar>
 
-      <v-card-text style="height: calc(100vh - 64px);">
-        <slot name="grafico"></slot>
+      <v-card-text class="fullscreen-content" >
+        <slot name="grafico" :expandido="expandir"></slot>
       </v-card-text>
     </v-card>
   </v-dialog>
@@ -74,7 +74,7 @@ const expandir = ref(false);
 const infoStore = useInformativosStore();
 
 defineSlots<{
-  grafico?: (props: {}) => any
+   grafico?: (props: { expandido: boolean }) => any
 }>()
 
 </script>
@@ -83,5 +83,11 @@ defineSlots<{
 :deep(.v-card-text) {
   display: flex;
   flex-direction: column;
+}
+
+.fullscreen-content {
+  height: calc(100vh - 64px);
+  display: flex;
+  overflow: hidden;
 }
 </style>

@@ -1,16 +1,25 @@
 <template>
-    <div style="height: 100vh; width: 100%;">
-        <apexchart 
-            type="bar" 
-            :options="options" 
-            :series="series" 
-        />
-    </div>
+  <div 
+    class="chart-container"
+    :class="{ fullscreen: expandido }"
+  >
+    <apexchart
+      width="100%"
+      height="100%"
+      type="bar"
+      :options="options"
+      :series="series"
+    />
+  </div>
 </template>
 
 <script lang="ts" setup>
 import { ref } from "vue";
 import VueApexCharts from "vue3-apexcharts";
+
+defineProps<{
+  expandido?: boolean
+}>()
 
 const apexchart = VueApexCharts;
 
@@ -36,3 +45,14 @@ const series = ref([
     },
 ]);
 </script>
+
+<style scoped>
+.chart-container {
+  width: 100%;
+  height: 300px;
+}
+
+.chart-container.fullscreen {
+  height: 100%;
+}
+</style>

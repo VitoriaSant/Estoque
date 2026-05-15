@@ -1,6 +1,9 @@
 <template>
-    <div>
-        <v-table :style="{ height: height }" class="tabela-cabecalho-fixo">
+    <div :class="{ fullscreen: expandido }">
+        <v-table 
+            width="100%"
+            height="100%" 
+            class="tabela-cabecalho-fixo">
             <thead>
                 <tr>
                     <th v-for="header in th" :key="header">
@@ -39,7 +42,8 @@ const props = defineProps({
     campoKey: String,
     height: String,
     itensPorPagina: Number,
-    corDeAlerta: String
+    corDeAlerta: String,
+    expandido: Boolean
 });
 
 const itensPorPagina = props.itensPorPagina || 10;
@@ -95,6 +99,10 @@ th {
 }
 tr {
     height: 50px !important;
+}
+
+.chart-container.fullscreen {
+  height: 100%;
 }
 
 /* .linha-amarela td {
