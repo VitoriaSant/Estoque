@@ -1,12 +1,10 @@
 <template>
-    <div>
+    <div style="height: 100vh; width: 100%;"">
         <apexchart 
-            width="100%" 
-            height="300"
             type="line" 
             :options="options" 
             :series="series"
-        ></apexchart>
+        />
     </div>
 </template>
 

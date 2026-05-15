@@ -1,8 +1,6 @@
 <template>
-    <div>
+    <div style="height: 100vh; width: 100%;">
         <apexchart 
-            width="100%" 
-            height="300"
             type="bubble" 
             :options="options" 
             :series="series" 

@@ -1,34 +1,33 @@
 <template>
 <v-row no-gutters>
     <v-col cols="12" md="4" class="pa-1">
-    <v-card
-        style="height: 476px"
-        variant="elevated"
-        class="mx-auto"
-        title="Pedidos Pendentes"
-        prepend-icon="mdi-text-box-edit"
-    >
-        <Pizza 
-            :options="['Pedidos em Atraso', 'Pedidos no Prazo']"
-            :dados="[dados?.resumo?.qntPedidoEmAtraso || 0, dados?.resumo?.pedidoEmDia || 0]"
-        />
-    </v-card>
+        <CardParaComportarGraf
+            :titulo="'Pedidos Pendentes'"
+            :icon="'mdi-text-box-edit'"
+        >
+            <template #grafico>
+                <Pizza 
+                    :options="['Pedidos em Atraso', 'Pedidos no Prazo']"
+                    :dados="[dados?.resumo?.qntPedidoEmAtraso || 0, dados?.resumo?.pedidoEmDia || 0]"
+                />
+            </template>
+        </CardParaComportarGraf>
     </v-col>
     <v-col cols="12" md="8" class="pa-1">
-    <v-card
-        variant="elevated"
-        class="mx-auto"
-        title="Fornecedor em atraso"
-        prepend-icon="mdi-account-alert"
-    >
-        <Tabela 
-            :th="['Codigo', 'Fornecedor', 'Qtd. Pedidos', 'Valor Total']" 
-            :campos="['fornecedorId', 'fornecedorNome', 'quantidadePedidosFornecedor', 'valorTotalFornecedor']"
-            :campoKey="'fornecedorId'"
-            :dados="dados?.pedidosPorFornecedor || []"
-            :height="'350px'"
-        />
-    </v-card>
+        <CardParaComportarGraf 
+            :titulo="'Fornecedor em atraso'"
+            :icon="'mdi-account-alert'"
+        >
+            <template #grafico>
+                <Tabela 
+                    :th="['Codigo', 'Fornecedor', 'Qtd. Pedidos', 'Valor Total']" 
+                    :campos="['fornecedorId', 'fornecedorNome', 'quantidadePedidosFornecedor', 'valorTotalFornecedor']"
+                    :campoKey="'fornecedorId'"
+                    :dados="dados?.pedidosPorFornecedor || []"
+                    :height="'350px'"
+                />
+            </template>
+        </CardParaComportarGraf>
     </v-col>
 </v-row>
 </template>

@@ -1,8 +1,6 @@
 <template>
-    <div>
+    <div style="height: 100vh; width: 100%;">
         <apexchart 
-            width="100%" 
-            height="300"
             type="bar" 
             :options="options" 
             :series="series" 
@@ -33,3 +31,6 @@ const series = ref([
     },
 ]);
 </script>
+
+<style>
+</style>

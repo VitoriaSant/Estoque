@@ -1,8 +1,6 @@
 <template>
-    <div>
+    <div style="height: 100vh; width: 100%;">
         <apexchart 
-            width="100%" 
-            height="300"
             type="line" 
             :options="options" 
             :series="series"
@@ -12,11 +10,10 @@
 
 <script lang="ts" setup>
 import { ref } from "vue";
-import VueApexCharts from "vue3-apexcharts";
+import type { ApexOptions } from "apexcharts";
+import apexchart from "vue3-apexcharts";
 
-const apexchart = VueApexCharts;
-
-const options = ref({
+const options = ref<ApexOptions>({
     chart: {
         id: "vuechart-example",
     },

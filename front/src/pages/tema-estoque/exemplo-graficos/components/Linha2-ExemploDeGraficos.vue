@@ -1,47 +1,46 @@
 <template>
 <v-row>
     <v-col cols="12" md="4" class="pa-1">
-        <v-card
-        style="height: 400px"
-        variant="elevated"
-        class="mx-auto"
-        title="Gráfico de Donuts"
-        prepend-icon="mdi-chart-arc"
+        <CardParaComportarGraf 
+        :titulo="'Gráfico de Donuts'"
+        :icone="'mdi-chart-arc'"
         >
-            <Donuts />
-        </v-card>
+            <template #grafico>
+                <Donuts />
+            </template>
+        </CardParaComportarGraf>
     </v-col>
  
     <v-col cols="12" md="4" class="pa-1">
-        <v-card
-        style="height: 400px"
-        variant="elevated"
-        class="mx-auto"
-        title="Gráfico Polar"
-        prepend-icon="mdi-chart-pie-outline"
+        <CardParaComportarGraf 
+        :titulo="'Gráfico Polar'"
+        :icone="'mdi-chart-pie-outline'"
         >
-            <AreaPolar />
-        </v-card>
+            <template #grafico>
+                <AreaPolar />
+            </template>
+        </CardParaComportarGraf>
     </v-col>
     
     <v-col cols="12" md="4" class="pa-1">
-        <v-card
-        style="height: 400px"
-        variant="elevated"
-        class="mx-auto"
-        title="Gráfico de Barras Vertical Empilhada"
-        prepend-icon="mdi-chart-waterfall"
+        <CardParaComportarGraf 
+        :titulo="'Gráfico de Barras Vertical Empilhada'"
+        :icone="'mdi-chart-waterfall'"
         >
-            <BarrasVerticalEmpilhada />
-        </v-card>
+            <template #grafico>
+                <BarrasVerticalEmpilhada />
+            </template>
+        </CardParaComportarGraf>
     </v-col>
 </v-row>
 </template>
 
-<script lang="ts">
+<script setup>
 import Donuts from '@/components/Donuts.vue';
 import AreaPolar from '@/components/AreaPolar.vue';
 import BarrasVerticalEmpilhada from '@/components/BarrasVerticalEmpilhada.vue';
+import CardParaComportarGraf from '@/components/CardParaComportarGraf.vue';
+
 
 
 </script>

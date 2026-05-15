@@ -1,88 +1,87 @@
 <template>
-  <v-container>
-    <v-card 
-      style="height: 400px"
-      variant="elevated"
-      class="mx-auto"
-    >
-      <!-- Usamos v-card-item para customizar o cabeçalho -->
-      <v-card-item>
-        <div class="d-flex align-center">
-          <v-icon icon="mdi-chart-bar" class="me-2"></v-icon>
-          <v-card-title>Gráfico de Barras Horizontal</v-card-title>
-          
-          <v-spacer></v-spacer>
+  <v-card 
+    style="height: 400px"
+    width="100%"
+    variant="elevated"
+    class="mx-auto"
+  >
+    <v-card-item>
+      <div class="d-flex align-center">
+        <!-- Usamos as variáveis tipadas diretamente -->
+        <v-icon :icon="icone" class="me-2"></v-icon>
+        <v-card-title>{{ titulo }}</v-card-title>
+        
+        <v-spacer></v-spacer>
 
-          <v-btn 
-            variant="tonal" 
-            color="primary" 
-            icon="mdi-fullscreen" 
-            density="comfortable"
-            @click="expandir = true"
-          >
-          </v-btn>
-        </div>
-      </v-card-item>
+        <!-- Botão de expandir -->
+        <v-btn 
+          variant="tonal" 
+          color="primary" 
+          icon="mdi-fullscreen" 
+          density="comfortable"
+          @click="expandir = true"
+        >
+        </v-btn>
+        <!-- Botão de informações -->
+        <v-btn 
+          v-if="props.temInformacao"
+          variant="text" 
+          icon="mdi-information-outline" 
+          @click="infoStore.mostrarInformacoes()">
+        </v-btn>
+      </div>
+    </v-card-item>
 
-      <v-card-text>
-        <BarrasHorizontal />
+    <v-card-text>
+      <slot name="grafico"></slot>
+    </v-card-text>
+  </v-card>
+
+  <v-dialog v-model="expandir" fullscreen transition="dialog-bottom-transition">
+    <v-card>
+      <v-toolbar color="surface" elevation="1">
+        <v-icon :icon="icone" class="ms-4"></v-icon>
+        <v-toolbar-title>{{ titulo }}</v-toolbar-title>
+        <v-spacer></v-spacer>
+        <v-btn icon="mdi-fullscreen-exit" @click="expandir = false"></v-btn>
+      </v-toolbar>
+
+      <v-card-text style="height: calc(100vh - 64px);">
+        <slot name="grafico"></slot>
       </v-card-text>
     </v-card>
-
-    <!-- Dialog de expansão -->
-    <v-dialog v-model="expandir" fullscreen transition="dialog-bottom-transition">
-      <v-card>
-        <!--<v-toolbar color="primary">
-          <v-btn icon @click="expandir = false">
-            <v-icon>mdi-fullscreen-exit</v-icon>
-          </v-btn>
-          <v-toolbar-title>Gráfico Expandido</v-toolbar-title>
-        </v-toolbar>-->
-
-      <v-card-text style="height: 100%;">
-        <v-card
-          style="height: 400px"
-          variant="elevated"
-          class="mx-auto"
-        >
-          <!-- Container Flexbox para alinhar horizontalmente -->
-          <div class="d-flex align-center"> 
-            <v-icon icon="mdi-chart-bar" class="me-2"></v-icon>
-            <v-card-title>Gráfico de Barras Horizontal</v-card-title>
-            
-            <v-spacer></v-spacer> <!-- Empurra o botão para o final da linha -->
-
-            <v-btn 
-              variant="tonal" 
-              color="primary" 
-              icon="mdi-fullscreen-exit" 
-              density="comfortable"
-              @click="expandir = false"
-            >
-            </v-btn>
-          </div>
-
-          <v-card-text>
-            <BarrasHorizontal />
-          </v-card-text>
-        </v-card>
-      </v-card-text>
-      </v-card>
-    </v-dialog>
-  </v-container>
+  </v-dialog>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue'
-import BarrasHorizontal from './BarrasHorizontal.vue'
+import { useInformativosStore } from '@/stores/InformativosStore'
 
-const expandir = ref(false)
+interface Props {
+  titulo?: string;
+  icone?: string;
+  temInformacao?: boolean;
+}
 
-// Simulação dos dados que você já calculou no seu JSON
-const dadosDoItem = ref({
-  descricao: 'MATÉRIA PRIMA 104',
-  prazo: 12,
-  consumo: 45.8,
-  duracao: 15
+const props = withDefaults(defineProps<Props>(), {
+  titulo: 'Gráfico',
+  icone: 'mdi-chart-bar',
+  temInformacao: true
 })
+
+const expandir = ref(false);
+
+const infoStore = useInformativosStore();
+
+defineSlots<{
+  grafico?: (props: {}) => any
+}>()
+
 </script>
+
+<style scoped>
+:deep(.v-card-text) {
+  display: flex;
+  flex-direction: column;
+}
+</style>
