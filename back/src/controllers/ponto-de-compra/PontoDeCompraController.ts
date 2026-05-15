@@ -22,14 +22,10 @@ export default class PontoDeCompraController {
             const jsonData = fs.readFileSync(jsonPath, 'utf8');
             let result = JSON.parse(jsonData);
 
-            console.log("Leu arquivo json");
-
             // Aplicar filtros se existirem
             const classeFiltro = new CClasseFiltro<CPontoDeCompraModel>(
                 req.body,
             ) as CClasseFiltro<CPontoDeCompraModel>;
-
-            console.log("Aplicando filtros");
 
             for (const filtro of classeFiltro.filtros) {
                 if (filtro.campo == "empresaItem") {
@@ -115,8 +111,6 @@ export default class PontoDeCompraController {
             }
 
             try {
-                console.log("Tratando dados");
-
 //----------------------------------------------------------------------------------------------------
 // Contagem de valores: Valor todol em estoque, Valor de pedido pendente, Valor total
 //----------------------------------------------------------------------------------------------------
@@ -133,8 +127,6 @@ export default class PontoDeCompraController {
                 }, 0);
 
                 const valorTotal = valorTotalEmEstoque + valorTotalDePedidosPendentes;
-
-                console.log("valor total:", valorTotal);
 //----------------------------------------------------------------------------------------------------
 // Relatorio de ponto de compra
 //----------------------------------------------------------------------------------------------------
@@ -169,14 +161,14 @@ export default class PontoDeCompraController {
                         };
                     }
 
-//----------------------------------------------------------------------------------------------------
-// Somar quantidade do pedido pendente
-//----------------------------------------------------------------------------------------------------
+                    //----------------------------------------------------------------------------------------------------
+                    // Somar quantidade do pedido pendente
+                    //----------------------------------------------------------------------------------------------------
                     acc[itemId].pedidoCompraPendente += quantidadePedido;
                     
-//----------------------------------------------------------------------------------------------------
-// Calcular prazo de entrega em dias
-//----------------------------------------------------------------------------------------------------
+                    //----------------------------------------------------------------------------------------------------
+                    // Calcular prazo de entrega em dias
+                    //----------------------------------------------------------------------------------------------------
                     let prazoEntregaDias = 0;
 
                     if (item.DTEMISSAO_PDC) {
@@ -192,9 +184,9 @@ export default class PontoDeCompraController {
 
                     acc[itemId].prazoEntrega = prazoEntregaDias;
 
-//----------------------------------------------------------------------------------------------------
-// Calcular consumo diario nos ultimos 90 dias
-//----------------------------------------------------------------------------------------------------
+                    //----------------------------------------------------------------------------------------------------
+                    // Calcular consumo diario nos ultimos 90 dias
+                    //----------------------------------------------------------------------------------------------------
                     const noventaDiasAtras = new Date(hoje);
                     noventaDiasAtras.setDate(hoje.getDate() - 90);                
                     const dataString = item.DATA_REQEST;
@@ -218,15 +210,15 @@ export default class PontoDeCompraController {
                         }
                     }
 
-//----------------------------------------------------------------------------------------------------
-// Calcular dias de duração
-//----------------------------------------------------------------------------------------------------
+                    //----------------------------------------------------------------------------------------------------
+                    // Calcular dias de duração
+                    //----------------------------------------------------------------------------------------------------
                     const diasDeDuracao = acc[itemId].consumoDiario > 0 ? acc[itemId].saldoDisponivel / acc[itemId].consumoDiario : 0;
                     acc[itemId].diasDeDuracao = diasDeDuracao;
 
-//----------------------------------------------------------------------------------------------------
-// Validar cor de alerta
-//----------------------------------------------------------------------------------------------------
+                    //----------------------------------------------------------------------------------------------------
+                    // Validar cor de alerta
+                    //----------------------------------------------------------------------------------------------------
                     const metadeDoMaximo = acc[itemId].saldoMaximo / 2;
                     if (acc[itemId].saldoDisponivel < acc[itemId].saldoMinimo) {
                         acc[itemId].corDeAlerta = 'Vermelho';
@@ -236,12 +228,9 @@ export default class PontoDeCompraController {
 
                     return acc;
                 }, {});
-
-                console.log("ponto de compra:", pontoDeCompra);
-
-//----------------------------------------------------------------------------------------------------
-// Transforma o Relatorio de ponto de compra em array
-//----------------------------------------------------------------------------------------------------
+                //----------------------------------------------------------------------------------------------------
+                // Transforma o Relatorio de ponto de compra em array
+                //----------------------------------------------------------------------------------------------------
                 const listaPontoDeCompra = Object.values(pontoDeCompra).map((item: any) => ({
                     itemId: item.itemId,
                     descricaoItem: item.descricaoItem,
@@ -255,7 +244,55 @@ export default class PontoDeCompraController {
                     corDeAlerta: item.corDeAlerta || '',
                 }));
 
-                console.log("Dados com corDeAlerta:", JSON.stringify(listaPontoDeCompra.slice(0, 3), null, 2));
+//----------------------------------------------------------------------------------------------------
+// Consumo nos ultimos 12 meses
+//----------------------------------------------------------------------------------------------------
+                
+            const consumoUltimos12Meses = result.reduce((acc: any, item: any) => {
+                const ultimos12Meses: any[] = [];
+                const hoje = new Date();
+                
+                // Cria os últimos 12 meses
+                for (let i = 11; i >= 0; i--) {
+                    const data = new Date(hoje.getFullYear(), hoje.getMonth() - i, 1);
+
+                    const chave = `${data.getFullYear()}-${String(data.getMonth() + 1).padStart(2, '0')}`;
+
+                    ultimos12Meses.push({
+                        chave,
+                        mes: String(data.getMonth() + 1).padStart(2, '0'),
+                        ano: data.getFullYear(),
+                        total: 0
+                    });
+                }
+
+                // Agrupa os dados
+                result.forEach((item: any) => {
+
+                    const data = new Date(item.DATA_REQUEST);
+
+                    const chave = `${data.getFullYear()}-${String(data.getMonth() + 1).padStart(2, '0')}`;
+
+                    const mesEncontrado = ultimos12Meses.find(m => m.chave === chave);
+
+                    if (mesEncontrado) {
+                        mesEncontrado.total += Number(item.valor || 0);
+                    }
+                });
+
+                console.log(ultimos12Meses);
+                return acc;
+            }, {});
+
+            //----------------------------------------------------------------------------------------------------
+            // Transforma o Relatorio de ponto de compra em array
+            //----------------------------------------------------------------------------------------------------
+            const ultimos12MesesArray = Object.values(consumoUltimos12Meses).map((item: any) => ({
+                mes: item.mes,
+                ano: item.ano,
+                total: Number(item.total.toFixed(2))
+            }));
+
 
 //----------------------------------------------------------------------------------------------------
 // Response
@@ -268,6 +305,7 @@ export default class PontoDeCompraController {
                     },
                     //dados: result,
                     pontoDeCompra: listaPontoDeCompra,
+                    consumoUltimos12Meses: ultimos12MesesArray,
                 };
 
                 res.json(response);
