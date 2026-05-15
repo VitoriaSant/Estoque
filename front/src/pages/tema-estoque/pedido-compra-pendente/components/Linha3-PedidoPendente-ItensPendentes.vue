@@ -5,7 +5,7 @@
             :titulo="'Itens Pendentes'"
             :icone="'mdi-archive-alert'"
             >
-                <template #grafico>
+                <template #grafico="{ expandido }">
                     <Tabela
                         :th="[
                             'Código',
@@ -19,6 +19,7 @@
                         :dados="dados?.itensPendentes || []"
                         :height="'350px'"
                         :corDeAlerta="'corDeAlerta'"
+                        :expandido="expandido"
                     />
                 </template>
         </CardParaComportarGraf>
@@ -29,7 +30,7 @@
             :titulo="'Pedidos Pendentes'"
             :icone="'mdi-archive-alert'"
             >
-                <template #grafico>
+                <template #grafico="{ expandido }">
                     <Tabela 
                         :th="['Codigo', 'Prev. Entrega', 'Valor']" 
                         :campos="['pedidoId', 'previsaoEntregaPedido', 'valorTotalPedido']"
@@ -37,6 +38,7 @@
                         :dados="dados?.pedidosPendentes || []" 
                         :height="'350px'"
                         :temInformacao="true"
+                        :expandido="expandido"
                     />
                 </template>
         </CardParaComportarGraf>

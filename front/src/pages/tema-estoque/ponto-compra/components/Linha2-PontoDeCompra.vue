@@ -5,7 +5,7 @@
         :titulo="'Ponto de Compra'"
         :icone="'mdi-cash-multiple'"
         >
-            <template #grafico>
+            <template #grafico="{ expandido }">
                 <Tabela
                     :th="['Cod. Item', 'Descrição', 'Saldo Disponível', 'Saldo Mínimo', 'Saldo Máximo', 'Pedido de Compra Pendente', 'Prazo de Entrega', 'Consumo Diário', 'Dias de Duração']" 
                     :campos="['itemId', 'descricaoItem', 'saldoDisponivel', 'saldoMinimo', 'saldoMaximo', 'pedidoCompraPendente', 'prazoEntrega', 'consumoDiario', 'diasDeDuracao']"
@@ -14,6 +14,7 @@
                     :height="'700px'"
                     :itensPorPagina="20"
                     :corDeAlerta="'corDeAlerta'"
+                    :expandido="expandido"
                 />
             </template>
     </CardParaComportarGraf>

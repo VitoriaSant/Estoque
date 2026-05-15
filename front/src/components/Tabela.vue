@@ -1,9 +1,14 @@
 <template>
-    <div :class="{ fullscreen: expandido }">
+    <div 
+        class="table-wrapper"
+        :class="{ fullscreen: expandido }"
+    >
         <v-table 
-            width="100%"
-            height="100%" 
-            class="tabela-cabecalho-fixo">
+            class="tabela-cabecalho-fixo compact-table"
+            density="compact"
+            fixed-header
+            :height="expandido ? 'calc(100vh - 140px)' : '290px'"
+        >
             <thead>
                 <tr>
                     <th v-for="header in th" :key="header">
@@ -23,9 +28,11 @@
         <v-pagination
             v-model="paginaAtual"
             :length="totalPaginas"
-            :total-visible="7"
-            class="mt-4"
-        ></v-pagination>
+            :total-visible="$vuetify.display.smAndDown ? 3 : 7"
+            density="compact"
+            size="small"
+            class="mt-2"
+        />  
     </div>
 </template>
 
@@ -46,7 +53,7 @@ const props = defineProps({
     expandido: Boolean
 });
 
-const itensPorPagina = props.itensPorPagina || 10;
+const itensPorPagina = props.itensPorPagina || 20;
 const paginaAtual = ref(1);
 
 // Computados para paginação
@@ -94,15 +101,30 @@ const alerta = (item) => {
     font-weight: bold;
 }
 
-th {
-    height: 50px !important;
+.compact-table :deep(th),
+.compact-table :deep(td) {
+    height: 30px !important;
+    padding: 0 8px !important;
+    font-size: 12px;
+    white-space: nowrap;
 }
-tr {
-    height: 50px !important;
+
+.compact-table :deep(thead th) {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    background-color: #f7f3f3 !important;
+    font-weight: 600;
 }
 
 .chart-container.fullscreen {
   height: 100%;
+}
+
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
 }
 
 /* .linha-amarela td {
