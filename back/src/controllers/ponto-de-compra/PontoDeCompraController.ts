@@ -248,41 +248,44 @@ export default class PontoDeCompraController {
 // Consumo nos ultimos 12 meses
 //----------------------------------------------------------------------------------------------------
                 
-            const consumoUltimos12Meses = result.reduce((acc: any, item: any) => {
-                const ultimos12Meses: any[] = [];
-                const hoje = new Date();
-                
-                // Cria os últimos 12 meses
-                for (let i = 11; i >= 0; i--) {
-                    const data = new Date(hoje.getFullYear(), hoje.getMonth() - i, 1);
+            const consumoUltimos12Meses: any = {};
+            const hojeConsumo = new Date();
 
-                    const chave = `${data.getFullYear()}-${String(data.getMonth() + 1).padStart(2, '0')}`;
+            for (let i = 11; i >= 0; i--) {
+                const data = new Date(hojeConsumo.getFullYear(), hojeConsumo.getMonth() - i, 1);
+                const chave = `${data.getFullYear()}-${String(data.getMonth() + 1).padStart(2, '0')}`;
 
-                    ultimos12Meses.push({
-                        chave,
-                        mes: String(data.getMonth() + 1).padStart(2, '0'),
-                        ano: data.getFullYear(),
-                        total: 0
-                    });
+                consumoUltimos12Meses[chave] = {
+                    chave,
+                    mes: String(data.getMonth() + 1).padStart(2, '0'),
+                    ano: data.getFullYear(),
+                    total: 0
+                };
+            }
+
+            result.forEach((item: any) => {
+                const dataString = item.DATA_REQEST || item.DATA_REQUEST;
+
+                if (!dataString) {
+                    return;
                 }
 
-                // Agrupa os dados
-                result.forEach((item: any) => {
+                const partes = dataString.toString().split(/[. ]/);
+                const data = partes.length >= 3
+                    ? new Date(`${partes[2]}-${partes[1]}-${partes[0]}T${partes[3] || '00:00'}`)
+                    : new Date(dataString);
 
-                    const data = new Date(item.DATA_REQUEST);
+                if (isNaN(data.getTime())) {
+                    return;
+                }
 
-                    const chave = `${data.getFullYear()}-${String(data.getMonth() + 1).padStart(2, '0')}`;
+                const chave = `${data.getFullYear()}-${String(data.getMonth() + 1).padStart(2, '0')}`;
+                const mesEncontrado = consumoUltimos12Meses[chave];
 
-                    const mesEncontrado = ultimos12Meses.find(m => m.chave === chave);
-
-                    if (mesEncontrado) {
-                        mesEncontrado.total += Number(item.valor || 0);
-                    }
-                });
-
-               
-                return acc;
-            }, {});
+                if (mesEncontrado) {
+                    mesEncontrado.total += convertBrasilianStringToNumber(item.QTDEREQUISICAO_ITEMREQ);
+                }
+            });
 
             //----------------------------------------------------------------------------------------------------
             // Transforma o Relatorio de ponto de compra em array

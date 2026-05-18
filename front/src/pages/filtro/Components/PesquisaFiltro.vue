@@ -21,6 +21,10 @@
                         <v-icon start icon="mdi-check" />
                         Aplicar Filtro
                     </v-btn>
+                     <v-btn color="primary" size="large" variant="outlined" @click="limparFiltro()">
+                        <v-icon start icon="mdi-delete" />
+                        Limpar Filtro
+                    </v-btn>
                 </div>
             </template>
         </v-dialog>
@@ -53,6 +57,7 @@ const emit = defineEmits([
     "update:operadorSelecionado",
     "update:valorDigitado",
     "buscarDados",
+    "limparFiltro",
 ]);
 
 const operadorSelecionado = ref("IGUAL");
@@ -76,6 +81,9 @@ async function buscarDados() {
     emit('buscarDados');
 }
 
+function limparFiltro() {
+    emit('limparFiltro');
+}
 </script>
 
 <style scoped></style>

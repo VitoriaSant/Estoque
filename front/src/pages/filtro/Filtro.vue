@@ -5,7 +5,6 @@
                 Filtros
                 <v-btn icon="mdi-close" variant="text" class="position-absolute right-0 top-0" @click="fechar" />
             </v-card-title>
-
             <DatasFiltro 
                 :classeFiltro="classeFiltro" 
                 :dialogFiltro="dialogFiltro"
@@ -30,6 +29,7 @@
                         @update:operadorSelecionado="operadorSelecionado = $event"
                         @update:valorDigitado="valorDigitado = $event"
                         @buscarDados="buscarDados"
+                        @limparFiltro="limparFiltro"
                     />
                 </v-col>
             </v-row>
@@ -132,6 +132,15 @@ async function buscarDados() {
     useLayoutDashboardStore().classeFiltro = filtroAtualizado;
     //const resultado = await useLayoutDashboardStore().filtrarComprasPendentes();
     
+    emit("fechar");
+}
+
+function limparFiltro() {
+    operadorSelecionado.value = "";
+    valorDigitado.value = "";
+    dataInicio.value = "";
+    dataFim.value = "";
+    useLayoutDashboardStore().classeFiltro = new CClasseFiltro();
     emit("fechar");
 }
 
