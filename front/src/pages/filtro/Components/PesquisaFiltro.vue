@@ -21,7 +21,7 @@
                         <v-icon start icon="mdi-check" />
                         Aplicar Filtro
                     </v-btn>
-                     <v-btn color="primary" size="large" variant="outlined" @click="limparFiltro()">
+                    <v-btn color="primary" size="large" variant="outlined" @click="limparFiltro()">
                         <v-icon start icon="mdi-delete" />
                         Limpar Filtro
                     </v-btn>

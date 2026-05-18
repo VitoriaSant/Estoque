@@ -8,7 +8,7 @@ export class CFiltro<Classe> {
 
   constructor(pObj?: Partial<CFiltro<Classe>>) {
     this.campo = pObj?.campo ?? this.campo;
-    this.operador = pObj?.operador ?? this.operador;
+    this.operador = pObj?.operador || this.operador;
     this.valor = pObj?.valor ?? this.valor;
   }
 
@@ -40,9 +40,10 @@ export default class CClasseFiltro<Classe> {
     >,
   ) {
     if (pObj?.filtros && Array.isArray(pObj.filtros)) {
-      this.filtros = pObj.filtros.map((item) => new CFiltro(item));
+      this.filtros = pObj.filtros
+        .filter((item) => item?.campo && item?.valor !== undefined && item?.valor !== null && item?.valor !== "")
+        .map((item) => new CFiltro(item));
     }
-    this.filtros = pObj?.filtros ?? this.filtros;
     
     this.dataInicio = pObj?.dataInicio ? new Date(pObj.dataInicio) : undefined;
     this.dataFim = pObj?.dataFim ? new Date(pObj.dataFim) : undefined;
