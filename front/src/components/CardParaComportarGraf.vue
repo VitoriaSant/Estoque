@@ -25,7 +25,7 @@
       </div>
     </v-card-item>
 
-    <v-card-text>
+    <v-card-text class="grafico-content">
       <slot name="grafico" :expandido="false"></slot>
     </v-card-text>
   </v-card>
@@ -76,9 +76,16 @@ defineSlots<{
   flex-direction: column;
 }
 
+.grafico-content {
+  align-items: center;
+  justify-content: center;
+}
+
 .fullscreen-content {
   height: calc(100vh - 64px);
   display: flex;
+  align-items: center;
+  justify-content: center;
   overflow: hidden;
 }
 </style>
