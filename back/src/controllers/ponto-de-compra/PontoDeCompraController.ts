@@ -280,7 +280,7 @@ export default class PontoDeCompraController {
                     }
                 });
 
-                console.log(ultimos12Meses);
+               
                 return acc;
             }, {});
 

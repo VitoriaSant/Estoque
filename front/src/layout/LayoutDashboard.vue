@@ -2,6 +2,11 @@
   <v-app-bar app color="primary" height="55">
     <v-app-bar-nav-icon @click="drawer = !drawer" />
     <v-toolbar-title>{{ $route.name }}</v-toolbar-title>
+    <v-btn 
+      @click="informativosStore.exibirInformativo = true"
+      class="ml-2">
+      <v-icon>mdi-information-outline</v-icon>
+    </v-btn>
     <v-btn
       class="text-h7 ml-auto d-flex align-center justify-end"
       @click="filtrar"
@@ -31,6 +36,8 @@
         v-model:classeFiltro="layoutStore.classeFiltro"
         @aplicar="layoutStore.filtrar"
       />
+
+    <Informativo />
     
     <RouterView />
   </v-main>
@@ -39,6 +46,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import Filtro from "../pages/filtro/Filtro.vue";
+import Informativo from "../components/Informativo.vue";
 
 const drawer = ref(false);
 const emit = defineEmits(["fechar"]);
@@ -46,12 +54,12 @@ const emit = defineEmits(["fechar"]);
 import { useLayoutDashboardStore } from "../stores/LayoutDashboardStore";
 const layoutStore = useLayoutDashboardStore();
 
+import { useInformativosStore } from "../stores/InformativosStore";
+const informativosStore = useInformativosStore();
+
+
 function filtrar() {
   useLayoutDashboardStore().exibirFiltro = true;
 }
-
-// function fechar() {
-//   emit("fechar");
-// }
 
 </script>

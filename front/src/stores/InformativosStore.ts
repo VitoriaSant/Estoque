@@ -6,14 +6,8 @@ export const useInformativosStore = defineStore(
   () => {
     const exibirInformativo = ref<boolean>(false);
 
-    const mostrarInformacoes = () => {
-      console.log("Mostrando informações");
-      exibirInformativo.value = true;
-    };
-
     return {
-      exibirInformativo,
-      mostrarInformacoes,
+      exibirInformativo
     };
   }
 );

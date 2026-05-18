@@ -22,13 +22,6 @@
           @click="expandir = true"
         >
         </v-btn>
-        <!-- Botão de informações -->
-        <v-btn 
-          v-if="props.temInformacao"
-          variant="text" 
-          icon="mdi-information-outline" 
-          @click="infoStore.mostrarInformacoes()">
-        </v-btn>
       </div>
     </v-card-item>
 
@@ -60,13 +53,11 @@ import { useInformativosStore } from '@/stores/InformativosStore'
 interface Props {
   titulo?: string;
   icone?: string;
-  temInformacao?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   titulo: 'Gráfico',
-  icone: 'mdi-chart-bar',
-  temInformacao: true
+  icone: 'mdi-chart-bar'
 })
 
 const expandir = ref(false);

@@ -1,6 +1,6 @@
 <template>
 <v-row no-gutters>
-    <v-col cols="12" md="4" class="pa-1">
+    <v-col cols="12" md="3" class="pa-1">
         <CardParaComportarGraf
             :titulo="'Pedidos Pendentes'"
             :icon="'mdi-text-box-edit'"
@@ -14,7 +14,7 @@
             </template>
         </CardParaComportarGraf>
     </v-col>
-    <v-col cols="12" md="8" class="pa-1">
+    <v-col cols="12" md="9" class="pa-1">
         <CardParaComportarGraf 
             :titulo="'Fornecedor em atraso'"
             :icon="'mdi-account-alert'"
