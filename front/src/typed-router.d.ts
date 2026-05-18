@@ -24,6 +24,7 @@ declare module 'vue-router/auto-routes' {
     '/filtro/Components/PesquisaFiltro': RouteRecordInfo<'/filtro/Components/PesquisaFiltro', '/filtro/Components/PesquisaFiltro', Record<never, never>, Record<never, never>>,
     '/filtro/Filtro': RouteRecordInfo<'/filtro/Filtro', '/filtro/Filtro', Record<never, never>, Record<never, never>>,
     '/login/Login': RouteRecordInfo<'/login/Login', '/login/Login', Record<never, never>, Record<never, never>>,
+    '/tema-estoque/exemplo-graficos/components/Info-ExemploGraficos': RouteRecordInfo<'/tema-estoque/exemplo-graficos/components/Info-ExemploGraficos', '/tema-estoque/exemplo-graficos/components/Info-ExemploGraficos', Record<never, never>, Record<never, never>>,
     '/tema-estoque/exemplo-graficos/components/Linha1-ExemploDeGraficos': RouteRecordInfo<'/tema-estoque/exemplo-graficos/components/Linha1-ExemploDeGraficos', '/tema-estoque/exemplo-graficos/components/Linha1-ExemploDeGraficos', Record<never, never>, Record<never, never>>,
     '/tema-estoque/exemplo-graficos/components/Linha2-ExemploDeGraficos': RouteRecordInfo<'/tema-estoque/exemplo-graficos/components/Linha2-ExemploDeGraficos', '/tema-estoque/exemplo-graficos/components/Linha2-ExemploDeGraficos', Record<never, never>, Record<never, never>>,
     '/tema-estoque/exemplo-graficos/components/Linha3-ExemploDeGraficos': RouteRecordInfo<'/tema-estoque/exemplo-graficos/components/Linha3-ExemploDeGraficos', '/tema-estoque/exemplo-graficos/components/Linha3-ExemploDeGraficos', Record<never, never>, Record<never, never>>,
@@ -74,6 +75,10 @@ declare module 'vue-router/auto-routes' {
     }
     'src/pages/login/Login.vue': {
       routes: '/login/Login'
+      views: never
+    }
+    'src/pages/tema-estoque/exemplo-graficos/components/Info-ExemploGraficos.vue': {
+      routes: '/tema-estoque/exemplo-graficos/components/Info-ExemploGraficos'
       views: never
     }
     'src/pages/tema-estoque/exemplo-graficos/components/Linha1-ExemploDeGraficos.vue': {
