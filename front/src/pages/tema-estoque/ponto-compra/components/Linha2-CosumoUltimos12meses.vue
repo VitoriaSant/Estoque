@@ -6,7 +6,9 @@
                 :icone="'mdi-text-box-search-outline'"
                 >
                 <template #grafico="{ expandido }">
-                    <BarrasVertical :expandido="expandido"/>
+                    <BarrasVertical :expandido="expandido"
+                    :dados="props.dados?.consumoUltimos12Meses || []"
+                    />
                 </template>
         </CardParaComportarGraf>
     </v-col>
@@ -15,7 +17,6 @@
 
 <script setup lang="ts">
 import BarrasVertical from '@/components/BarrasVertical.vue';
-
 
 const props = defineProps<{
     dados: any;

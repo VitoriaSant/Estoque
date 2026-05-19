@@ -14,40 +14,45 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from "vue";
+import { computed } from "vue";
 import VueApexCharts from "vue3-apexcharts";
 
-defineProps<{
-  expandido?: boolean
+const props = defineProps<{
+    expandido?: boolean
+    dados?: Array<{
+        mes: string;
+        ano: number;
+        total: number;
+    }>;
 }>()
 
 const apexchart = VueApexCharts;
 
-const options = ref({
+const options = computed(() => ({
     chart: {
         id: "vuechart-example",
     },
     colors: ['#755640'],
     xaxis: {
-        categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998],
+        categories: props.dados?.map((item) => `${item.mes}/${item.ano}`) || [],
     },
-});
+}));
 
-const series = ref([
+const series = computed(() => [
     {
-        name: "PRODUTO A",
-        data: [30, 40, 45, 50, 49, 60, 70, 91],
+        name: "Consumo",
+        data: props.dados?.map((item) => item.total) || [],
     },
 ]);
 </script>
 
 <style scoped>
 .chart-container {
-  width: 100%;
-  height: 300px;
+    width: 100%;
+    height: 300px;
 }
 
 .chart-container.fullscreen {
-  height: 100%;
+    height: 100%;
 }
 </style>

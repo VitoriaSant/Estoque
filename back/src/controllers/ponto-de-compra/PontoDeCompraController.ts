@@ -267,59 +267,49 @@ export default class PontoDeCompraController {
                     diasDeDuracao: Number((item.diasDeDuracao || 0).toFixed(2)),
                     corDeAlerta: item.corDeAlerta || '',
                 }));
-
 //----------------------------------------------------------------------------------------------------
 // Consumo nos ultimos 12 meses
 //----------------------------------------------------------------------------------------------------
-                
-            const consumoUltimos12Meses: any = {};
-            const hojeConsumo = new Date();
+                const consumoUltimos12Meses: Record<string, any> = {};
+                const hojeConsumo = new Date();
 
-            for (let i = 11; i >= 0; i--) {
-                const data = new Date(hojeConsumo.getFullYear(), hojeConsumo.getMonth() - i, 1);
-                const chave = `${data.getFullYear()}-${String(data.getMonth() + 1).padStart(2, '0')}`;
+                // Cria os 12 meses
+                for (let i = 11; i >= 0; i--) {
+                    // Calcula a data do mês
+                    const data = new Date(hojeConsumo.getFullYear(), hojeConsumo.getMonth() - i, 1);
+                    // Cria a chave no formato YYYY-MM
+                    const chave = `${data.getFullYear()}-${String(data.getMonth() + 1).padStart(2, '0')}`;
 
-                consumoUltimos12Meses[chave] = {
-                    chave,
-                    mes: String(data.getMonth() + 1).padStart(2, '0'),
-                    ano: data.getFullYear(),
-                    total: 0
-                };
-            }
-
-            result.forEach((item: any) => {
-                const dataString = item.DATA_REQEST || item.DATA_REQUEST;
-
-                if (!dataString) {
-                    return;
+                    // Adiciona o mês ao objeto
+                    consumoUltimos12Meses[chave] = {
+                        chave,
+                        mes: String(data.getMonth() + 1).padStart(2, '0'),
+                        ano: data.getFullYear(),
+                        total: 0
+                    };
                 }
+                // Preenche os valores de consumo
+                result.forEach((item: any) => {
+                    if (!item.DATA_REQEST) return;
+                    // Converte a data para Date
+                    const dataRequisicao = new Date(item.DATA_REQEST);
+                    if (isNaN(dataRequisicao.getTime())) return;
 
-                const partes = dataString.toString().split(/[. ]/);
-                const data = partes.length >= 3
-                    ? new Date(`${partes[2]}-${partes[1]}-${partes[0]}T${partes[3] || '00:00'}`)
-                    : new Date(dataString);
+                    // Cria a chave no formato YYYY-MM
+                    const chave = `${dataRequisicao.getFullYear()}-${String(dataRequisicao.getMonth() + 1).padStart(2, '0')}`;
+                    const mesEncontrado = consumoUltimos12Meses[chave];
 
-                if (isNaN(data.getTime())) {
-                    return;
-                }
-
-                const chave = `${data.getFullYear()}-${String(data.getMonth() + 1).padStart(2, '0')}`;
-                const mesEncontrado = consumoUltimos12Meses[chave];
-
-                if (mesEncontrado) {
-                    mesEncontrado.total += convertBrasilianStringToNumber(item.QTDEREQUISICAO_ITEMREQ);
-                }
-            });
-
-            //----------------------------------------------------------------------------------------------------
-            // Transforma o Relatorio de ponto de compra em array
-            //----------------------------------------------------------------------------------------------------
-            const ultimos12MesesArray = Object.values(consumoUltimos12Meses).map((item: any) => ({
-                mes: item.mes,
-                ano: item.ano,
-                total: Number(item.total.toFixed(2))
-            }));
-
+                    // Adiciona o consumo ao mês
+                    if (mesEncontrado) {
+                        mesEncontrado.total += convertBrasilianStringToNumber(item.QTDEREQUISICAO_ITEMREQ);
+                    }
+                });
+                // Converte para array
+                const ultimos12MesesArray = Object.values(consumoUltimos12Meses).map((item: any) => ({
+                    mes: item.mes,
+                    ano: item.ano,
+                    total: Number(item.total.toFixed(2))
+                }));
 
 //----------------------------------------------------------------------------------------------------
 // Response
@@ -332,7 +322,7 @@ export default class PontoDeCompraController {
                     },
                     //dados: result,
                     pontoDeCompra: listaPontoDeCompra,
-                   //consumoUltimos12Meses: ultimos12MesesArray,
+                    consumoUltimos12Meses: ultimos12MesesArray,
                 };
 
                 res.json(response);
