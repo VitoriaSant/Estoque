@@ -22,4 +22,6 @@ export default class CPontoDeCompraModel {
     quantidadeRequisicao: number = 0;
     dataRequisicao: string = "";
     dataEmissao: string = "";
+    fornecedorId: number = 0;
+    razaoSocialFornecedor: string = "";
 }

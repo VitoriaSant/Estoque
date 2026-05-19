@@ -22,4 +22,6 @@ export type TPontoDeCompra = {
     VLRUNITARIOLIQUIDO_PDCITEMDET: number;
     QTDEREQUISICAO_ITEMREQ: number;
     DATA_REQEST: string;
+    FORNECEDOR_PDC: number;
+    RAZAOSOCIAL_PESSOA: string;
 };

@@ -43,15 +43,23 @@ export default class PontoDeCompraController {
             }
 
             for (const filtro of classeFiltro.filtros) {
-                if (filtro.campo == "empresaItem") {
+                if (filtro.campo == "fornecedorId") {
                     result = result.filter((item: any) => {
                         const valor = filtro.operador == "CONTEM" 
-                            ? item.EMPRESA_ITEM_SALDO?.toString().includes(filtro.valor)
-                            : item.EMPRESA_ITEM_SALDO == filtro.valor;
+                            ? item.FORNECEDOR_PDC?.toString().includes(filtro.valor)
+                            : item.FORNECEDOR_PDC == filtro.valor;
                         return valor;
                     });
                 }
 
+                if (filtro.campo == "razaoSocialFornecedor") {
+                    result = result.filter((item: any) => { 
+                        const valor = filtro.operador == "CONTEM"
+                            ? item.RAZAOSOCIAL_PESSOA?.toString().includes(filtro.valor)
+                            : item.RAZAOSOCIAL_PESSOA == filtro.valor;
+                        return valor;
+                    });
+                }   
 
                 if(filtro.campo == "itemId") {
                     result = result.filter((item: any) => {
