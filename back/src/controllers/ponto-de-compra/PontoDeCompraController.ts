@@ -27,6 +27,21 @@ export default class PontoDeCompraController {
                 req.body,
             ) as CClasseFiltro<CPontoDeCompraModel>;
 
+            const dataInicio = classeFiltro.dataInicio;
+            const dataFim = classeFiltro.dataFim;
+
+            if(dataInicio && dataFim) {
+                dataInicio.setHours(0, 0, 0, 0);
+                dataFim.setHours(23, 59, 59, 999);
+
+                result = result.filter((item: any) => {
+                    const dataPrevisaoEmissao = new Date(item.DTEMISSAO_PDC);
+                    if (!dataPrevisaoEmissao) return false;
+                    const valor = dataPrevisaoEmissao >= dataInicio && dataPrevisaoEmissao <= dataFim;
+                    return valor;
+                });
+            }
+
             for (const filtro of classeFiltro.filtros) {
                 if (filtro.campo == "empresaItem") {
                     result = result.filter((item: any) => {
@@ -36,6 +51,7 @@ export default class PontoDeCompraController {
                         return valor;
                     });
                 }
+
 
                 if(filtro.campo == "itemId") {
                     result = result.filter((item: any) => {
@@ -308,7 +324,7 @@ export default class PontoDeCompraController {
                     },
                     //dados: result,
                     pontoDeCompra: listaPontoDeCompra,
-                    consumoUltimos12Meses: ultimos12MesesArray,
+                   //consumoUltimos12Meses: ultimos12MesesArray,
                 };
 
                 res.json(response);
