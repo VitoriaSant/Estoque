@@ -1,26 +1,25 @@
-<template> 
-        <v-card-text>
-            <div class="bg-accent" style="padding: 10px; border-radius: 8px;">
-                <h4>Esse painel apresenta graficos de exemplos que podem ser utilizados!</h4>
-            </div>
-        </v-card-text>
+<template>
+  <v-card-text>
+    <div class="bg-accent" style="padding: 10px; border-radius: 8px">
+      <h4>Esse painel apresenta graficos de exemplos que podem ser utilizados!</h4>
+    </div>
+  </v-card-text>
 </template>
 
-<script setup lang="ts">
-</script>
+<script setup lang="ts"></script>
 
 <style scoped>
 .v-card-text {
-    padding: 20px;
+  padding: 20px;
 }
 h4 {
-    margin-top: 10px;
+  margin-top: 10px;
 }
 p {
-    margin-top: 10px;
+  margin-top: 10px;
 }
 
-.v-card{
+.v-card {
   border-radius: 24px !important;
   overflow: hidden;
 }

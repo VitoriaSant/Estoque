@@ -1,9 +1,9 @@
-type TOperadorFiltro = "IGUAL" | "DIFERENTE" | "MAIOR" | "MENOR" | "CONTEM";
+type TOperadorFiltro = 'IGUAL' | 'DIFERENTE' | 'MAIOR' | 'MENOR' | 'CONTEM';
 
-class CFiltro<Classe> { 
-  campo: keyof Classe = "" as any;
-  operador: TOperadorFiltro = "IGUAL";
-  valor: any = "";
+class CFiltro<Classe> {
+  campo: keyof Classe = '' as any;
+  operador: TOperadorFiltro = 'IGUAL';
+  valor: any = '';
 }
 
 export default class CClasseFiltro<Classe> {

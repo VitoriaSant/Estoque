@@ -2,38 +2,38 @@
 
 /* Altura padrão para linhas de componentes */
 .linha-componente {
-    min-height: 350px !important;
-    display: flex !important;
-    align-items: stretch !important;
+  min-height: 350px !important;
+  display: flex !important;
+  align-items: stretch !important;
 }
 
 /* Altura para gráficos */
 .grafico-padrao {
-    height: 350px !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
+  height: 350px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
 }
 
 /* Altura para componentes de pizza */
 .pizza-container {
-    height: 350px !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
+  height: 350px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
 }
 
 /* Garantir que todos os cards dentro de rows tenham mesma altura */
 .v-row .v-col {
-    display: flex !important;
+  display: flex !important;
 }
 
 .v-row .v-col .v-card {
-    flex: 1 !important;
-    display: flex !important;
-    flex-direction: column !important;
+  flex: 1 !important;
+  display: flex !important;
+  flex-direction: column !important;
 }
 
 .v-row .v-col .v-card .v-card-text {
-    flex: 1 !important;
+  flex: 1 !important;
 }

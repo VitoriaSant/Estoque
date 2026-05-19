@@ -1,5 +1,5 @@
 <template>
-    <Error />
+  <Error />
 </template>
 
 <script setup>

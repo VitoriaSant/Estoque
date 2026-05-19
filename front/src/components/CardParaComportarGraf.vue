@@ -1,26 +1,15 @@
 <template>
-  <v-card 
-    style="height: 400px"
-    width="100%"
-    variant="elevated"
-    class="mx-auto"
-  >
+  <v-card style="height: 400px" width="100%" variant="elevated" class="mx-auto">
     <v-card-item>
       <div class="d-flex align-center">
         <!-- Usamos as variáveis tipadas diretamente -->
         <v-icon :icon="icone" class="me-2"></v-icon>
         <v-card-title>{{ titulo }}</v-card-title>
-        
+
         <v-spacer></v-spacer>
 
         <!-- Botão de expandir -->
-        <v-btn 
-          variant="tonal" 
-          color="primary" 
-          icon="mdi-fullscreen" 
-          density="comfortable"
-          @click="expandir = true"
-        >
+        <v-btn variant="tonal" color="primary" icon="mdi-fullscreen" density="comfortable" @click="expandir = true">
         </v-btn>
       </div>
     </v-card-item>
@@ -39,7 +28,7 @@
         <v-btn icon="mdi-fullscreen-exit" @click="expandir = false"></v-btn>
       </v-toolbar>
 
-      <v-card-text class="fullscreen-content" >
+      <v-card-text class="fullscreen-content">
         <slot name="grafico" :expandido="expandir"></slot>
       </v-card-text>
     </v-card>
@@ -47,8 +36,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useInformativosStore } from '@/stores/InformativosStore'
+import { ref } from 'vue';
+import { useInformativosStore } from '@/stores/InformativosStore';
 
 interface Props {
   titulo?: string;
@@ -57,17 +46,16 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), {
   titulo: 'Gráfico',
-  icone: 'mdi-chart-bar'
-})
+  icone: 'mdi-chart-bar',
+});
 
 const expandir = ref(false);
 
 const infoStore = useInformativosStore();
 
 defineSlots<{
-   grafico?: (props: { expandido: boolean }) => any
-}>()
-
+  grafico?: (props: { expandido: boolean }) => any;
+}>();
 </script>
 
 <style scoped>

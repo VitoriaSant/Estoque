@@ -5,26 +5,26 @@
  */
 
 // Plugins
-import { registerPlugins } from "@/plugins";
+import { registerPlugins } from '@/plugins';
 
 // Components
-import App from "./App.vue";
+import App from './App.vue';
 
 // Composables
-import { createApp } from "vue";
+import { createApp } from 'vue';
 
 // Styles
-import "unfonts.css";
-import "@/styles/components-height.css";
+import 'unfonts.css';
+import '@/styles/components-height.css';
 
 const app = createApp(App);
 
 // Pinia
-import { createPinia } from "pinia";
+import { createPinia } from 'pinia';
 
 const pinia = createPinia();
 app.use(pinia);
 
 registerPlugins(app);
 
-app.mount("#app");
+app.mount('#app');

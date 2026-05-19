@@ -1,48 +1,44 @@
 // Composables
-import { createRouter, createWebHistory } from "vue-router";
+import { createRouter, createWebHistory } from 'vue-router';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
 
   routes: [
     {
-      path: "/login",
-      name: "Login",
-      component: () => import("@/pages/login/Login.vue"),
+      path: '/login',
+      name: 'Login',
+      component: () => import('@/pages/login/Login.vue'),
     },
     {
-      path: "/",
-      redirect: "/login",
+      path: '/',
+      redirect: '/login',
     },
 
     {
-      path: "/",
-      name: "LayoutDashboard",
-      component: () => import("@/layout/LayoutDashboard.vue"),
+      path: '/',
+      name: 'LayoutDashboard',
+      component: () => import('@/layout/LayoutDashboard.vue'),
       children: [
         {
-          path: "/pedido-compra-pendente",
-          name: "Pedido de compra pendente",
-          component: () =>
-            import("@/pages/tema-estoque/pedido-compra-pendente/PedidoCompraPendente.vue"),
+          path: '/pedido-compra-pendente',
+          name: 'Pedido de compra pendente',
+          component: () => import('@/pages/tema-estoque/pedido-compra-pendente/PedidoCompraPendente.vue'),
         },
         {
-          path: "/ponto-compra",
-          name: "Ponto de compra",
-          component: () =>
-            import("@/pages/tema-estoque/ponto-compra/PontoCompra.vue"),
+          path: '/ponto-compra',
+          name: 'Ponto de compra',
+          component: () => import('@/pages/tema-estoque/ponto-compra/PontoCompra.vue'),
         },
         {
-          path: "/exemplo-graficos",
-          name: "Exemplo de Graficos",
-          component: () =>
-            import("@/pages/tema-estoque/exemplo-graficos/ExemploGraficos.vue"),
+          path: '/exemplo-graficos',
+          name: 'Exemplo de Graficos',
+          component: () => import('@/pages/tema-estoque/exemplo-graficos/ExemploGraficos.vue'),
         },
         {
-          path: "/testeex/teste",
-          name: "Exemplo de Card",
-          component: () =>
-            import("@/pages/tema-estoque/testeex/teste.vue"),
+          path: '/testeex/teste',
+          name: 'Exemplo de Card',
+          component: () => import('@/pages/tema-estoque/testeex/teste.vue'),
         },
       ],
     },

@@ -1,18 +1,18 @@
 export default class CPedidoCompraPendenteModel {
- //codigo: number = 0;
+  //codigo: number = 0;
   empresaId: number = 0;
   //dataEmissao: Date | null = null;
   //dataPrevisaoEntrega: Date | null = null;
   fornecedorId: number = 0;
-  razaoSocialFornecedor: string = "";
+  razaoSocialFornecedor: string = '';
   itemId: number = 0;
-  descricaoItem: string = "";
+  descricaoItem: string = '';
   variacaoId: number = 0;
-  descricaoVariacao: string = "";
+  descricaoVariacao: string = '';
   corId: number = 0;
-  descricaoCor: string = "";
+  descricaoCor: string = '';
   acabamentoId: number = 0;
-  descricaoAcabamento: string = "";
+  descricaoAcabamento: string = '';
   //quantidadeAberta: number = 0;
   //valorUnitarioLiquido: number = 0;
 
@@ -23,15 +23,15 @@ export default class CPedidoCompraPendenteModel {
   // Mapeamento de nomes amigáveis para nomes técnicos do modelo
   static readonly mapaCampos: Record<string, keyof CPedidoCompraPendenteModel> = {
     'Código do Fornecedor': 'fornecedorId',
-    'Fornecedor': 'razaoSocialFornecedor',
+    Fornecedor: 'razaoSocialFornecedor',
     'Código do Item': 'itemId',
-    'Item': 'descricaoItem',
+    Item: 'descricaoItem',
     'Código da Cor': 'corId',
-    'Cor': 'descricaoCor',
+    Cor: 'descricaoCor',
     'Código da Variação': 'variacaoId',
-    'Variação': 'descricaoVariacao',
+    Variação: 'descricaoVariacao',
     'Código do Acabamento': 'acabamentoId',
-    'Acabamento': 'descricaoAcabamento',
+    Acabamento: 'descricaoAcabamento',
   };
 
   static getMapaCampos() {
