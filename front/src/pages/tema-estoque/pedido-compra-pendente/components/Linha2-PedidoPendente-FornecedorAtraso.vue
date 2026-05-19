@@ -8,7 +8,7 @@
             <template #grafico="{ expandido }">
                 <Pizza 
                     :options="['Pedidos em Atraso', 'Pedidos no Prazo']"
-                    :dados="[dados?.resumo?.qntPedidoEmAtraso || 0, dados?.resumo?.pedidoEmDia || 0]"
+                    :dados="[props.dados?.resumo?.qntPedidoEmAtraso || 0, props.dados?.resumo?.pedidoEmDia || 0]"
                     :expandido="expandido"
                 />
             </template>
@@ -24,7 +24,7 @@
                     :th="['Codigo', 'Fornecedor', 'Qtd. Pedidos', 'Valor Total']" 
                     :campos="['fornecedorId', 'fornecedorNome', 'quantidadePedidosFornecedor', 'valorTotalFornecedor']"
                     :campoKey="'fornecedorId'"
-                    :dados="dados?.pedidosPorFornecedor || []"
+                    :dados="props.dados?.pedidosPorFornecedor || []"
                     :height="'350px'"
                     :expandido="expandido"
                 />
@@ -35,27 +35,8 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, watch } from 'vue';
-import { useLayoutDashboardStore } from "@/stores/LayoutDashboardStore";
-
-const layoutStore = useLayoutDashboardStore();
-const dados = ref<any>(null);
-
-const carregarDados = async () => {
-    try {
-        const resultado = await layoutStore.filtrarComprasPendentes();
-        dados.value = resultado;
-    } catch (error) {
-        console.error("Erro ao carregar dados:", error);
-    }
-};
-
-watch(() => layoutStore.classeFiltro, () => {
-    carregarDados();
-}, { deep: true });
-
-onMounted(() => {
-    carregarDados();
-});
+const props = defineProps<{
+    dados: any;
+}>();
 
 </script>

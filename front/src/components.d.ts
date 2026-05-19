@@ -20,6 +20,8 @@ declare module 'vue' {
     CardParaComportarGraf: typeof import('./components/CardParaComportarGraf.vue')['default']
     ColunaLinhaArea: typeof import('./components/ColunaLinhaArea.vue')['default']
     Donuts: typeof import('./components/Donuts.vue')['default']
+    Erro: typeof import('./components/erro.vue')['default']
+    Error: typeof import('./components/Error.vue')['default']
     Filtro: typeof import('./components/Filtro.vue')['default']
     HelloWorld: typeof import('./components/HelloWorld.vue')['default']
     Informativo: typeof import('./components/Informativo.vue')['default']

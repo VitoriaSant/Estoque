@@ -16,4 +16,9 @@
 <script setup lang="ts">
 import BarrasVertical from '@/components/BarrasVertical.vue';
 
+
+const props = defineProps<{
+    dados: any;
+}>();
+
 </script>

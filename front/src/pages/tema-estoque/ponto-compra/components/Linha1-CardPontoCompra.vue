@@ -5,7 +5,8 @@
         title="Estoque em valor"
         subtitle="Valor total do estoque"
         icon="mdi-text-box-edit"
-        :valor=dados?.resumo?.valorTotalEmEstoque
+        :valor=props.dados?.resumo?.valorTotalEmEstoque
+        :loading="!props.dados"
         />
     </v-col>
     <v-col cols="12" md="4" class="pa-1">
@@ -13,8 +14,9 @@
         title="Pedido pendente em valor"
         subtitle="Valor total dos pedidos pendentes"
         icon="mdi-text-box-edit"
-        :valor=dados?.resumo?.valorTotalDePedidosPendentes
+        :valor=props.dados?.resumo?.valorTotalDePedidosPendentes
         cor="error"
+        :loading="!props.dados"
         />
     </v-col>
     <v-col cols="12" md="4" class="pa-1">
@@ -22,36 +24,19 @@
         title="Saldo em futuros"
         subtitle="Soma do estoque e saldo em futuros"
         icon="mdi-text-box-edit"
-        :valor=dados?.resumo?.valorTotal
+        :valor=props.dados?.resumo?.valorTotal
+        :loading="!props.dados"
         />
     </v-col>
 </v-row>
 </template>
 
 <script setup lang="ts">
-import { useLayoutDashboardStore } from '@/stores/LayoutDashboardStore';
-import { ref, onMounted, watch } from 'vue';
 
-const layoutStore = useLayoutDashboardStore();
-const dados = ref<any>(null);
+const props = defineProps<{
+    dados: any;
+}>();
 
-const carregarDados = async () => {
-    try {
-        const resultado = await layoutStore.filtrarPontoDeCompra();
-        dados.value = resultado;
-        console.log("Dados recebidos nos cards:", resultado);
-    } catch (error) {
-        console.error("Erro ao carregar dados:", error);
-    }
-};
-
-watch(() => layoutStore.classeFiltro, () => {
-    carregarDados();
-}, { deep: true });
-
-onMounted(() => {
-    carregarDados();
-});
 </script>
 
 <style scoped>

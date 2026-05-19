@@ -5,7 +5,8 @@
         title="Pedidos Pendentes"
         subtitle="Total de pedidos pendentes"
         icon="mdi-text-box-edit"
-        :valor=dados?.resumo?.totalDePedidos
+        :valor="props.dados?.resumo?.totalDePedidos"
+        :loading="!props.dados"
     />
     </v-col>
     <v-col cols="12" md="6" lg="3" class="pa-1">
@@ -13,7 +14,8 @@
         title="Valor Pendente"
         subtitle="Total de valores pendentes"
         icon="mdi-currency-usd"
-        :valor=dados?.resumo?.somaTotal
+        :valor="props.dados?.resumo?.somaTotal"
+        :loading="!props.dados"
     />
     </v-col>
     <v-col cols="12" md="6" lg="3" class="pa-1">
@@ -21,8 +23,9 @@
         title="Pedidos em Atraso"
         subtitle="Total de pedidos pendentes em atraso"
         icon="mdi-clock-alert"
-        :valor=dados?.resumo?.qntPedidoEmAtraso
+        :valor="props.dados?.resumo?.qntPedidoEmAtraso"
         cor="error"
+        :loading="!props.dados"
     />
     </v-col>
     <v-col cols="12" md="6" lg="3" class="pa-1">
@@ -30,35 +33,18 @@
         title="Valor Pendente em Atraso"
         subtitle="Total de valores pendentes em atraso"
         icon="mdi-currency-usd"
-        :valor=dados?.resumo?.somaPedidoEmAtraso
+        :valor="props.dados?.resumo?.somaPedidoEmAtraso"
         cor="error"
+        :loading="!props.dados"
     />
     </v-col>
 </v-row>
 </template> 
 
 <script setup lang="ts">
-import { onMounted, ref, watch } from 'vue';
-import { useLayoutDashboardStore } from "@/stores/LayoutDashboardStore";
 
-const layoutStore = useLayoutDashboardStore();
-const dados = ref<any>(null);
-
-const carregarDados = async () => {
-    try {
-        const resultado = await layoutStore.filtrarComprasPendentes();
-        dados.value = resultado;
-    } catch (error) {
-        console.error("Erro ao carregar dados:", error);
-    }
-};
-
-watch(() => layoutStore.classeFiltro, () => {
-    carregarDados();
-}, { deep: true });
-
-onMounted(() => {
-    carregarDados();
-});
+const props = defineProps<{
+    dados: any;
+}>();
 
 </script>

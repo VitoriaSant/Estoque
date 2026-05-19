@@ -16,7 +16,7 @@
                         ]"
                         :campos="['IdItem', 'descricaoItem', 'quantidadeItens', 'valorUnitarioItem', 'valorTotalItem']"
                         :campoKey="'IdItem'"
-                        :dados="dados?.itensPendentes || []"
+                        :dados="props.dados?.itensPendentes || []"
                         :height="'350px'"
                         :corDeAlerta="'corDeAlerta'"
                         :expandido="expandido"
@@ -35,7 +35,7 @@
                         :th="['Codigo', 'Prev. Entrega', 'Valor']" 
                         :campos="['pedidoId', 'previsaoEntregaPedido', 'valorTotalPedido']"
                         :campoKey="'pedidoId'"
-                        :dados="dados?.pedidosPendentes || []" 
+                        :dados="props.dados?.pedidosPendentes || []" 
                         :height="'350px'"
                         :expandido="expandido"
                     />
@@ -46,27 +46,9 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, watch } from 'vue';
-import { useLayoutDashboardStore } from "@/stores/LayoutDashboardStore";
 
-const layoutStore = useLayoutDashboardStore();
-const dados = ref<any>(null);
-
-const carregarDados = async () => {
-    try {
-        const resultado = await layoutStore.filtrarComprasPendentes();
-        dados.value = resultado;
-    } catch (error) {
-        console.error("Erro ao carregar dados:", error);
-    }
-};
-
-watch(() => layoutStore.classeFiltro, () => {
-    carregarDados();
-}, { deep: true });
-
-onMounted(() => {
-    carregarDados();
-});
+const props = defineProps<{
+    dados: any;
+}>();
 
 </script>

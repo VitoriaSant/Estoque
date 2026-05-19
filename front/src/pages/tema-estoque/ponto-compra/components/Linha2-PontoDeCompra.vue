@@ -10,7 +10,7 @@
                         :th="['Cod. Item', 'Descrição', 'Saldo Disponível', 'Saldo Mínimo', 'Saldo Máximo', 'Pedido de Compra Pendente', 'Prazo de Entrega', 'Consumo Diário', 'Dias de Duração']" 
                         :campos="['itemId', 'descricaoItem', 'saldoDisponivel', 'saldoMinimo', 'saldoMaximo', 'pedidoCompraPendente', 'prazoEntrega', 'consumoDiario', 'diasDeDuracao']"
                         :campoKey="'itemId'"
-                        :dados="dados?.pontoDeCompra" 
+                        :dados="props.dados?.pontoDeCompra" 
                         :height="'700px'"
                         :itensPorPagina="20"
                         :corDeAlerta="'corDeAlerta'"
@@ -23,29 +23,9 @@
 </template>
 
 <script setup lang="ts">
-import { useLayoutDashboardStore } from '@/stores/LayoutDashboardStore';
-import { ref, onMounted, watch } from 'vue';
-
-const layoutStore = useLayoutDashboardStore();
-const dados = ref<any>(null);
-
-const carregarDados = async () => {
-    try {
-        const resultado = await layoutStore.filtrarPontoDeCompra();
-        dados.value = resultado;
-        console.log("Dados recebidos nos cards:", resultado);
-    } catch (error) {
-        console.error("Erro ao carregar dados:", error);
-    }
-};
-
-watch(() => layoutStore.classeFiltro, () => {
-    carregarDados();
-}, { deep: true });
-
-onMounted(() => {
-    carregarDados();
-});
+const props = defineProps<{
+    dados: any;
+}>();
 </script>
 
 <style scoped>
