@@ -26,7 +26,7 @@
   </v-row>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import Donuts from '@/components/Donuts.vue';
 import AreaPolar from '@/components/AreaPolar.vue';
 import BarrasVerticalEmpilhada from '@/components/BarrasVerticalEmpilhada.vue';

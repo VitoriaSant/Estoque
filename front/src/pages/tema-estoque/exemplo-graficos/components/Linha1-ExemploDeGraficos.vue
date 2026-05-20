@@ -26,7 +26,7 @@
   </v-row>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import BarrasHorizontal from '@/components/BarrasHorizontal.vue';
 import BarrasVertical from '@/components/BarrasVertical.vue';
 import Linhas from '@/components/Linhas.vue';

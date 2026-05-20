@@ -33,24 +33,35 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, computed } from 'vue';
 import { useFormatarValorStore } from '@/stores/FormatarValorStore';
 
 const formatarValorStore = useFormatarValorStore();
 
-const props = defineProps({
-  th: Array,
-  dados: Array,
-  campos: Array,
-  campoKey: String,
-  height: String,
-  itensPorPagina: Number,
-  corDeAlerta: String,
-  expandido: Boolean,
+interface Props {
+  th: string[];
+  dados: any[];
+  campos: string[];
+  campoKey: string;
+  height?: string;
+  itensPorPagina?: number;
+  corDeAlerta?: string;
+  expandido?: boolean;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  th: () => [],
+  dados: () => [],
+  campos: () => [],
+  campoKey: '',
+  height: '',
+  itensPorPagina: 20,
+  corDeAlerta: '',
+  expandido: false,
 });
 
-const itensPorPagina = props.itensPorPagina || 20;
+const itensPorPagina = props.itensPorPagina;
 const paginaAtual = ref(1);
 
 // Computados para paginação
@@ -66,7 +77,7 @@ const itensPaginados = computed(() => {
   return props.dados.slice(inicio, fim);
 });
 
-const alerta = (item) => {
+const alerta = (item: any) => {
   const corDeAlerta = item.corDeAlerta;
   if (corDeAlerta == 'Vermelho') {
     return 'linha-vermelha';

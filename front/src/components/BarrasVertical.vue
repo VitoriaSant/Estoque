@@ -4,18 +4,23 @@
   </div>
 </template>
 
-<script lang="ts" setup>
+<script setup lang="ts">
 import { computed } from 'vue';
 import VueApexCharts from 'vue3-apexcharts';
 
-const props = defineProps<{
+interface Props {
   expandido?: boolean;
   dados?: Array<{
     mes: string;
     ano: number;
     total: number;
   }>;
-}>();
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  expandido: false,
+  dados: () => [],
+});
 
 const apexchart = VueApexCharts;
 

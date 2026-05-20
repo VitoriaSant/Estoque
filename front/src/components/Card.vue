@@ -15,17 +15,25 @@
     </template>
   </v-card>
 </template>
-<script setup>
+<script setup lang="ts">
 import { useFormatarValorStore } from '@/stores/FormatarValorStore';
 
 const formatarValorStore = useFormatarValorStore();
 
-defineProps({
-  title: String,
-  subtitle: String,
-  icon: String,
-  valor: Number,
-  cor: String,
+interface Props {
+  title?: string;
+  subtitle?: string;
+  icon?: string;
+  valor: number;
+  cor?: string;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  title: '',
+  subtitle: '',
+  icon: '',
+  valor: 0,
+  cor: '',
 });
 </script>
 

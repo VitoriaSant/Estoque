@@ -26,7 +26,7 @@
   </v-row>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import MapaDeArea from '@/components/MapaDeArea.vue';
 import Bolhas from '@/components/Bolhas.vue';
 import ColunaLinhaArea from '@/components/ColunaLinhaArea.vue';
