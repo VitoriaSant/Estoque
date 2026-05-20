@@ -1,10 +1,10 @@
-type TOperadorFiltro = "IGUAL" | "DIFERENTE" | "MAIOR" | "MENOR" | "CONTEM";
-type TOperadorSQL = "=" | "<>" | ">" | "LIKE";
+type TOperadorFiltro = 'IGUAL' | 'DIFERENTE' | 'MAIOR' | 'MENOR' | 'CONTEM';
+type TOperadorSQL = '=' | '<>' | '>' | 'LIKE';
 
 export class CFiltro<Classe> {
-  campo: keyof Classe = "" as any;
-  operador: TOperadorFiltro = "IGUAL";
-  valor: any = "";
+  campo: keyof Classe = '' as any;
+  operador: TOperadorFiltro = 'IGUAL';
+  valor: any = '';
 
   constructor(pObj?: Partial<CFiltro<Classe>>) {
     this.campo = pObj?.campo ?? this.campo;
@@ -14,14 +14,14 @@ export class CFiltro<Classe> {
 
   static toOperadorSQL(pOperador: TOperadorFiltro): TOperadorSQL {
     switch (pOperador) {
-      case "IGUAL":
-        return "=";
+      case 'IGUAL':
+        return '=';
 
-      case "DIFERENTE":
-        return "<>";
+      case 'DIFERENTE':
+        return '<>';
 
-      case "CONTEM":
-        return "LIKE";
+      case 'CONTEM':
+        return 'LIKE';
 
       default:
         throw `O operador: "${pOperador}" não foi mapeado na função.`;
@@ -34,20 +34,16 @@ export default class CClasseFiltro<Classe> {
   dataFim?: Date;
   filtros: CFiltro<Classe>[] = [];
 
-  constructor(
-    pObj?: Partial<
-      CClasseFiltro<Classe> & { dataInicio?: string | Date; dataFim?: string | Date }
-    >,
-  ) {
+  constructor(pObj?: Partial<CClasseFiltro<Classe> & { dataInicio?: string | Date; dataFim?: string | Date }>) {
     if (pObj?.filtros && Array.isArray(pObj.filtros)) {
       this.filtros = pObj.filtros
-        .filter((item) => item?.campo && item?.valor !== undefined && item?.valor !== null && item?.valor !== "")
+        .filter((item) => item?.campo && item?.valor !== undefined && item?.valor !== null && item?.valor !== '')
         .map((item) => new CFiltro(item));
     }
-    
+
     this.dataInicio = pObj?.dataInicio ? new Date(pObj.dataInicio) : undefined;
     this.dataFim = pObj?.dataFim ? new Date(pObj.dataFim) : undefined;
-    
-    console.log("Constructor CClasseFiltro:", this.filtros);
+
+    console.log('Constructor CClasseFiltro:', this.filtros);
   }
 }

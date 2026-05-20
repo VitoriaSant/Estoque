@@ -1,17 +1,17 @@
-import Firebird, { Database } from "node-firebird";
-import options from "../../database/conection";
-import { Request, Response } from "express";
-import CClasseFiltro, { CFiltro } from "../base/CClasseFiltro";
-import CPedidoCompraPendenteModel from "./CPedidoCompraPendenteModel";
+import Firebird, { Database } from 'node-firebird';
+import options from '../../database/conection';
+import { Request, Response } from 'express';
+import CClasseFiltro, { CFiltro } from '../base/CClasseFiltro';
+import CPedidoCompraPendenteModel from './CPedidoCompraPendenteModel';
 
 export default class PedidosCompraPendentesControlles {
   public pedidoCompraPendente(req: Request, res: Response): void {
-        Firebird.attach(options, (err: any, db: Database) => {
-        if (err) {
-          console.error(err);
-          return res.status(500).json({ error: "Erro ao conectar" });
-        }
-        let query = `
+    Firebird.attach(options, (err: any, db: Database) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).json({ error: 'Erro ao conectar' });
+      }
+      let query = `
                 SELECT
                     pedido_compra.codigo_pdc,
                     pedido_compra.empresa_pdc,
@@ -47,310 +47,292 @@ export default class PedidosCompraPendentesControlles {
                 WHERE pedido_compra_item_detalhe.qtdeaberta_pdcitemdet > 0
             `;
 
-        const params: any[] = [];
+      const params: any[] = [];
 
-        const classeFiltro = new CClasseFiltro<CPedidoCompraPendenteModel>(
-          req.body,
-        ) as CClasseFiltro<CPedidoCompraPendenteModel>;
+      const classeFiltro = new CClasseFiltro<CPedidoCompraPendenteModel>(
+        req.body,
+      ) as CClasseFiltro<CPedidoCompraPendenteModel>;
 
-        console.log("ClasseFiltro:", classeFiltro);
+      console.log('ClasseFiltro:', classeFiltro);
 
-        if (classeFiltro.dataInicio && classeFiltro.dataFim) {
-          query += ` AND dtemissao_pdc >= ? AND dtpreventrega_pdc <= ?`; 
-          params.push(classeFiltro.dataInicio);
-          params.push(new Date(classeFiltro.dataFim));
+      if (classeFiltro.dataInicio && classeFiltro.dataFim) {
+        query += ` AND dtemissao_pdc >= ? AND dtpreventrega_pdc <= ?`;
+        params.push(classeFiltro.dataInicio);
+        params.push(new Date(classeFiltro.dataFim));
+      }
+
+      for (const filtro of classeFiltro.filtros) {
+        if (filtro.campo == 'empresaId') {
+          query += ` AND pedido_compra.empresa_pdc ${CFiltro.toOperadorSQL(filtro.operador)} ?`;
+          if (filtro.operador != 'CONTEM') {
+            params.push(filtro.valor);
+          } else {
+            params.push(`%${filtro.valor}%`);
+          }
         }
 
-        for (const filtro of classeFiltro.filtros) {
-            if (filtro.campo == "empresaId") {
-              query += ` AND pedido_compra.empresa_pdc ${CFiltro.toOperadorSQL(filtro.operador)} ?`;
-              if (filtro.operador != "CONTEM") {
-                params.push(filtro.valor);
-              } else {
-                params.push(`%${filtro.valor}%`);
-              }
-            }
-
-            if (filtro.campo == "fornecedorId") {
-              query += ` AND pedido_compra.fornecedor_pdc ${CFiltro.toOperadorSQL(filtro.operador)} ?`;
-              if (filtro.operador != "CONTEM") {
-                params.push(filtro.valor);
-              } else {
-                params.push(`%${filtro.valor}%`);
-              }
-            }
-
-            if (filtro.campo == "razaoSocialFornecedor") {
-              query += ` AND pessoa.razaosocial_pessoa ${CFiltro.toOperadorSQL(filtro.operador)} ?`;
-              if (filtro.operador != "CONTEM") {
-                params.push(filtro.valor);
-              } else {
-                params.push(`%${filtro.valor}%`);
-              }
-            }
-
-            if (filtro.campo == "itemId") {
-              query += ` AND item.codigo_item ${CFiltro.toOperadorSQL(filtro.operador)} ?`;
-              if (filtro.operador != "CONTEM") {
-                params.push(filtro.valor);
-              } else {
-                params.push(`%${filtro.valor}%`);
-              }
+        if (filtro.campo == 'fornecedorId') {
+          query += ` AND pedido_compra.fornecedor_pdc ${CFiltro.toOperadorSQL(filtro.operador)} ?`;
+          if (filtro.operador != 'CONTEM') {
+            params.push(filtro.valor);
+          } else {
+            params.push(`%${filtro.valor}%`);
           }
+        }
 
-            if (filtro.campo == "descricaoItem") {
-              query += ` AND item.descricao_item ${CFiltro.toOperadorSQL(filtro.operador)} ?`;
-              if (filtro.operador != "CONTEM") {
-                params.push(filtro.valor);
-              } else {
-                params.push(`%${filtro.valor}%`);
-              }
-            }
-
-            if (filtro.campo == "variacaoId") {
-              query += ` AND pedido_compra_item.variacao_pdcitem ${CFiltro.toOperadorSQL(filtro.operador)} ?`;
-              if (filtro.operador != "CONTEM") {
-                params.push(filtro.valor);
-              } else {
-                params.push(`%${filtro.valor}%`);
-              }
-            }
-            if (filtro.campo == "descricaoVariacao") {
-              query += ` AND variacao.descricao_variacao ${CFiltro.toOperadorSQL(filtro.operador)} ?`;
-              if (filtro.operador != "CONTEM") {
-                params.push(filtro.valor);
-              } else {
-                params.push(`%${filtro.valor}%`);
-              }
-            }
-
-            if (filtro.campo == "corId") {
-              query += ` AND pedido_compra_item.cor_pdcitem ${CFiltro.toOperadorSQL(filtro.operador)} ?`;
-              if (filtro.operador != "CONTEM") {
-                params.push(filtro.valor);
-              } else {
-                params.push(`%${filtro.valor}%`);
-              }
-            }
-
-            if (filtro.campo == "descricaoCor") {
-              query += ` AND cor.descricao_cor ${CFiltro.toOperadorSQL(filtro.operador)} ?`;
-              if (filtro.operador != "CONTEM") {
-                params.push(filtro.valor);
-              } else {
-                params.push(`%${filtro.valor}%`);
-              }
-            }
-
-            if (filtro.campo == "acabamentoId") {
-              query += ` AND pedido_compra_item.acabamento_pdcitem ${CFiltro.toOperadorSQL(filtro.operador)} ?`;
-              if (filtro.operador != "CONTEM") {
-                params.push(filtro.valor);
-              } else {
-                params.push(`%${filtro.valor}%`);
-              }
-            }
-            if (filtro.campo == "descricaoAcabamento") {
-              query += ` AND acabamento.descricao_acabamento ${CFiltro.toOperadorSQL(filtro.operador)} ?`;
-              if (filtro.operador != "CONTEM") {
-                params.push(filtro.valor);
-              } else {
-                params.push(`%${filtro.valor}%`);
-              }
-            }
-          } 
-        
-
-        db.query(query, params, (err: any, result: any) => {
-          if (err) {
-            console.error(err);
-            db.detach();
-            return res.status(500).json({ error: "Erro na query" });
+        if (filtro.campo == 'razaoSocialFornecedor') {
+          query += ` AND pessoa.razaosocial_pessoa ${CFiltro.toOperadorSQL(filtro.operador)} ?`;
+          if (filtro.operador != 'CONTEM') {
+            params.push(filtro.valor);
+          } else {
+            params.push(`%${filtro.valor}%`);
           }
+        }
 
-//----------------------------------------------------------------------------------------------------
-//Contagem de valores: Pedidos e Valores pendetes e Pedidos e valores pendentes em atrado
-//----------------------------------------------------------------------------------------------------
+        if (filtro.campo == 'itemId') {
+          query += ` AND item.codigo_item ${CFiltro.toOperadorSQL(filtro.operador)} ?`;
+          if (filtro.operador != 'CONTEM') {
+            params.push(filtro.valor);
+          } else {
+            params.push(`%${filtro.valor}%`);
+          }
+        }
 
-          const somaTotal = result.reduce((acc: number, item: any) => {
+        if (filtro.campo == 'descricaoItem') {
+          query += ` AND item.descricao_item ${CFiltro.toOperadorSQL(filtro.operador)} ?`;
+          if (filtro.operador != 'CONTEM') {
+            params.push(filtro.valor);
+          } else {
+            params.push(`%${filtro.valor}%`);
+          }
+        }
+
+        if (filtro.campo == 'variacaoId') {
+          query += ` AND pedido_compra_item.variacao_pdcitem ${CFiltro.toOperadorSQL(filtro.operador)} ?`;
+          if (filtro.operador != 'CONTEM') {
+            params.push(filtro.valor);
+          } else {
+            params.push(`%${filtro.valor}%`);
+          }
+        }
+        if (filtro.campo == 'descricaoVariacao') {
+          query += ` AND variacao.descricao_variacao ${CFiltro.toOperadorSQL(filtro.operador)} ?`;
+          if (filtro.operador != 'CONTEM') {
+            params.push(filtro.valor);
+          } else {
+            params.push(`%${filtro.valor}%`);
+          }
+        }
+
+        if (filtro.campo == 'corId') {
+          query += ` AND pedido_compra_item.cor_pdcitem ${CFiltro.toOperadorSQL(filtro.operador)} ?`;
+          if (filtro.operador != 'CONTEM') {
+            params.push(filtro.valor);
+          } else {
+            params.push(`%${filtro.valor}%`);
+          }
+        }
+
+        if (filtro.campo == 'descricaoCor') {
+          query += ` AND cor.descricao_cor ${CFiltro.toOperadorSQL(filtro.operador)} ?`;
+          if (filtro.operador != 'CONTEM') {
+            params.push(filtro.valor);
+          } else {
+            params.push(`%${filtro.valor}%`);
+          }
+        }
+
+        if (filtro.campo == 'acabamentoId') {
+          query += ` AND pedido_compra_item.acabamento_pdcitem ${CFiltro.toOperadorSQL(filtro.operador)} ?`;
+          if (filtro.operador != 'CONTEM') {
+            params.push(filtro.valor);
+          } else {
+            params.push(`%${filtro.valor}%`);
+          }
+        }
+        if (filtro.campo == 'descricaoAcabamento') {
+          query += ` AND acabamento.descricao_acabamento ${CFiltro.toOperadorSQL(filtro.operador)} ?`;
+          if (filtro.operador != 'CONTEM') {
+            params.push(filtro.valor);
+          } else {
+            params.push(`%${filtro.valor}%`);
+          }
+        }
+      }
+
+      db.query(query, params, (err: any, result: any) => {
+        if (err) {
+          console.error(err);
+          db.detach();
+          return res.status(500).json({ error: 'Erro na query' });
+        }
+
+        //----------------------------------------------------------------------------------------------------
+        //Contagem de valores: Pedidos e Valores pendetes e Pedidos e valores pendentes em atrado
+        //----------------------------------------------------------------------------------------------------
+
+        const somaTotal = result.reduce((acc: number, item: any) => {
+          return acc + (item.VLRUNITARIOLIQUIDO_PDCITEMDET || 0);
+        }, 0);
+
+        const totalDePedidos = result.length;
+
+        const qntPedidoEmAtraso = result.reduce((acc: number, item: any) => {
+          if (item.DTPREVENTREGA_PDC && new Date(item.DTPREVENTREGA_PDC) < new Date()) {
+            return acc + 1;
+          }
+          return acc;
+        }, 0);
+
+        const somaPedidoEmAtraso = result
+          .filter((item: any) => {
+            return item.DTPREVENTREGA_PDC && new Date(item.DTPREVENTREGA_PDC) < new Date();
+          })
+          .reduce((acc: number, item: any) => {
             return acc + (item.VLRUNITARIOLIQUIDO_PDCITEMDET || 0);
           }, 0);
 
-          const totalDePedidos = result.length;
+        const pedidoEmDia = totalDePedidos - qntPedidoEmAtraso;
 
-          const qntPedidoEmAtraso = result.reduce((acc: number, item: any) => {
-            if (
-              item.DTPREVENTREGA_PDC &&
-              new Date(item.DTPREVENTREGA_PDC) < new Date()
-            ) {
-              return acc + 1;
-            }
-            return acc;
-          }, 0);
+        //----------------------------------------------------------------------------------------------------
+        //Contagem de pedidos diferentes por fornecedor
+        //----------------------------------------------------------------------------------------------------
 
-          const somaPedidoEmAtraso = result
-            .filter((item: any) => {
-              return (
-                item.DTPREVENTREGA_PDC &&
-                new Date(item.DTPREVENTREGA_PDC) < new Date()
-              );
-            })
-            .reduce((acc: number, item: any) => {
-              return acc + (item.VLRUNITARIOLIQUIDO_PDCITEMDET || 0);
-            }, 0);
+        const pedidosPorFornecedor = result.reduce((acc: any, item: any) => {
+          const fornecedorId = item.FORNECEDOR_PDC;
+          const fornecedorNome = item.RAZAOSOCIAL_PESSOA;
+          const pedidoId = item.CODIGO_PDC;
+          const valorTotal = item.VLRUNITARIOLIQUIDO_PDCITEMDET || 0;
 
-            const pedidoEmDia = totalDePedidos - qntPedidoEmAtraso;
-            
-//----------------------------------------------------------------------------------------------------
-//Contagem de pedidos diferentes por fornecedor
-//----------------------------------------------------------------------------------------------------
+          if (!acc[fornecedorId]) {
+            acc[fornecedorId] = {
+              fornecedorId,
+              fornecedorNome,
+              pedidos: new Set(),
+              quantidadePedidos: 0,
+              valorTotal: 0,
+            };
+          }
 
-          const pedidosPorFornecedor = result.reduce((acc: any, item: any) => {
-            const fornecedorId = item.FORNECEDOR_PDC;
-            const fornecedorNome = item.RAZAOSOCIAL_PESSOA;
-            const pedidoId = item.CODIGO_PDC;
-            const valorTotal = item.VLRUNITARIOLIQUIDO_PDCITEMDET || 0;
+          acc[fornecedorId].pedidos.add(pedidoId);
+          acc[fornecedorId].quantidadePedidos = acc[fornecedorId].pedidos.size;
+          acc[fornecedorId].valorTotal += valorTotal;
 
-            if (!acc[fornecedorId]) {
-              acc[fornecedorId] = {
-                fornecedorId,
-                fornecedorNome,
-                pedidos: new Set(),
-                quantidadePedidos: 0,
-                valorTotal: 0,
-              };
-            }
+          return acc;
+        }, {});
 
-            acc[fornecedorId].pedidos.add(pedidoId);
-            acc[fornecedorId].quantidadePedidos = acc[fornecedorId].pedidos.size;
-            acc[fornecedorId].valorTotal += valorTotal;
+        //----------------------------------------------------------------------------------------------------
+        //Converter para array Pedido Por Fornecedor
+        //----------------------------------------------------------------------------------------------------
 
-            return acc;
-          }, {});
+        const listaPedidosPorFornecedor = Object.values(pedidosPorFornecedor).map((item: any) => ({
+          fornecedorId: item.fornecedorId,
+          fornecedorNome: item.fornecedorNome,
+          quantidadePedidosFornecedor: item.quantidadePedidos,
+          valorTotalFornecedor: Number(item.valorTotal.toFixed(2)),
+        }));
 
-//----------------------------------------------------------------------------------------------------
-//Converter para array Pedido Por Fornecedor
-//----------------------------------------------------------------------------------------------------
+        //----------------------------------------------------------------------------------------------------
+        //Contagem de Pedido Pendente
+        //----------------------------------------------------------------------------------------------------
 
-          const listaPedidosPorFornecedor = Object.values(
-            pedidosPorFornecedor,
-          ).map((item: any) => ({
-            fornecedorId: item.fornecedorId,
-            fornecedorNome: item.fornecedorNome,
-            quantidadePedidosFornecedor: item.quantidadePedidos,
-            valorTotalFornecedor: Number(item.valorTotal.toFixed(2)),
-          }));
+        const pedidosPendentes = result.reduce((acc: any, item: any) => {
+          const pedidoId = item.CODIGO_PDC;
+          const valorTotalPedido = item.VLRUNITARIOLIQUIDO_PDCITEMDET || 0;
 
-//----------------------------------------------------------------------------------------------------
-//Contagem de Pedido Pendente
-//----------------------------------------------------------------------------------------------------
+          if (!acc[pedidoId]) {
+            acc[pedidoId] = {
+              pedidoId,
+              previsaoEntregaPedido: new Date(item.DTPREVENTREGA_PDC).toLocaleDateString('pt-BR'),
+              fornecedorNome: item.RAZAOSOCIAL_PESSOA,
+              valorTotalPedido: 0,
+            };
+          }
+          acc[pedidoId].valorTotalPedido += valorTotalPedido;
 
-          const pedidosPendentes = result.reduce((acc: any, item: any) => {
-            const pedidoId = item.CODIGO_PDC;
-            const valorTotalPedido = item.VLRUNITARIOLIQUIDO_PDCITEMDET || 0;
+          //Valida cor de alerta
+          const [dia, mes, ano] = acc[pedidoId].previsaoEntregaPedido.split('/');
+          const dataPrevisao = new Date(ano, mes - 1, dia);
 
-            if (!acc[pedidoId]) {
-              acc[pedidoId] = {
-                pedidoId,
-                previsaoEntregaPedido: new Date(
-                  item.DTPREVENTREGA_PDC,
-                ).toLocaleDateString("pt-BR"),
-                fornecedorNome: item.RAZAOSOCIAL_PESSOA,
-                valorTotalPedido: 0,
-              };
-            }
-            acc[pedidoId].valorTotalPedido += valorTotalPedido;
+          const hoje = new Date();
+          hoje.setHours(0, 0, 0, 0);
 
-            //Valida cor de alerta
-            const [dia, mes, ano] = acc[pedidoId].previsaoEntregaPedido.split('/');
-            const dataPrevisao = new Date(ano, mes - 1, dia);
+          if (dataPrevisao < hoje) {
+            acc[pedidoId].corDeAlerta = 'Vermelho';
+          }
+          return acc;
+        }, {});
 
-            const hoje = new Date();
-            hoje.setHours(0, 0, 0, 0);
+        //----------------------------------------------------------------------------------------------------
+        //Transforma em Array Pedido Pendente
+        //----------------------------------------------------------------------------------------------------
 
-            if (dataPrevisao < hoje) {
-                acc[pedidoId].corDeAlerta = 'Vermelho';
-            }
-            return acc;
-          }, {});
+        const listaPedidosPendentes = Object.values(pedidosPendentes).map((item: any) => ({
+          pedidoId: item.pedidoId,
+          previsaoEntregaPedido: item.previsaoEntregaPedido,
+          fornecedorNome: item.fornecedorNome,
+          valorTotalPedido: Number(item.valorTotalPedido.toFixed(2)),
+          corDeAlerta: item.corDeAlerta || '',
+        }));
 
-//----------------------------------------------------------------------------------------------------
-//Transforma em Array Pedido Pendente
-//----------------------------------------------------------------------------------------------------
+        //----------------------------------------------------------------------------------------------------
+        //Contagem de valor por item
+        //----------------------------------------------------------------------------------------------------
 
-          const listaPedidosPendentes = Object.values(pedidosPendentes).map(
-            (item: any) => ({
-              pedidoId: item.pedidoId,
-              previsaoEntregaPedido: item.previsaoEntregaPedido,
-              fornecedorNome: item.fornecedorNome,
-              valorTotalPedido: Number(item.valorTotalPedido.toFixed(2)),
-              corDeAlerta: item.corDeAlerta || '',
-            }),
-          );
+        const ItensPendetes = result.reduce((acc: any, item: any) => {
+          const IdItem = item.ITEM_PDCITEM;
+          const valorTotalItem = (item.VLRUNITARIOLIQUIDO_PDCITEMDET || 0) * (item.QTDEABERTA_PDCITEMDET || 0);
+          const quantidadeItens = item.QTDEABERTA_PDCITEMDET || 0;
 
-//----------------------------------------------------------------------------------------------------
-//Contagem de valor por item
-//----------------------------------------------------------------------------------------------------
+          if (!acc[IdItem]) {
+            acc[IdItem] = {
+              IdItem,
+              descricaoItem: item.DESCRICAO_ITEM,
+              valorUnitarioItem: 0,
+              valorTotalItem: 0,
+              quantidadeItens: 0,
+            };
+          }
+          acc[IdItem].valorTotalItem += valorTotalItem;
+          acc[IdItem].quantidadeItens += quantidadeItens;
+          acc[IdItem].valorUnitarioItem = valorTotalItem / quantidadeItens;
 
-          const ItensPendetes = result.reduce((acc: any, item: any) => {
-            const IdItem = item.ITEM_PDCITEM;
-            const valorTotalItem =
-              (item.VLRUNITARIOLIQUIDO_PDCITEMDET || 0) *
-              (item.QTDEABERTA_PDCITEMDET || 0);
-            const quantidadeItens = item.QTDEABERTA_PDCITEMDET || 0;
+          return acc;
+        }, {});
 
-            if (!acc[IdItem]) {
-              acc[IdItem] = {
-                IdItem,
-                descricaoItem: item.DESCRICAO_ITEM,
-                valorUnitarioItem: 0,
-                valorTotalItem: 0,
-                quantidadeItens: 0,
-              };
-            }
-            acc[IdItem].valorTotalItem += valorTotalItem;
-            acc[IdItem].quantidadeItens += quantidadeItens;
-            acc[IdItem].valorUnitarioItem = valorTotalItem / quantidadeItens;
+        //----------------------------------------------------------------------------------------------------
+        //Transforma em Array Item Pendente
+        //----------------------------------------------------------------------------------------------------
 
-            return acc;
-          }, {});
+        const listaItensPendentes = Object.values(ItensPendetes).map((item: any) => ({
+          IdItem: item.IdItem,
+          descricaoItem: item.descricaoItem,
+          valorTotalItem: Number(item.valorTotalItem.toFixed(2)),
+          quantidadeItens: item.quantidadeItens,
+          valorUnitarioItem: Number(item.valorUnitarioItem.toFixed(2)),
+        }));
 
-//----------------------------------------------------------------------------------------------------
-//Transforma em Array Item Pendente
-//----------------------------------------------------------------------------------------------------
+        //----------------------------------------------------------------------------------------------------
+        //Response
+        //----------------------------------------------------------------------------------------------------
 
-          const listaItensPendentes = Object.values(ItensPendetes).map(
-            (item: any) => ({
-              IdItem: item.IdItem,
-              descricaoItem: item.descricaoItem,
-              valorTotalItem: Number(item.valorTotalItem.toFixed(2)),
-              quantidadeItens: item.quantidadeItens,
-              valorUnitarioItem: Number(item.valorUnitarioItem.toFixed(2)),
-            }),
-          );
+        const response = {
+          resumo: {
+            qntPedidoEmAtraso,
+            pedidoEmDia,
+            somaPedidoEmAtraso: Number(somaPedidoEmAtraso.toFixed(2)),
+            totalDePedidos,
+            somaTotal: Number(somaTotal.toFixed(2)),
+          },
+          // dados: result,
+          pedidosPorFornecedor: listaPedidosPorFornecedor,
+          pedidosPendentes: listaPedidosPendentes,
+          itensPendentes: listaItensPendentes,
+        };
 
-//----------------------------------------------------------------------------------------------------
-//Response
-//----------------------------------------------------------------------------------------------------
-
-          const response = {
-            resumo: {
-              qntPedidoEmAtraso,
-              pedidoEmDia,
-              somaPedidoEmAtraso: Number(somaPedidoEmAtraso.toFixed(2)),
-              totalDePedidos,
-              somaTotal: Number(somaTotal.toFixed(2)),
-            },
-            // dados: result,
-            pedidosPorFornecedor: listaPedidosPorFornecedor,
-            pedidosPendentes: listaPedidosPendentes,
-            itensPendentes: listaItensPendentes,
-          };
-
-          res.json(response);
-          db.detach();
-        });
-      },
-    );
+        res.json(response);
+        db.detach();
+      });
+    });
   }
 }
