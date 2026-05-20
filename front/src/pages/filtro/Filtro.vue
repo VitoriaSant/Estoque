@@ -43,9 +43,9 @@ import { ref, toRef } from 'vue';
 import CClasseFiltro from '@/Service/base/CClasseFiltro';
 import CPedidoCompraPendenteModel from '@/Service/tema-estoque/pedidos-compra-pendente/CPedidoCompraPendenteModel';
 
-import DatasFiltro from './Components/DatasFiltro.vue';
-import OpcoesFiltro from './Components/OpcoesFiltro.vue';
-import PesquisaFiltro from './Components/PesquisaFiltro.vue';
+import DatasFiltro from './components/DatasFiltro.vue';
+import OpcoesFiltro from './components/OpcoesFiltro.vue';
+import PesquisaFiltro from './components/PesquisaFiltro.vue';
 
 //Services
 import { useLayoutDashboardStore } from '@/stores/LayoutDashboardStore';
