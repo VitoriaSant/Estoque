@@ -11,6 +11,7 @@
 </template>
 
 <script setup lang="ts">
+//Components
 import BarrasVertical from '@/components/BarrasVertical.vue';
 
 const props = defineProps<{

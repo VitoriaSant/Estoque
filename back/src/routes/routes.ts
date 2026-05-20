@@ -1,4 +1,6 @@
+//Express
 import { Router } from 'express';
+//Controllers
 import ComprasPendentesController from '../controllers/pedidos-compra-pendente/PedidosCompraPendentesController';
 import Teste from '../controllers/teste.controlles';
 import PontoDeCompraController from '../controllers/ponto-de-compra/PontoDeCompraController';

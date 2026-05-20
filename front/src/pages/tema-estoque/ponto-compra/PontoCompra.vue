@@ -7,11 +7,17 @@
 </template>
 
 <script setup lang="ts">
+//Vue
+import { ref, onMounted, watch } from 'vue';
+
+//Stores
 import { useLayoutDashboardStore } from '@/stores/LayoutDashboardStore';
+
+//Componentes
 import Linha1CardPontoCompra from './components/Linha1-CardPontoCompra.vue';
 import Linha2CosumoUltimos12meses from './components/Linha2-CosumoUltimos12meses.vue';
 import Linha3PontoDeCompra from './components/Linha3-PontoDeCompra.vue';
-import { ref, onMounted, watch } from 'vue';
+
 
 const layoutStore = useLayoutDashboardStore();
 

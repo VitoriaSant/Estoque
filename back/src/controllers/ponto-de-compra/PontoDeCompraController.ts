@@ -1,6 +1,10 @@
+//express
 import { Request, response, Response } from 'express';
+//Classes
 import CClasseFiltro, { CFiltro } from '../base/CClasseFiltro';
+//Model
 import CPontoDeCompraModel from './CPontoDeCompraModel';
+//Node
 import * as fs from 'fs';
 import * as path from 'path';
 

@@ -5,7 +5,10 @@
 </template>
 
 <script setup lang="ts">
+//Vue
 import { ref } from 'vue';
+
+//ApexCharts
 import VueApexCharts from 'vue3-apexcharts';
 
 defineProps<{

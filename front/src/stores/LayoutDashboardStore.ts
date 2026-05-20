@@ -1,9 +1,14 @@
+//Vue
 import { ref } from 'vue';
 import { defineStore } from 'pinia';
+
+//Services
 import CClasseFiltro from '@/Service/base/CClasseFiltro';
 import type CPedidoCompraPendenteModel from '@/Service/tema-estoque/pedidos-compra-pendente/CPedidoCompraPendenteModel';
 import PedidoCompraPendenteController from '@/Service/tema-estoque/pedidos-compra-pendente/PedidoCompraPendenteController';
 import PontoDeCompraController from '@/Service/tema-estoque/ponto-de-compra/PontoDeCompraController';
+
+//Interfaces
 import type { IPedidoCompraPendenteResponse } from '@/interfaces/IPedidoCompraPendenteResonse';
 import type { IPontoDeCompraResponse } from '@/interfaces/IPontoDeCompraResponse';
 

@@ -1,7 +1,12 @@
+//Node
 import Firebird, { Database } from 'node-firebird';
+//Database
 import options from '../../database/conection';
+//Express
 import { Request, Response } from 'express';
+//Classes
 import CClasseFiltro, { CFiltro } from '../base/CClasseFiltro';
+//Model
 import CPedidoCompraPendenteModel from './CPedidoCompraPendenteModel';
 
 export default class PedidosCompraPendentesControlles {

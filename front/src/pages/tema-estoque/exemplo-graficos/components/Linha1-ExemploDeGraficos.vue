@@ -27,6 +27,7 @@
 </template>
 
 <script setup lang="ts">
+//Components
 import BarrasHorizontal from '@/components/BarrasHorizontal.vue';
 import BarrasVertical from '@/components/BarrasVertical.vue';
 import Linhas from '@/components/Linhas.vue';

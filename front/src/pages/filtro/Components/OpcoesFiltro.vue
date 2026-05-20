@@ -20,6 +20,8 @@
 <script setup lang="ts">
 //Vue
 import { ref, watch } from 'vue';
+
+//Services
 import CClasseFiltro from '@/Service/base/CClasseFiltro';
 import CPedidoCompraPendenteModel from '@/Service/tema-estoque/pedidos-compra-pendente/CPedidoCompraPendenteModel';
 

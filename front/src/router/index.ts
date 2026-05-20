@@ -34,12 +34,7 @@ const router = createRouter({
           path: '/exemplo-graficos',
           name: 'Exemplo de Graficos',
           component: () => import('@/pages/tema-estoque/exemplo-graficos/ExemploGraficos.vue'),
-        },
-        {
-          path: '/testeex/teste',
-          name: 'Exemplo de Card',
-          component: () => import('@/pages/tema-estoque/testeex/teste.vue'),
-        },
+        }
       ],
     },
   ],

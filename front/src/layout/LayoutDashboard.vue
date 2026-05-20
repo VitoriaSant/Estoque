@@ -38,8 +38,13 @@
 </template>
 
 <script setup lang="ts">
+//Vue
 import { ref } from 'vue';
+
+//Pages
 import Filtro from '../pages/filtro/Filtro.vue';
+
+//Components
 import Informativo from '../components/Informativo.vue';
 
 const drawer = ref(false);

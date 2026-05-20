@@ -5,9 +5,13 @@
 </template>
 
 <script lang="ts" setup>
+//Vue
 import { computed } from 'vue';
+
+//ApexCharts
 import VueApexCharts from 'vue3-apexcharts';
 import type { ApexOptions } from 'apexcharts';
+
 const apexchart = VueApexCharts;
 
 const props = defineProps<{

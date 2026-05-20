@@ -5,7 +5,10 @@
 </template>
 
 <script lang="ts" setup>
+//Vue
 import { ref } from 'vue';
+
+//ApexCharts
 import type { ApexOptions } from 'apexcharts';
 import apexchart from 'vue3-apexcharts';
 

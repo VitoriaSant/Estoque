@@ -27,6 +27,7 @@
 </template>
 
 <script setup lang="ts">
+//Components
 import Donuts from '@/components/Donuts.vue';
 import AreaPolar from '@/components/AreaPolar.vue';
 import BarrasVerticalEmpilhada from '@/components/BarrasVerticalEmpilhada.vue';

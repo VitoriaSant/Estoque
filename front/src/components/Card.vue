@@ -16,6 +16,7 @@
   </v-card>
 </template>
 <script setup lang="ts">
+//Store
 import { useFormatarValorStore } from '@/stores/FormatarValorStore';
 
 const formatarValorStore = useFormatarValorStore();

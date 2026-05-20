@@ -23,9 +23,14 @@
 </template>
 
 <script setup lang="ts">
-import { useInformativosStore } from '../stores/InformativosStore';
+//Vue
 import { useRoute } from 'vue-router';
 import { computed, type Component } from 'vue';
+
+//Store
+import { useInformativosStore } from '../stores/InformativosStore';
+
+//Pages
 import InfoPedidoCompraPendente from '@/pages/tema-estoque/pedido-compra-pendente/components/Info-PedidoCompraPendente.vue';
 import InfoPontoCompra from '@/pages/tema-estoque/ponto-compra/components/Info-PontoDeCompra.vue';
 import InfoExemploGraficos from '@/pages/tema-estoque/exemplo-graficos/components/Info-ExemploGraficos.vue';

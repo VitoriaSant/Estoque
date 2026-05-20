@@ -36,7 +36,10 @@
 </template>
 
 <script setup lang="ts">
+//Vue
 import { ref } from 'vue';
+
+//Store
 import { useInformativosStore } from '@/stores/InformativosStore';
 
 interface Props {

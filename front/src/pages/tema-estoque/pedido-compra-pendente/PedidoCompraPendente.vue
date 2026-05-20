@@ -14,18 +14,20 @@
 </template>
 
 <script setup lang="ts">
-import { useLayoutDashboardStore } from '@/stores/LayoutDashboardStore';
+//Vue
 import { ref, onMounted, watch } from 'vue';
 
-const layoutStore = useLayoutDashboardStore();
-const erro = ref<boolean>(false);
-const mensagemErro = ref('');
+//Stores
+import { useLayoutDashboardStore } from '@/stores/LayoutDashboardStore';
 
 // Coponentes
 import Linha1CardsPedidoPendente from './components/Linha1-Cards-PedidoPendente.vue';
 import Linha2PedidoPendenteFornecedorAtraso from './components/Linha2-PedidoPendente-FornecedorAtraso.vue';
 import Linha3PedidoPendenteItensPendentes from './components/Linha3-PedidoPendente-ItensPendentes.vue';
 
+const layoutStore = useLayoutDashboardStore();
+const erro = ref<boolean>(false);
+const mensagemErro = ref('');
 const dados = ref<any>(null);
 
 const carregarDados = async () => {

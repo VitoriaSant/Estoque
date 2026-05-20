@@ -34,7 +34,10 @@
 </template>
 
 <script setup lang="ts">
+//Vue
 import { ref, computed } from 'vue';
+
+//Store
 import { useFormatarValorStore } from '@/stores/FormatarValorStore';
 
 const formatarValorStore = useFormatarValorStore();
