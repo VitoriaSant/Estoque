@@ -1,0 +1,16 @@
+  #!/bin/sh
+
+  # --- Etapa 4: Validação da Mensagem de Commit ---
+  echo ""
+  echo "------------------------------------------------------"
+  echo "| ✍️  Validando a mensagem de commit (commitlint)..."
+  echo "------------------------------------------------------"
+
+  # O $1 é o arquivo temporário que armazena a mensagem de commit
+  npx --no -- commitlint --edit "$1"
+
+  # Se o commitlint falhar, ele abortará o script com (exit 1)
+  # Se chegar aqui, é porque passou.
+  echo "------------------------------------------------------"
+  echo "✅ SUCESSO: A mensagem de commit está no padrão."
+  echo "------------------------------------------------------"
