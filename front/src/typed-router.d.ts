@@ -41,7 +41,6 @@ declare module 'vue-router/auto-routes' {
     '/tema-estoque/ponto-compra/components/Linha2-CosumoUltimos12meses': RouteRecordInfo<'/tema-estoque/ponto-compra/components/Linha2-CosumoUltimos12meses', '/tema-estoque/ponto-compra/components/Linha2-CosumoUltimos12meses', Record<never, never>, Record<never, never>>,
     '/tema-estoque/ponto-compra/components/Linha3-PontoDeCompra': RouteRecordInfo<'/tema-estoque/ponto-compra/components/Linha3-PontoDeCompra', '/tema-estoque/ponto-compra/components/Linha3-PontoDeCompra', Record<never, never>, Record<never, never>>,
     '/tema-estoque/ponto-compra/PontoCompra': RouteRecordInfo<'/tema-estoque/ponto-compra/PontoCompra', '/tema-estoque/ponto-compra/PontoCompra', Record<never, never>, Record<never, never>>,
-    '/tema-estoque/testeex/teste': RouteRecordInfo<'/tema-estoque/testeex/teste', '/tema-estoque/testeex/teste', Record<never, never>, Record<never, never>>,
   }
 
   /**
@@ -145,10 +144,6 @@ declare module 'vue-router/auto-routes' {
     }
     'src/pages/tema-estoque/ponto-compra/PontoCompra.vue': {
       routes: '/tema-estoque/ponto-compra/PontoCompra'
-      views: never
-    }
-    'src/pages/tema-estoque/testeex/teste.vue': {
-      routes: '/tema-estoque/testeex/teste'
       views: never
     }
   }
