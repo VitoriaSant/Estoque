@@ -1,6 +1,6 @@
 <template>
   <div class="chart-container" :class="{ fullscreen: expandido }">
-    <apexchart width="100%" height="100%" type="donut" :options="chartOptions" :series="dados" />
+    <apexchart height="100%" id="pizza-chart" type="donut" :options="chartOptions" :series="dados" />
   </div>
 </template>
 
@@ -46,6 +46,12 @@ const chartOptions = computed(
 );
 </script>
 <style scoped>
+#pizza-chart {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .chart-container {
   width: 100%;
   height: 300px;
