@@ -8,7 +8,7 @@ import CClasseFiltro from '@/Service/base/CClasseFiltro';
 import CPontoDeCompraModel from '@/Service/tema-estoque/ponto-de-compra/CPontoDeCompraModel';
 
 //Interfaces
-import type { IPontoDeCompraResponse } from '@/interfaces/IPontoDeCompraResponse';
+import type { IPontoDeCompraResponse } from '@/Service/tema-estoque/ponto-de-compra/IPontoDeCompraResponse';
 
 export const usePontoDeCompraStore = defineStore('[PontoDeCompraStore]', () => {
   const pontoDeCompraController = new PontoDeCompraController();

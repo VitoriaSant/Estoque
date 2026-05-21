@@ -5,7 +5,7 @@ import type CClasseFiltro from '@/Service/base/CClasseFiltro';
 //Models
 import CPedidoCompraPendenteModel from './CPedidoCompraPendenteModel';
 //Interfaces
-import type { IPedidoCompraPendenteResponse } from '@/interfaces/IPedidoCompraPendenteResonse';
+import type { IPedidoCompraPendenteResponse } from '@/Service/tema-estoque/pedidos-compra-pendente/IPedidoCompraPendenteResonse';
 //Constants
 import { cBASE_URL_API } from '@/constants/ConstantesRest';
 

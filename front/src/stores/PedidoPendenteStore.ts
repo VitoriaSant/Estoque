@@ -5,7 +5,7 @@ import { defineStore } from 'pinia';
 import PedidoCompraPendenteController from '@/Service/tema-estoque/pedidos-compra-pendente/PedidoCompraPendenteController';
 import CClasseFiltro from '@/Service/base/CClasseFiltro';
 //Interfaces
-import type { IPedidoCompraPendenteResponse } from '@/interfaces/IPedidoCompraPendenteResonse';
+import type { IPedidoCompraPendenteResponse } from '@/Service/tema-estoque/pedidos-compra-pendente/IPedidoCompraPendenteResonse';
 //Models
 import type CPedidoCompraPendenteModel from '@/Service/tema-estoque/pedidos-compra-pendente/CPedidoCompraPendenteModel';
 
