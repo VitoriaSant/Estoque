@@ -19,6 +19,7 @@ import { ref, onMounted, watch } from 'vue';
 
 //Stores
 import { useLayoutDashboardStore } from '@/stores/LayoutDashboardStore';
+import { usePedidoPendenteStore } from '@/stores/PedidoPendenteStore';
 
 // Coponentes
 import Linha1CardsPedidoPendente from './components/Linha1-Cards-PedidoPendente.vue';
@@ -26,13 +27,14 @@ import Linha2PedidoPendenteFornecedorAtraso from './components/Linha2-PedidoPend
 import Linha3PedidoPendenteItensPendentes from './components/Linha3-PedidoPendente-ItensPendentes.vue';
 
 const layoutStore = useLayoutDashboardStore();
+const pedidoPendenteStore = usePedidoPendenteStore();
 const erro = ref<boolean>(false);
 const mensagemErro = ref('');
 const dados = ref<any>(null);
 
 const carregarDados = async () => {
   try {
-    const resultado = await layoutStore.filtrarComprasPendentes();
+    const resultado = await pedidoPendenteStore.filtrarComprasPendentes(layoutStore.classeFiltro);
     dados.value = resultado;
   } catch (error) {
     mensagemErro.value = error as string;

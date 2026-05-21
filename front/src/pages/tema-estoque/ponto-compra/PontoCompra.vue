@@ -12,6 +12,7 @@ import { ref, onMounted, watch } from 'vue';
 
 //Stores
 import { useLayoutDashboardStore } from '@/stores/LayoutDashboardStore';
+import { usePontoDeCompraStore } from '@/stores/PontoDeCompraStore';
 
 //Componentes
 import Linha1CardPontoCompra from './components/Linha1-CardPontoCompra.vue';
@@ -20,12 +21,13 @@ import Linha3PontoDeCompra from './components/Linha3-PontoDeCompra.vue';
 
 
 const layoutStore = useLayoutDashboardStore();
+const pontoDeCompraStore = usePontoDeCompraStore();
 
 const dados = ref<any>(null);
 
 const carregarDados = async () => {
   try {
-    const resultado = await layoutStore.filtrarPontoDeCompra();
+    const resultado = await pontoDeCompraStore.filtrarPontoDeCompra(layoutStore.classeFiltro as any);
     dados.value = resultado;
     console.log('Dados recebidos nos cards:', resultado);
   } catch (error: any) {
