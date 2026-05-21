@@ -16,7 +16,12 @@
       </CardParaComportarGraf>
     </v-col>
     <v-col cols="12" md="5" class="pa-1">
-      <CardParaComportarGraf :titulo="'Pedidos Pendentes'" :icone="'mdi-archive-alert'">
+      <CardParaComportarGraf
+        :titulo="'Pedidos Pendentes'"
+        :icone="'mdi-archive-alert'"
+        :exibiIconeInformativo="true"
+        :componenteInformativo="InfoPedidoCompraPendente"
+      >
         <template #grafico="{ expandido }">
           <Tabela
             :th="['Codigo', 'Prev. Entrega', 'Valor']"
@@ -33,6 +38,9 @@
 </template>
 
 <script setup lang="ts">
+import InfoPedidoCompraPendente from './Info-PedidoCompraPendente.vue';
+import InfoTeste from './Info-Teste.vue';
+
 const props = defineProps<{
   dados: any;
 }>();

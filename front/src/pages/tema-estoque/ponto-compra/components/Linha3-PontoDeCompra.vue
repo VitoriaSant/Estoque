@@ -1,7 +1,12 @@
 <template>
   <v-row>
     <v-col cols="12" md="12" class="pa-1">
-      <CardParaComportarGraf :titulo="'Ponto de Compra'" :icone="'mdi-cash-multiple'">
+      <CardParaComportarGraf
+        :titulo="'Ponto de Compra'"
+        :icone="'mdi-cash-multiple'"
+        :exibiIconeInformativo="true"
+        :componenteInformativo="InfoPontoDeCompra"
+      >
         <template #grafico="{ expandido }">
           <Tabela
             :th="[
@@ -40,6 +45,9 @@
 </template>
 
 <script setup lang="ts">
+//Components
+import InfoPontoDeCompra from './Info-PontoDeCompra.vue';
+
 const props = defineProps<{
   dados: any;
 }>();

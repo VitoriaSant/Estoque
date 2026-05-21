@@ -17,40 +17,21 @@
         class="position-absolute right-0 top-0 text-white mt-2 mr-2"
         @click="fechar"
       />
-      <component :is="componenteInformativo" />
+      <component :is="informativosStore.componenteInformativo" />
     </v-card>
   </v-dialog>
 </template>
 
 <script setup lang="ts">
-//Vue
-import { useRoute } from 'vue-router';
-import { computed, type Component } from 'vue';
-
 //Store
 import { useInformativosStore } from '../stores/InformativosStore';
 
-//Pages
-import InfoPedidoCompraPendente from '@/pages/tema-estoque/pedido-compra-pendente/components/Info-PedidoCompraPendente.vue';
-import InfoPontoCompra from '@/pages/tema-estoque/ponto-compra/components/Info-PontoDeCompra.vue';
-import InfoExemploGraficos from '@/pages/tema-estoque/exemplo-graficos/components/Info-ExemploGraficos.vue';
-
 const informativosStore = useInformativosStore();
-const route = useRoute();
 
 function fechar() {
   informativosStore.exibirInformativo = false;
+  informativosStore.componenteInformativo = null;
 }
-
-const informativosPorPagina: Record<string, Component> = {
-  'Ponto de compra': InfoPontoCompra,
-  'Pedido de compra pendente': InfoPedidoCompraPendente,
-  'Exemplo de Graficos': InfoExemploGraficos,
-};
-
-const componenteInformativo = computed(() => {
-  return informativosPorPagina[String(route.name)] || null;
-});
 </script>
 <style scoped>
 .informativo-card {

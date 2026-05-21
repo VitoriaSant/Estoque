@@ -2,15 +2,25 @@
   <v-card style="height: 400px" width="100%" variant="elevated" class="mx-auto">
     <v-card-item>
       <div class="d-flex align-center">
-        <!-- Usamos as variáveis tipadas diretamente -->
-        <v-icon :icon="icone" class="me-2"></v-icon>
-        <v-card-title>{{ titulo }}</v-card-title>
-
-        <v-spacer></v-spacer>
-
-        <!-- Botão de expandir -->
-        <v-btn variant="tonal" color="primary" icon="mdi-fullscreen" density="comfortable" @click="expandir = true">
-        </v-btn>
+        <v-row>
+          <v-col cols="6" md="8" lg="8" class="d-flex align-center">
+            <!-- Usamos as variáveis tipadas diretamente -->
+            <v-icon :icon="icone" class="me-2"></v-icon>
+            <v-card-title>{{ titulo }}</v-card-title>
+          </v-col>
+          <v-col cols="6" md="4" lg="4" class="d-flex justify-end">
+            <!-- Botão de informação -->
+            <v-btn
+              v-if="exibiIconeInformativo"
+              variant="tonal"
+              icon="mdi-information-outline"
+              density="comfortable"
+              @click="abrirInformativo"
+            ></v-btn>
+            <!-- Botão de expandir -->
+            <v-btn variant="tonal" icon="mdi-fullscreen" density="comfortable" @click="expandir = true"></v-btn>
+          </v-col>
+        </v-row>
       </div>
     </v-card-item>
 
@@ -38,23 +48,33 @@
 <script setup lang="ts">
 //Vue
 import { ref } from 'vue';
+import type { Component } from 'vue';
 
 //Store
 import { useInformativosStore } from '@/stores/InformativosStore';
 
+const informativosStore = useInformativosStore();
+
 interface Props {
   titulo?: string;
   icone?: string;
+  exibiIconeInformativo?: boolean;
+  componenteInformativo?: Component;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   titulo: 'Gráfico',
   icone: 'mdi-chart-bar',
+  exibiIconeInformativo: false,
+  componenteInformativo: undefined,
 });
 
 const expandir = ref(false);
 
-const infoStore = useInformativosStore();
+function abrirInformativo() {
+  informativosStore.componenteInformativo = props.componenteInformativo || null;
+  informativosStore.exibirInformativo = true;
+}
 
 defineSlots<{
   grafico?: (props: { expandido: boolean }) => any;
