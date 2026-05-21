@@ -12,7 +12,7 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     AreaPolar: typeof import('./components/AreaPolar.vue')['default']
-    BarrasHorizontal: typeof import('./components/BarrasHorizontal.vue')['default']
+    BarrasHorizontal: typeof import('./components/graficos/barra-horizontal/BarrasHorizontal.vue')['default']
     BarrasVertical: typeof import('./components/BarrasVertical.vue')['default']
     BarrasVerticalEmpilhada: typeof import('./components/BarrasVerticalEmpilhada.vue')['default']
     Bolhas: typeof import('./components/Bolhas.vue')['default']
