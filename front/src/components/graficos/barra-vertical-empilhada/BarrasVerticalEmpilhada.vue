@@ -41,15 +41,16 @@ const options = computed<ApexOptions>(() => {
   return lOptions;
 });
 
-const lDados = computed(() =>
-  props.dataSet.registros.map((registro: any) => ({
+const lDados = [] as any[];
+for (const registro of props.dataSet.registros) {
+  lDados.push({
     titulo: String(registro[props.dataSet.campos.campoTitulo as any]),
     valor: registro[props.dataSet.campos.campoValor as any],
-  })),
-);
+  });
+}
 
 const series = computed(() =>
-  lDados.value.map((item: any) => ({
+  lDados.map((item: any) => ({
     name: item.titulo,
     data: item.valor,
   })),

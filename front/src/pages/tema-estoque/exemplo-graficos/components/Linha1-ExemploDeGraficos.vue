@@ -137,12 +137,13 @@ type TRegistrosLinha = {
   valor: number[];
 };
 const dataSetLinha = computed(() => {
-  new CGraficoLinha<TRegistrosLinha>({
+  const campos = new CGraficoLinha<TRegistrosLinha>({
     campoTitulo: 'titulo',
     campoValor: 'valor',
   });
 
   return new CDatasetGraficoLinha<TRegistrosLinha>({
+    campos: campos,
     campoLabel: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998],
     registros: [
       {

@@ -10,10 +10,12 @@ export class CGraficoLinha<Classe> {
 
 export default class CDatasetGraficoLinha<Classe> {
   campoLabel: number[] = [];
+  campos: CGraficoLinha<Classe>;
   registros: Classe[] = [];
 
   constructor(pObj?: Partial<CDatasetGraficoLinha<Classe>>) {
     this.registros = pObj?.registros ?? this.registros;
+    this.campos = new CGraficoLinha<Classe>(pObj?.campos);
     this.campoLabel = pObj?.campoLabel ?? this.campoLabel;
   }
 }

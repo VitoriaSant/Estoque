@@ -50,8 +50,8 @@ const lLabels = computed(() => props.dataSet.campoLabel as any[]);
 const lDados = [] as any[];
 for (const registro of props.dataSet.registros) {
   lDados.push({
-    titulo: registro.titulo ?? registro.name ?? '',
-    valor: registro.valor ?? registro.data ?? [],
+    titulo: String(registro[props.dataSet.campos.campoTitulo as any]),
+    valor: registro[props.dataSet.campos.campoValor as any],
   });
 }
 
