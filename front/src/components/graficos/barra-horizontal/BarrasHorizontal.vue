@@ -27,6 +27,11 @@ const options = computed<ApexOptions>(() => {
     chart: {
       id: 'vuechart-example',
     },
+    plotOptions: {
+      bar: {
+        horizontal: true,
+      },
+    },
     colors: ['#755640'],
     xaxis: {
       categories: lLabels,
