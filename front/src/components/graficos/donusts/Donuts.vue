@@ -35,6 +35,9 @@ const options = computed<ApexOptions>(() => {
     },
     colors: ['#755640', '#8B6F5B', '#A18A73', '#B8A58B'],
     labels: lLabels,
+    legend: {
+      position: 'bottom' as const,
+    },
   };
   return lOptions;
 });
