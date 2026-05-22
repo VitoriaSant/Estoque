@@ -11,7 +11,7 @@
     <v-col cols="12" md="4" class="pa-1">
       <CardParaComportarGraf :titulo="'Gráfico Polar'" :icone="'mdi-chart-pie-outline'">
         <template #grafico="{ expandido }">
-          <AreaPolar :expandido="expandido" />
+          <AreaPolar :expandido="expandido" :dataSet="dataSetAreaPolar" />
         </template>
       </CardParaComportarGraf>
     </v-col>
@@ -38,6 +38,7 @@ import CardParaComportarGraf from '@/components/CardParaComportarGraf.vue';
 
 //Classes
 import CDatasetGraficoDonuts from '@/components/graficos/donusts/CDatasetGraficoDonuts.ts';
+import CDatasetGraficoAreaPolar from '@/components/graficos/area-polar/CDatasetGraficoAreaPolar.ts';
 
 type TRegistrosDonuts = {
   descricao: string;
@@ -64,6 +65,40 @@ const dataSetDonuts = computed(() => {
       {
         descricao: 'PRODUTO D',
         valor: 43,
+      },
+    ],
+  });
+});
+
+type TRegistrosAreaPolar = {
+  descricao: string;
+  valor: number;
+};
+
+const dataSetAreaPolar = computed(() => {
+  return new CDatasetGraficoAreaPolar<TRegistrosAreaPolar>({
+    campoLabel: 'descricao',
+    campoValor: 'valor',
+    registros: [
+      {
+        descricao: 'PRODUTO A',
+        valor: 42,
+      },
+      {
+        descricao: 'PRODUTO B',
+        valor: 47,
+      },
+      {
+        descricao: 'PRODUTO C',
+        valor: 52,
+      },
+      {
+        descricao: 'PRODUTO D',
+        valor: 58,
+      },
+      {
+        descricao: 'PRODUTO E',
+        valor: 65,
       },
     ],
   });
