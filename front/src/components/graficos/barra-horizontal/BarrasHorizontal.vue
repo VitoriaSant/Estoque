@@ -11,6 +11,8 @@ import { computed } from 'vue';
 //ApexCharts
 import type { ApexOptions } from 'apexcharts';
 import VueApexCharts from 'vue3-apexcharts';
+
+//Classes
 import CDatasetGraficoBarraHorizontal from './CDatasetGraficoBarraHorizontal';
 
 const props = defineProps<{
@@ -27,25 +29,35 @@ const options = computed<ApexOptions>(() => {
     },
     colors: ['#755640'],
     xaxis: {
-      categories: lLabels.value,
+      categories: lLabels,
     },
   };
 
   return lOptions;
 });
 
-const lDados = computed(() => {
-  return props.dataSet.registros.map((registro) => registro[props.dataSet.campoValor]);
-});
+const lDados = [] as any[];
+for (const registro of props.dataSet.registros) {
+  lDados.push(registro[props.dataSet.campoValor]);
+}
 
-const lLabels = computed(() => {
-  return props.dataSet.registros.map((registro) => registro[props.dataSet.campoLabel]);
-});
+const lLabels = [] as any[];
+for (const registro of props.dataSet.registros) {
+  lLabels.push(registro[props.dataSet.campoLabel]);
+}
+
+// const lDados = computed(() => {
+//   return props.dataSet.registros.map((registro) => registro[props.dataSet.campoValor]);
+// });
+
+// const lLabels = computed(() => {
+//   return props.dataSet.registros.map((registro) => registro[props.dataSet.campoLabel]);
+// });
 
 const series = computed(() => {
   return [
     {
-      data: lDados.value,
+      data: lDados,
     },
   ];
 });
@@ -66,6 +78,16 @@ const series = computed(() => {
 //  ano: 2024,
 //  total: 100,
 //});
+
+// const lDados = [];
+// for (const registro of dataSet.registros) {
+//   lDados.push(registro[dataSet.campoValor]);
+// }
+
+// const lLabels = [];
+// for (const registro of dataSet.registros) {
+//   lLabels.push(registro[dataSet.campoLabel]);
+// }
 </script>
 
 <style scoped>
