@@ -11,10 +11,10 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
-    AreaPolar: typeof import('./components/AreaPolar.vue')['default']
+    AreaPolar: typeof import('./components/graficos/area-polar/AreaPolar.vue')['default']
     BarrasHorizontal: typeof import('./components/graficos/barra-horizontal/BarrasHorizontal.vue')['default']
     BarrasVertical: typeof import('./components/BarrasVertical.vue')['default']
-    BarrasVerticalEmpilhada: typeof import('./components/BarrasVerticalEmpilhada.vue')['default']
+    BarrasVerticalEmpilhada: typeof import('./components/graficos/barra-vertical-empilhada/BarrasVerticalEmpilhada.vue')['default']
     Bolhas: typeof import('./components/Bolhas.vue')['default']
     Card: typeof import('./components/Card.vue')['default']
     CardParaComportarGraf: typeof import('./components/CardParaComportarGraf.vue')['default']

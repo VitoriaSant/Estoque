@@ -53,7 +53,7 @@ const dataSetBarraHorizontal = computed(() => {
         ano: 1991,
         valor: 30,
       },
-      {//
+      {
         ano: 1992,
         valor: 40,
       },

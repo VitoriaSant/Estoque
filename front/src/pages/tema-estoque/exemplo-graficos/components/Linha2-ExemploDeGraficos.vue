@@ -19,7 +19,7 @@
     <v-col cols="12" md="4" class="pa-1">
       <CardParaComportarGraf :titulo="'Gráfico de Barras Vertical Empilhada'" :icone="'mdi-chart-waterfall'">
         <template #grafico="{ expandido }">
-          <BarrasVerticalEmpilhada :expandido="expandido" />
+          <BarrasVerticalEmpilhada :expandido="expandido" :dataSet="dataSetBarraVerticalEmpilhada" />
         </template>
       </CardParaComportarGraf>
     </v-col>
@@ -32,13 +32,16 @@ import { computed } from 'vue';
 
 //Components
 import Donuts from '@/components/graficos/donusts/Donuts.vue';
-import AreaPolar from '@/components/AreaPolar.vue';
-import BarrasVerticalEmpilhada from '@/components/BarrasVerticalEmpilhada.vue';
+import AreaPolar from '@/components/graficos/area-polar/AreaPolar.vue';
+import BarrasVerticalEmpilhada from '@/components/graficos/barra-vertical-empilhada/BarrasVerticalEmpilhada.vue';
 import CardParaComportarGraf from '@/components/CardParaComportarGraf.vue';
 
 //Classes
 import CDatasetGraficoDonuts from '@/components/graficos/donusts/CDatasetGraficoDonuts.ts';
 import CDatasetGraficoAreaPolar from '@/components/graficos/area-polar/CDatasetGraficoAreaPolar.ts';
+import CDatasetGraficoBarraVerticalEmpilhada, {
+  CGraficoBarraVerticalEmpilhada,
+} from '@/components/graficos/barra-vertical-empilhada/CDatasetGraficoBarraVerticalempilhads.ts';
 
 type TRegistrosDonuts = {
   descricao: string;
@@ -99,6 +102,38 @@ const dataSetAreaPolar = computed(() => {
       {
         descricao: 'PRODUTO E',
         valor: 65,
+      },
+    ],
+  });
+});
+
+type TRegistrosBarraVerticalEmpilhada = {
+  titulo: string;
+  valor: number[];
+};
+
+const dataSetBarraVerticalEmpilhada = computed(() => {
+  const datasetProdutos = [
+    new CGraficoBarraVerticalEmpilhada<TRegistrosBarraVerticalEmpilhada>({
+      campoTitulo: 'titulo',
+      campoValor: 'valor',
+    }),
+  ];
+
+  return new CDatasetGraficoBarraVerticalEmpilhada<TRegistrosBarraVerticalEmpilhada>({
+    campoLabel: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998],
+    registros: [
+      {
+        titulo: 'PRODUTO A',
+        valor: [44, 55, 41, 67, 22, 43],
+      },
+      {
+        titulo: 'PRODUTO B',
+        valor: [13, 23, 20, 8, 13, 27, 33, 12],
+      },
+      {
+        titulo: 'PRODUTO C',
+        valor: [11, 17, 15, 15, 21, 14, 15, 13],
       },
     ],
   });

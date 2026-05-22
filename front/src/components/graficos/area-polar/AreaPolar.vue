@@ -13,7 +13,7 @@ import VueApexCharts from 'vue3-apexcharts';
 import type { ApexOptions } from 'apexcharts';
 
 //Classes
-import CDatasetGraficoAreaPolar from './graficos/area-polar/CDatasetGraficoAreaPolar';
+import CDatasetGraficoAreaPolar from './CDatasetGraficoAreaPolar';
 
 const props = defineProps<{
   expandido?: boolean;
