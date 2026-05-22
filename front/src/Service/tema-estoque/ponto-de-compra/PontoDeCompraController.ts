@@ -10,8 +10,11 @@ import type { IPontoDeCompraResponse } from '@/Service/tema-estoque/ponto-de-com
 import { cBASE_URL_API } from '@/constants/ConstantesRest';
 
 export default class PontoDeCompraController {
+  private readonly endpoint = {
+    listar: '/pontoDeCompra',
+  };
   async listarPontoDeCompra(pFiltro: CClasseFiltro<CPontoDeCompraModel>): Promise<IPontoDeCompraResponse> {
-    const response = await api.post<IPontoDeCompraResponse>(`${cBASE_URL_API}/pontoDeCompra`, pFiltro);
+    const response = await api.post<IPontoDeCompraResponse>(`${cBASE_URL_API}${this.endpoint.listar}`, pFiltro);
     return response.data;
   }
 }

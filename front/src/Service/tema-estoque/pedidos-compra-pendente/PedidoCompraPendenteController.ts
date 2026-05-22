@@ -10,10 +10,13 @@ import type { IPedidoCompraPendenteResponse } from '@/Service/tema-estoque/pedid
 import { cBASE_URL_API } from '@/constants/ConstantesRest';
 
 export default class PedidoCompraPendenteController {
+  private readonly endpoint = {
+    listar: '/compraPendente',
+  };
   async listarComprasPendentes(
     pFiltros: CClasseFiltro<CPedidoCompraPendenteModel>,
   ): Promise<IPedidoCompraPendenteResponse> {
-    const response = await api.post<IPedidoCompraPendenteResponse>(`${cBASE_URL_API}/compraPendente`, pFiltros);
+    const response = await api.post<IPedidoCompraPendenteResponse>(`${cBASE_URL_API}${this.endpoint.listar}`, pFiltros);
     return response.data;
   }
 }
