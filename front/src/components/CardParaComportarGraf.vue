@@ -51,9 +51,9 @@ import { ref } from 'vue';
 import type { Component } from 'vue';
 
 //Store
-import { useInformativosStore } from '@/stores/InformativosStore';
+import { useLayoutDashboardStore } from '@/stores/LayoutDashboardStore';
 
-const informativosStore = useInformativosStore();
+const layoutStore = useLayoutDashboardStore();
 
 interface Props {
   titulo?: string;
@@ -72,8 +72,8 @@ const props = withDefaults(defineProps<Props>(), {
 const expandir = ref(false);
 
 function abrirInformativo() {
-  informativosStore.componenteInformativo = props.componenteInformativo || null;
-  informativosStore.exibirInformativo = true;
+  layoutStore.componenteInformativo = props.componenteInformativo || null;
+  layoutStore.exibirInformativo = true;
 }
 
 defineSlots<{

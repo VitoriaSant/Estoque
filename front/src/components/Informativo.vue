@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="informativosStore.exibirInformativo" width="680" persistent>
+  <v-dialog v-model="layoutStore.exibirInformativo" width="680" persistent>
     <v-card class="informativo-card">
       <v-card-title class="px-6 py-4 bg-primary">
         <div class="d-flex align-center">
@@ -17,20 +17,20 @@
         class="position-absolute right-0 top-0 text-white mt-2 mr-2"
         @click="fechar"
       />
-      <component :is="informativosStore.componenteInformativo" />
+      <component :is="layoutStore.componenteInformativo" />
     </v-card>
   </v-dialog>
 </template>
 
 <script setup lang="ts">
 //Store
-import { useInformativosStore } from '../stores/InformativosStore';
+import { useLayoutDashboardStore } from '../stores/LayoutDashboardStore';
 
-const informativosStore = useInformativosStore();
+const layoutStore = useLayoutDashboardStore();
 
 function fechar() {
-  informativosStore.exibirInformativo = false;
-  informativosStore.componenteInformativo = null;
+  layoutStore.exibirInformativo = false;
+  layoutStore.componenteInformativo = null;
 }
 </script>
 <style scoped>
