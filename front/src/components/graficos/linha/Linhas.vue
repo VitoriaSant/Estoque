@@ -1,10 +1,10 @@
 <template>
   <div class="chart-container" :class="{ fullscreen: expandido }">
-    <apexchart width="100%" height="100%" type="bar" :options="options" :series="series" />
+    <apexchart width="100%" height="100%" type="line" :options="options" :series="series" />
   </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 //Vue
 import { ref, computed } from 'vue';
 
@@ -13,33 +13,39 @@ import VueApexCharts from 'vue3-apexcharts';
 import type { ApexOptions } from 'apexcharts';
 
 //Classes
-import CDatasetGraficoBarraVerticalEmpilhada from './CDatasetGraficoBarraVerticalempilhado';
+import CDatasetGraficoLinha from './CDatasetGraficoLinha';
 
 const props = defineProps<{
   expandido?: boolean;
-  dataSet: CDatasetGraficoBarraVerticalEmpilhada<any>;
+  dataSet: CDatasetGraficoLinha<any>;
 }>();
 
 const apexchart = VueApexCharts;
 
-const lLabels = computed(() => props.dataSet.campoLabel as any[]);
-
 const options = computed<ApexOptions>(() => {
   const lOptions: ApexOptions = {
     chart: {
-      type: 'bar',
-      height: 350,
-      stacked: true,
-      stackType: '100%',
+      id: 'vuechart-example',
     },
-    colors: ['#5a4031', '#8b6b5a', '#a88a75'],
+    colors: ['#755640'],
+    stroke: {
+      width: 3,
+      curve: 'straight' as const,
+    },
+    markers: {
+      size: 6,
+      colors: ['#5a4031', '#8b6b5a', '#a88a75'],
+      strokeColors: '#fff',
+      strokeWidth: 2,
+    },
     xaxis: {
       categories: lLabels.value,
     },
   };
-
   return lOptions;
 });
+
+const lLabels = computed(() => props.dataSet.campoLabel as any[]);
 
 const lDados = [] as any[];
 for (const registro of props.dataSet.registros) {

@@ -26,7 +26,7 @@ declare module 'vue' {
     HelloWorld: typeof import('./components/HelloWorld.vue')['default']
     Informativo: typeof import('./components/Informativo.vue')['default']
     Instrucao: typeof import('./components/Instrucao.vue')['default']
-    Linhas: typeof import('./components/Linhas.vue')['default']
+    Linhas: typeof import('./components/graficos/linha/Linhas.vue')['default']
     MapaDeArea: typeof import('./components/MapaDeArea.vue')['default']
     NavBar: typeof import('./components/NavBar.vue')['default']
     Pizza: typeof import('./components/Pizza.vue')['default']

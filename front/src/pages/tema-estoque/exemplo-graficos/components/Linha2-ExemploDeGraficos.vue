@@ -41,7 +41,7 @@ import CDatasetGraficoDonuts from '@/components/graficos/donusts/CDatasetGrafico
 import CDatasetGraficoAreaPolar from '@/components/graficos/area-polar/CDatasetGraficoAreaPolar.ts';
 import CDatasetGraficoBarraVerticalEmpilhada, {
   CGraficoBarraVerticalEmpilhada,
-} from '@/components/graficos/barra-vertical-empilhada/CDatasetGraficoBarraVerticalempilhads.ts';
+} from '@/components/graficos/barra-vertical-empilhada/CDatasetGraficoBarraVerticalempilhado';
 
 type TRegistrosDonuts = {
   descricao: string;
@@ -113,12 +113,10 @@ type TRegistrosBarraVerticalEmpilhada = {
 };
 
 const dataSetBarraVerticalEmpilhada = computed(() => {
-  const datasetProdutos = [
-    new CGraficoBarraVerticalEmpilhada<TRegistrosBarraVerticalEmpilhada>({
-      campoTitulo: 'titulo',
-      campoValor: 'valor',
-    }),
-  ];
+  new CGraficoBarraVerticalEmpilhada<TRegistrosBarraVerticalEmpilhada>({
+    campoTitulo: 'titulo',
+    campoValor: 'valor',
+  });
 
   return new CDatasetGraficoBarraVerticalEmpilhada<TRegistrosBarraVerticalEmpilhada>({
     campoLabel: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998],

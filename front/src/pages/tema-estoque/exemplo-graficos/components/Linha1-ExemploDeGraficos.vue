@@ -19,7 +19,7 @@
     <v-col cols="12" md="4" class="pa-1">
       <CardParaComportarGraf :titulo="'Gráfico de Linhas'" :icone="'mdi-chart-line'">
         <template #grafico="{ expandido }">
-          <Linhas :expandido="expandido" />
+          <Linhas :expandido="expandido" :dataSet="dataSetLinha" />
         </template>
       </CardParaComportarGraf>
     </v-col>
@@ -33,12 +33,13 @@ import { computed } from 'vue';
 //Components
 import BarrasHorizontal from '@/components/graficos/barra-horizontal/BarrasHorizontal.vue';
 import BarrasVertical from '@/components/graficos/barra-vertical/BarrasVertical.vue';
-import Linhas from '@/components/Linhas.vue';
+import Linhas from '@/components/graficos/linha/Linhas.vue';
 import CardParaComportarGraf from '@/components/CardParaComportarGraf.vue';
 
 //Classes
 import CDatasetGraficoBarraHorizontal from '@/components/graficos/barra-horizontal/CDatasetGraficoBarraHorizontal.ts';
 import CDatasetGraficoBarraVertical from '@/components/graficos/barra-vertical/CDatasetGraficoBarraVertical.ts';
+import CDatasetGraficoLinha, { CGraficoLinha } from '@/components/graficos/linha/CDatasetGraficoLinha.ts';
 
 type TRegistrosBarraHorizontal = {
   ano: number;
@@ -126,6 +127,35 @@ const dataSetBarraVertical = computed(() => {
       {
         ano: 1998,
         valor: 90,
+      },
+    ],
+  });
+});
+
+type TRegistrosLinha = {
+  titulo: string;
+  valor: number[];
+};
+const dataSetLinha = computed(() => {
+  new CGraficoLinha<TRegistrosLinha>({
+    campoTitulo: 'titulo',
+    campoValor: 'valor',
+  });
+
+  return new CDatasetGraficoLinha<TRegistrosLinha>({
+    campoLabel: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998],
+    registros: [
+      {
+        titulo: 'PRODUTO A',
+        valor: [30, 40, 45, 50, 49, 60, 70, 91],
+      },
+      {
+        titulo: 'PRODUTO B',
+        valor: [20, 30, 35, 40, 39, 50, 60, 81],
+      },
+      {
+        titulo: 'PRODUTO C',
+        valor: [10, 20, 25, 30, 29, 40, 50, 71],
       },
     ],
   });
