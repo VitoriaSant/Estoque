@@ -6,58 +6,52 @@
 
 <script setup lang="ts">
 //Vue
-import { ref, computed } from 'vue';
+import { computed } from 'vue';
 
 //ApexCharts
 import VueApexCharts from 'vue3-apexcharts';
 import type { ApexOptions } from 'apexcharts';
 
 //Classes
-import CDatasetGraficoBarraVerticalEmpilhada, {
-  CGraficoBarraVerticalEmpilhada,
-} from './CDatasetGraficoBarraVerticalempilhads';
+import CDatasetGraficoBarraVertical from './CDatasetGraficoBarraVertical';
 
 const props = defineProps<{
   expandido?: boolean;
-  dataSet: CDatasetGraficoBarraVerticalEmpilhada<any>;
+  dataSet: CDatasetGraficoBarraVertical<any>;
 }>();
 
 const apexchart = VueApexCharts;
 
-const lLabels = computed(() => props.dataSet.campoLabel as any[]);
-
 const options = computed<ApexOptions>(() => {
   const lOptions: ApexOptions = {
     chart: {
-      type: 'bar',
-      height: 350,
-      stacked: true,
-      stackType: '100%',
+      id: 'vuechart-example',
     },
-    colors: ['#5a4031', '#8b6b5a', '#a88a75'],
+    colors: ['#755640'],
     xaxis: {
-      categories: lLabels.value,
+      categories: lLabels,
     },
   };
-
   return lOptions;
 });
 
 const lDados = [] as any[];
 for (const registro of props.dataSet.registros) {
-  lDados.push({
-    titulo: registro.titulo ?? registro.name ?? '',
-    valor: registro.valor ?? registro.data ?? [],
-  });
+  lDados.push(registro[props.dataSet.campoValor]);
 }
 
-const series = computed(() =>
-  lDados.map((item: any) => ({
-    name: item.titulo,
-    data: item.valor,
-  })),
-);
+const lLabels = [] as any[];
+for (const registro of props.dataSet.registros) {
+  lLabels.push(registro[props.dataSet.campoLabel]);
+}
+
+const series = computed(() => [
+  {
+    data: lDados,
+  },
+]);
 </script>
+
 <style scoped>
 .chart-container {
   width: 100%;

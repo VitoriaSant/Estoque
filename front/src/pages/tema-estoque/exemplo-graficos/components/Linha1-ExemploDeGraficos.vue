@@ -11,7 +11,7 @@
     <v-col cols="12" md="4" class="pa-1">
       <CardParaComportarGraf :titulo="'Gráfico de Barras Vertical'" :icone="'mdi-chart-bar'">
         <template #grafico="{ expandido }">
-          <BarrasVertical :expandido="expandido" />
+          <BarrasVertical :expandido="expandido" :dataSet="dataSetBarraVertical" />
         </template>
       </CardParaComportarGraf>
     </v-col>
@@ -32,12 +32,13 @@ import { computed } from 'vue';
 
 //Components
 import BarrasHorizontal from '@/components/graficos/barra-horizontal/BarrasHorizontal.vue';
-import BarrasVertical from '@/components/BarrasVertical.vue';
+import BarrasVertical from '@/components/graficos/barra-vertical/BarrasVertical.vue';
 import Linhas from '@/components/Linhas.vue';
 import CardParaComportarGraf from '@/components/CardParaComportarGraf.vue';
 
 //Classes
 import CDatasetGraficoBarraHorizontal from '@/components/graficos/barra-horizontal/CDatasetGraficoBarraHorizontal.ts';
+import CDatasetGraficoBarraVertical from '@/components/graficos/barra-vertical/CDatasetGraficoBarraVertical.ts';
 
 type TRegistrosBarraHorizontal = {
   ano: number;
@@ -46,6 +47,51 @@ type TRegistrosBarraHorizontal = {
 
 const dataSetBarraHorizontal = computed(() => {
   return new CDatasetGraficoBarraHorizontal<TRegistrosBarraHorizontal>({
+    campoLabel: 'ano',
+    campoValor: 'valor',
+    registros: [
+      {
+        ano: 1991,
+        valor: 30,
+      },
+      {
+        ano: 1992,
+        valor: 40,
+      },
+      {
+        ano: 1993,
+        valor: 45,
+      },
+      {
+        ano: 1994,
+        valor: 50,
+      },
+      {
+        ano: 1995,
+        valor: 49,
+      },
+      {
+        ano: 1996,
+        valor: 60,
+      },
+      {
+        ano: 1997,
+        valor: 70,
+      },
+      {
+        ano: 1998,
+        valor: 90,
+      },
+    ],
+  });
+});
+
+type TRegistrosBarraVertical = {
+  ano: number;
+  valor: number;
+};
+const dataSetBarraVertical = computed(() => {
+  return new CDatasetGraficoBarraVertical<TRegistrosBarraVertical>({
     campoLabel: 'ano',
     campoValor: 'valor',
     registros: [

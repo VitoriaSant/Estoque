@@ -12,7 +12,7 @@
 
 <script setup lang="ts">
 //Components
-import BarrasVertical from '@/components/BarrasVertical.vue';
+import BarrasVertical from '@/components/graficos/barra-vertical/BarrasVertical.vue';
 
 const props = defineProps<{
   dados: any;
