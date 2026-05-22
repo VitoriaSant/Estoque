@@ -66,33 +66,6 @@ const series = computed(() => {
     },
   ];
 });
-
-//type TRegistros = {
-//  mes: string;
-//  ano: number;
-//  total: number;
-//};
-
-//const dataset = new CDatasetGraficoBarraHorizontal<TRegistros>();
-
-//dataset.campoLabel = 'mes'
-//dataset.campoValor = 'total'
-
-//dataset.registros.push({
-//  mes: 'Janeiro',
-//  ano: 2024,
-//  total: 100,
-//});
-
-// const lDados = [];
-// for (const registro of dataSet.registros) {
-//   lDados.push(registro[dataSet.campoValor]);
-// }
-
-// const lLabels = [];
-// for (const registro of dataSet.registros) {
-//   lLabels.push(registro[dataSet.campoLabel]);
-// }
 </script>
 
 <style scoped>

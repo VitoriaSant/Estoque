@@ -6,7 +6,7 @@
 
 <script setup lang="ts">
 //Vue
-import { ref, computed } from 'vue';
+import { computed } from 'vue';
 
 //ApexCharts
 import VueApexCharts from 'vue3-apexcharts';
@@ -41,16 +41,15 @@ const options = computed<ApexOptions>(() => {
   return lOptions;
 });
 
-const lDados = [] as any[];
-for (const registro of props.dataSet.registros) {
-  lDados.push({
-    titulo: registro.titulo ?? registro.name ?? '',
-    valor: registro.valor ?? registro.data ?? [],
-  });
-}
+const lDados = computed(() =>
+  props.dataSet.registros.map((registro: any) => ({
+    titulo: String(registro[props.dataSet.campos.campoTitulo as any]),
+    valor: registro[props.dataSet.campos.campoValor as any],
+  })),
+);
 
 const series = computed(() =>
-  lDados.map((item: any) => ({
+  lDados.value.map((item: any) => ({
     name: item.titulo,
     data: item.valor,
   })),

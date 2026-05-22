@@ -113,13 +113,15 @@ type TRegistrosBarraVerticalEmpilhada = {
 };
 
 const dataSetBarraVerticalEmpilhada = computed(() => {
-  new CGraficoBarraVerticalEmpilhada<TRegistrosBarraVerticalEmpilhada>({
+  const campos = new CGraficoBarraVerticalEmpilhada<TRegistrosBarraVerticalEmpilhada>({
     campoTitulo: 'titulo',
     campoValor: 'valor',
   });
 
   return new CDatasetGraficoBarraVerticalEmpilhada<TRegistrosBarraVerticalEmpilhada>({
+    campos: campos,
     campoLabel: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998],
+
     registros: [
       {
         titulo: 'PRODUTO A',
