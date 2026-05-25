@@ -6,12 +6,13 @@
 
 <script setup lang="ts">
 //Vue
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 
 //ApexCharts
 import VueApexCharts from 'vue3-apexcharts';
+import type { ApexOptions } from 'apexcharts';
 
-defineProps<{
+const props = defineProps<{
   expandido?: boolean;
 }>();
 
@@ -33,26 +34,29 @@ function generateData(baseval: number, count: number, yrange: { min: number; max
   return series;
 }
 
-const options = ref({
-  chart: {
-    id: 'vuechart-example',
-    height: 350,
-    type: 'bubble' as const,
-  },
-  colors: ['#755640', '#8B4513', '#A0522D', '#CD853F'],
-  dataLabels: {
-    enabled: false,
-  },
-  fill: {
-    opacity: 0.8,
-  },
-  xaxis: {
-    tickAmount: 12,
-    type: 'category' as const,
-  },
-  yaxis: {
-    max: 70,
-  },
+const options = computed<ApexOptions>(() => {
+  const lOptions: ApexOptions = {
+    chart: {
+      id: 'vuechart-example',
+      height: 350,
+      type: 'bubble' as const,
+    },
+    colors: ['#755640', '#8B4513', '#A0522D', '#CD853F'],
+    dataLabels: {
+      enabled: false,
+    },
+    fill: {
+      opacity: 0.8,
+    },
+    xaxis: {
+      tickAmount: 12,
+      type: 'category' as const,
+    },
+    yaxis: {
+      max: 70,
+    },
+  };
+  return lOptions;
 });
 
 const series = ref([
