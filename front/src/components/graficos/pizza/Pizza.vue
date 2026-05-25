@@ -26,8 +26,6 @@ const options = computed<ApexOptions>(() => {
   const lOptions: ApexOptions = {
     chart: {
       id: 'vuechart-example',
-      width: 300,
-      height: 280,
     },
     colors: ['#a55050', '#755640'],
     plotOptions: {

@@ -4,7 +4,6 @@
       <CardParaComportarGraf :titulo="'Pedidos Pendentes'" :icon="'mdi-text-box-edit'">
         <template #grafico="{ expandido }">
           <Pizza :dataSet="dataSetPizza" :expandido="expandido" />
-          {{ dataSetPizza }}
         </template>
       </CardParaComportarGraf>
     </v-col>
