@@ -3,11 +3,8 @@
     <v-col cols="12" md="4" class="pa-1">
       <CardParaComportarGraf :titulo="'Pedidos Pendentes'" :icon="'mdi-text-box-edit'">
         <template #grafico="{ expandido }">
-          <Pizza
-            :options="['Pedidos em Atraso', 'Pedidos no Prazo']"
-            :dados="[props.dados?.resumo?.qntPedidoEmAtraso || 0, props.dados?.resumo?.pedidoEmDia || 0]"
-            :expandido="expandido"
-          />
+          <Pizza :dataSet="dataSetPizza" :expandido="expandido" />
+          {{ dataSetPizza }}
         </template>
       </CardParaComportarGraf>
     </v-col>
@@ -29,7 +26,35 @@
 </template>
 
 <script setup lang="ts">
+//Vue
+import { computed } from 'vue';
+
+//Classes
+import CDatasetGraficoPizza from '@/components/graficos/pizza/CDatasetGraficoPizza';
+
 const props = defineProps<{
   dados: any;
 }>();
+
+type TRegistroPizza = {
+  titulo: string;
+  valor: number[];
+};
+
+const dataSetPizza = computed(() => {
+  return new CDatasetGraficoPizza<TRegistroPizza>({
+    campoLabel: 'titulo',
+    campoValor: 'valor',
+    registros: [
+      {
+        titulo: 'Pedidos em Atraso',
+        valor: props.dados?.resumo?.qntPedidoEmAtraso,
+      },
+      {
+        titulo: 'Pedidos no Prazo',
+        valor: props.dados?.resumo?.pedidoEmDia,
+      },
+    ],
+  });
+});
 </script>

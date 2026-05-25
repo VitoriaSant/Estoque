@@ -1,6 +1,6 @@
 <template>
   <div class="chart-container" :class="{ fullscreen: expandido }">
-    <apexchart height="100%" id="pizza-chart" type="donut" :options="chartOptions" :series="dados" />
+    <apexchart height="100%" id="pizza-chart" type="donut" :options="options" :series="series" />
   </div>
 </template>
 
@@ -12,17 +12,23 @@ import { computed } from 'vue';
 import VueApexCharts from 'vue3-apexcharts';
 import type { ApexOptions } from 'apexcharts';
 
+//Classes
+import CDatasetGraficoPizza from './CDatasetGraficoPizza';
+
 const apexchart = VueApexCharts;
 
 const props = defineProps<{
-  options: string[];
-  dados: number[];
+  dataSet: CDatasetGraficoPizza<any>;
   expandido?: boolean;
 }>();
 
-const chartOptions = computed(
-  (): ApexOptions => ({
-    labels: props.options,
+const options = computed<ApexOptions>(() => {
+  const lOptions: ApexOptions = {
+    chart: {
+      id: 'vuechart-example',
+      width: 300,
+      height: 280,
+    },
     colors: ['#a55050', '#755640'],
     plotOptions: {
       pie: {
@@ -38,12 +44,24 @@ const chartOptions = computed(
       fontSize: '12px',
       offsetY: 10,
     },
-    chart: {
-      width: 300,
-      height: 280,
-    },
-  }),
-);
+    labels: lLabels,
+  };
+  return lOptions;
+});
+
+const lLabels = [] as any[];
+for (const registro of props.dataSet.registros) {
+  lLabels.push(registro[props.dataSet.campoLabel]);
+}
+
+const lDados = [] as any[];
+for (const registro of props.dataSet.registros) {
+  lDados.push(registro[props.dataSet.campoValor]);
+}
+
+const series = computed(() => {
+  return lDados;
+});
 </script>
 <style scoped>
 #pizza-chart {
