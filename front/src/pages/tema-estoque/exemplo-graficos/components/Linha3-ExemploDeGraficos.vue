@@ -28,11 +28,6 @@
       </CardParaComportarGraf>
     </v-col>
   </v-row>
-  {{ dataSetMapaDeArea }}
-  </br>
-  {{ dataSetColunaLinhaArea }}
-  </br>
-  {{ dataSetBolha }}
 </template>
 
 <script setup lang="ts">
@@ -142,137 +137,54 @@ const dataSetColunaLinhaArea = computed(() => {
   });
 });
 
-// 1. Defina o tipo de cada bolha interna (Atenção ao Z maiúsculo do seu JSON)
-type TItemPonto = {
-  x: number;
-  y: number;
-  Z: number;
-};
-
-// 2. Defina o tipo do registro pai (que contém o array de bolhas)
-type TProdutoRegistro = {
+type TRegistrosBolha = {
   titulo: string;
-  valores: TItemPonto[];
+  valores: number[][];
 };
 
 const dataSetBolha = computed(() => {
-  // Passamos os dois tipos para a classe garantir a validação completa
-  return new CDatasetGraficoBolha<TProdutoRegistro, TItemPonto>({
+  return new CDatasetGraficoBolha<TRegistrosBolha>({
     campoLabel: 'titulo',
-    campoValor: 'valores', // Nome da propriedade que guarda o array
-    campoX: 'x',
-    campoY: 'y',
-    campoTamanhoBolha: 'Z', // Mapeando para o seu 'Z' maiúsculo
+    campoValor: 'valores',
     registros: [
       {
-        titulo: 'Prod. A',
+        titulo: 'PRODUTO A',
         valores: [
-          {
-            x: 469,
-            y: 42,
-            Z: 64,
-          },
-          {
-            x: 373,
-            y: 47,
-            Z: 50,
-          },
-
-          {
-            x: 185,
-            y: 34,
-            Z: 51,
-          },
-          {
-            x: 316,
-            y: 47,
-            Z: 19,
-          },
-          {
-            x: 17,
-            y: 53,
-            Z: 45,
-          },
-          {
-            x: 81,
-            y: 16,
-            Z: 36,
-          },
-          {
-            x: 81,
-            y: 20,
-            Z: 44,
-          },
-          {
-            x: 664,
-            y: 25,
-            Z: 55,
-          },
-          {
-            x: 660,
-            y: 35,
-            Z: 64,
-          },
-          {
-            x: 245,
-            y: 25,
-            Z: 55,
-          },
+          [469, 42, 64],
+          [373, 47, 50],
+          [185, 34, 51],
+          [316, 47, 19],
+          [17, 53, 45],
+          [81, 16, 36],
+          [81, 20, 44],
+          [664, 25, 55],
+          [660, 35, 64],
+          [245, 25, 55],
+          [185, 34, 51],
+          [316, 47, 19],
+          [17, 53, 45],
+          [81, 16, 36],
+          [81, 20, 44],
+          [664, 25, 55],
+          [660, 35, 64],
+          [245, 25, 55],
         ],
       },
       {
-        titulo: 'Prod. B',
+        titulo: 'PRODUTO B',
         valores: [
-          {
-            x: 532,
-            y: 14,
-            Z: 41,
-          },
-          {
-            x: 336,
-            y: 28,
-            Z: 42,
-          },
-          {
-            x: 403,
-            y: 51,
-            Z: 71,
-          },
-          {
-            x: 634,
-            y: 31,
-            Z: 59,
-          },
-          {
-            x: 666,
-            y: 31,
-            Z: 59,
-          },
-          {
-            x: 64,
-            y: 39,
-            Z: 22,
-          },
-          {
-            x: 356,
-            y: 17,
-            Z: 28,
-          },
-          {
-            x: 104,
-            y: 37,
-            Z: 47,
-          },
-          {
-            x: 682,
-            y: 18,
-            Z: 27,
-          },
-          {
-            x: 243,
-            y: 43,
-            Z: 46,
-          },
+          [532, 14, 41],
+          [336, 28, 42],
+          [403, 51, 71],
+          [634, 31, 59],
+          [666, 31, 59],
+          [64, 39, 22],
+          [356, 17, 28],
+          [104, 37, 47],
+          [682, 18, 27],
+          [243, 43, 46],
+          [336, 28, 42],
+          [403, 51, 71],
         ],
       },
     ],

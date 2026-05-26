@@ -12,27 +12,15 @@ import { ref, computed } from 'vue';
 import VueApexCharts from 'vue3-apexcharts';
 import type { ApexOptions } from 'apexcharts';
 
+//classes
+import CDatasetGraficoBolha from './CDatasetGraficoBolha';
+
 const props = defineProps<{
   expandido?: boolean;
+  dataSet: CDatasetGraficoBolha<any>;
 }>();
 
 const apexchart = VueApexCharts;
-
-// Função para gerar dados para o gráfico de bolhas
-function generateData(baseval: number, count: number, yrange: { min: number; max: number }) {
-  let i = 0;
-  const series = [];
-  while (i < count) {
-    const x = Math.floor(Math.random() * (750 - 1 + 1)) + 1;
-    const y = Math.floor(Math.random() * (yrange.max - yrange.min + 1)) + yrange.min;
-    const z = Math.floor(Math.random() * (75 - 15 + 1)) + 15;
-
-    series.push([x, y, z]);
-    baseval += 86400000;
-    i++;
-  }
-  return series;
-}
 
 const options = computed<ApexOptions>(() => {
   const lOptions: ApexOptions = {
@@ -50,45 +38,22 @@ const options = computed<ApexOptions>(() => {
     },
     xaxis: {
       tickAmount: 12,
-      type: 'category' as const,
+      type: 'numeric' as const,
     },
     yaxis: {
       max: 70,
     },
   };
+  console.log('options', lDados);
   return lOptions;
 });
 
-const series = ref([
-  {
-    name: 'PRODUTOS 1',
-    data: generateData(new Date('11 Feb 2017 GMT').getTime(), 20, {
-      min: 10,
-      max: 60,
-    }),
-  },
-  {
-    name: 'PRODUTOS 2',
-    data: generateData(new Date('11 Feb 2017 GMT').getTime(), 20, {
-      min: 10,
-      max: 60,
-    }),
-  },
-  {
-    name: 'PRODUTOS 3',
-    data: generateData(new Date('11 Feb 2017 GMT').getTime(), 20, {
-      min: 10,
-      max: 60,
-    }),
-  },
-  {
-    name: 'PRODUTOS 4',
-    data: generateData(new Date('11 Feb 2017 GMT').getTime(), 20, {
-      min: 10,
-      max: 60,
-    }),
-  },
-]);
+const lDados = props.dataSet.registros.map((registro) => ({
+  name: String(registro[props.dataSet.campoLabel]),
+  data: registro[props.dataSet.campoValor] as any[],
+}));
+
+const series = computed(() => lDados);
 </script>
 <style scoped>
 .chart-container {
