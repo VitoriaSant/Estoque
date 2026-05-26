@@ -8,6 +8,9 @@ import { Request, Response } from 'express';
 import CClasseFiltro, { CFiltro } from '../../base/CClasseFiltro';
 //Model
 import CResumoPedidoCompraPendente from '../resumo/CResumoPedidoCompraPendenteModel';
+import CQueryBuilderSQL from '../../base/CQueryBuilderSQL';
+import CPedidoCompraPendenteModel from '../CPedidoCompraPendenteModel';
+import PedidosCompraPendenteSQL from '../base/PedidosCompraPendenteSQL';
 
 export default class ResumoPedidoCompraPendenteController {
   public async resumoPedidoCompraPendente(req: Request, res: Response): Promise<void> {
@@ -16,26 +19,44 @@ export default class ResumoPedidoCompraPendenteController {
         console.error(err);
         return res.status(500).json({ error: 'Erro ao conectar' });
       }
+
+      const classeFiltro = new CClasseFiltro<CPedidoCompraPendenteModel>(
+        req.body,
+      ) as CClasseFiltro<CPedidoCompraPendenteModel>;
+
       let query = `
-                SELECT
-                    COUNT(DISTINCT pc.codigo_pdc) AS total_pedidos_com_saldo,
-                    SUM(pcid.qtdeaberta_pdcitemdet * pcid.vlrunitarioliquido_pdcitemdet) AS valor_total,
-                    COUNT(DISTINCT CASE WHEN pc.dtpreventrega_pdc < CURRENT_DATE THEN pc.codigo_pdc END) AS total_pedidos_atrasados,
-                    SUM(CASE WHEN pc.dtpreventrega_pdc < CURRENT_DATE THEN pcid.qtdeaberta_pdcitemdet * pcid.vlrunitarioliquido_pdcitemdet ELSE 0 END) AS valor_total_atrasado
-                    FROM pedido_compra pc
-                    INNER JOIN pedido_compra_item pci
-                        on pci.autoincpedido_pdcitem = pc.codigo_pdc
-                    INNER JOIN pedido_compra_item_detalhe pcid
-                        on pcid.autoincpdcitem_pdcitemdet = pci.autoinc_pdcitem
-                    WHERE pcid.qtdeaberta_pdcitemdet > 0
-                `;
+        SELECT
+          COUNT(DISTINCT pedido_compra.codigo_pdc) AS total_pedidos_com_saldo_pendente,
+          SUM(pedido_compra_item_detalhe.qtdeaberta_pdcitemdet * pedido_compra_item_detalhe.vlrunitarioliquido_pdcitemdet) AS valor_total_pendente,
+          COUNT(DISTINCT CASE WHEN pedido_compra.dtpreventrega_pdc < CURRENT_DATE THEN pedido_compra.codigo_pdc END) AS total_pedidos_atrasados,
+          SUM(CASE WHEN pedido_compra.dtpreventrega_pdc < CURRENT_DATE THEN pedido_compra_item_detalhe.qtdeaberta_pdcitemdet * pedido_compra_item_detalhe.vlrunitarioliquido_pdcitemdet ELSE 0 END) AS valor_total_atrasado
+        FROM pedido_compra
+          INNER JOIN pedido_compra_item
+              on pedido_compra_item.autoincpedido_pdcitem = pedido_compra.codigo_pdc
+          INNER JOIN pedido_compra_item_detalhe
+              on pedido_compra_item_detalhe.autoincpdcitem_pdcitemdet = pedido_compra_item.autoinc_pdcitem
+      `;
+
+      if (CQueryBuilderSQL.verificarExistencia<CPedidoCompraPendenteModel>('acabamentoId', classeFiltro)) {
+        query += PedidosCompraPendenteSQL.JOIN_ACABAMENTO('LEFT JOIN');
+      } else if (CQueryBuilderSQL.verificarExistencia<CPedidoCompraPendenteModel>('corId', classeFiltro)) {
+        query += PedidosCompraPendenteSQL.JOIN_COR('LEFT JOIN');
+      } else if (CQueryBuilderSQL.verificarExistencia<CPedidoCompraPendenteModel>('variacaoId', classeFiltro)) {
+        query += PedidosCompraPendenteSQL.JOIN_VARIACAO('LEFT JOIN');
+      } else if (CQueryBuilderSQL.verificarExistencia<CPedidoCompraPendenteModel>('itemId', classeFiltro)) {
+        query += PedidosCompraPendenteSQL.JOIN_ITEM('LEFT JOIN');
+      } else if (
+        CQueryBuilderSQL.verificarExistencia<CPedidoCompraPendenteModel>('razaoSocialFornecedor', classeFiltro)
+      ) {
+        query += PedidosCompraPendenteSQL.JOIN_PESSOA('LEFT JOIN');
+      }
+
+      query += `WHERE pedido_compra_item_detalhe.qtdeaberta_pdcitemdet > 0`;
 
       const params: any[] = [];
 
-      const classeFiltro = new CClasseFiltro<CResumoPedidoCompraPendente>(
-        req.body,
-      ) as CClasseFiltro<CResumoPedidoCompraPendente>;
-
+      console.log('Query:', query);
+      console.log('Params:', params);
       console.log('ClasseFiltro:', classeFiltro);
 
       if (classeFiltro.dataInicio && classeFiltro.dataFim) {
@@ -45,17 +66,9 @@ export default class ResumoPedidoCompraPendenteController {
       }
 
       for (const filtro of classeFiltro.filtros) {
-        if (filtro.campo == 'empresaId') {
-          query += ` AND pedido_compra.empresa_pdc ${CFiltro.toOperadorSQL(filtro.operador)} ?`;
-          if (filtro.operador != 'CONTEM') {
-            params.push(filtro.valor);
-          } else {
-            params.push(`%${filtro.valor}%`);
-          }
-        }
+        if (CQueryBuilderSQL.verificarExistencia<CPedidoCompraPendenteModel>('fornecedorId', classeFiltro)) {
+          query += PedidosCompraPendenteSQL.WHERE_ID_FORNECEDO(CFiltro.toOperadorSQL(filtro.operador));
 
-        if (filtro.campo == 'fornecedorId') {
-          query += ` AND pedido_compra.fornecedor_pdc ${CFiltro.toOperadorSQL(filtro.operador)} ?`;
           if (filtro.operador != 'CONTEM') {
             params.push(filtro.valor);
           } else {
@@ -145,9 +158,10 @@ export default class ResumoPedidoCompraPendenteController {
 
       db.query(query, params, (err: any, result: any) => {
         if (err) {
-          console.error(err);
+          console.error('Erro completo:', err);
+          console.error('Mensagem:', err.message);
           db.detach();
-          return res.status(500).json({ error: 'Erro na query' });
+          return res.status(500).json({ error: 'Erro na query', details: err.message });
         }
         const response = {
           dados: result,

@@ -23,9 +23,12 @@ router.post('/compraPendente', comprasPendentesController.pedidoCompraPendente);
 router.post('/pontoDeCompra', pontoDeCompraController.pontoDeCompra);
 
 //Pedido de compra pendete
-router.get('/resumoPedidoCompraPendente', resumoPedidoCompraPendenteController.resumoPedidoCompraPendente);
+router.post('/resumoPedidoCompraPendente', resumoPedidoCompraPendenteController.resumoPedidoCompraPendente);
 router.get('/pedidoCompraPendente', pedidoCompraPendenteController.PedidoCompraPendente);
 router.get('/itensCompraPendente', itensCompraPendenteController.ItensCompraPendente);
-router.get('/fornecedoresPedidoCompraPendente', fornecedoresPedidoCompraPendenteController.FornecedoresPedidoCompraPendente);
+router.get(
+  '/fornecedoresPedidoCompraPendente',
+  fornecedoresPedidoCompraPendenteController.FornecedoresPedidoCompraPendente,
+);
 
 export default router;

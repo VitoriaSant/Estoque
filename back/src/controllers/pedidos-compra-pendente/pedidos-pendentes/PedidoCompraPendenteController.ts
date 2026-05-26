@@ -42,11 +42,15 @@ export default class PedidoCompraPendenteController {
 
       const params: any[] = [];
 
+      console.log('Query:', query);
+      console.log('Params:', params);
+
       db.query(query, params, (err: any, result: any) => {
         if (err) {
-          console.error(err);
+          console.error('Erro completo:', err);
+          console.error('Mensagem:', err.message);
           db.detach();
-          return res.status(500).json({ error: 'Erro na query' });
+          return res.status(500).json({ error: 'Erro na query', details: err.message });
         }
         const response = {
           dados: result,
