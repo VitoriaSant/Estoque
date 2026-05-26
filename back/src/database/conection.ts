@@ -1,7 +1,7 @@
 import * as dotenv from 'dotenv';
 dotenv.config();
 
-export default {
+export default  {
   host: process.env.host,
   port: process.env.port ? parseInt(process.env.port, 10) : undefined,
   database: process.env.database,
