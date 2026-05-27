@@ -8,6 +8,7 @@ import { Request, Response } from 'express';
 import CClasseFiltro, { CFiltro } from '../../base/CClasseFiltro';
 //Model
 import CPedidoCompraPendenteModel from '../CPedidoCompraPendenteModel';
+import CFornecedoresPedidoCompraPendente from './CFornecedoresPedidoCompraPendenteModel';
 
 //Base
 import CQueryBuilderSQL from '../../base/CQueryBuilderSQL';
@@ -114,8 +115,13 @@ export default class FornecedoresPedidoCompraPendenteController {
           db.detach();
           return res.status(500).json({ error: 'Erro na query', details: err.message });
         }
+
+        const dadosMapeados = Array.isArray(result)
+          ? result.map((row) => CFornecedoresPedidoCompraPendente.fromDatabaseRow(row))
+          : CFornecedoresPedidoCompraPendente.fromDatabaseRow(result);
+
         const response = {
-          dados: result,
+          dados: Array.isArray(dadosMapeados) ? dadosMapeados : [dadosMapeados],
         };
 
         res.json(response);
