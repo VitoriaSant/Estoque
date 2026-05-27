@@ -1,13 +1,15 @@
 <template>
   <Error v-model:error="erro" :mensagem="mensagemErro" />
   <div>
-    <Linha1-Cards-PedidoPendente :dados="dados" />
+    <Linha1-Cards-PedidoPendente :dadosResumo="dadosResumo" />
     <Linha2-PedidoPendente-FornecedorAtraso
-      :dados="dados"
+      :dadosFornecedor="dadosFornecedor"
+      :dadosResumo="dadosResumo"
       :key="`itens-${layoutStore.classeFiltro?.dataInicio || 'default'}`"
     />
     <Linha3-PedidoPendente-ItensPendentes
-      :dados="dados"
+      :dadosPedido="dadosPedido"
+      :dadosItens="dadosItens"
       :key="`itens-${layoutStore.classeFiltro?.dataInicio || 'default'}`"
     />
   </div>
@@ -30,12 +32,24 @@ const layoutStore = useLayoutDashboardStore();
 const pedidoPendenteStore = usePedidoPendenteStore();
 const erro = ref<boolean>(false);
 const mensagemErro = ref('');
-const dados = ref<any>(null);
+const dadosResumo = ref<any>(null);
+const dadosFornecedor = ref<any>(null);
+const dadosItens = ref<any>(null);
+const dadosPedido = ref<any>(null);
 
 const carregarDados = async () => {
   try {
-    const resultado = await pedidoPendenteStore.filtrarComprasPendentes(layoutStore.classeFiltro);
-    dados.value = resultado;
+    const resumo = await pedidoPendenteStore.filtrarResumoPedidoCompraPendete(layoutStore.classeFiltro);
+    dadosResumo.value = Array.isArray(resumo.dados) ? resumo.dados[0] : resumo.dados;
+
+    const fornecedor = await pedidoPendenteStore.filtrarFornecedorPedidoCompraPendente(layoutStore.classeFiltro);
+    dadosFornecedor.value = fornecedor.dados;
+
+    const pedidos = await pedidoPendenteStore.filtrarPedidoCompraPendente(layoutStore.classeFiltro);
+    dadosPedido.value = pedidos.dados;
+
+    const itens = await pedidoPendenteStore.filtrarItensCompraPendente(layoutStore.classeFiltro);
+    dadosItens.value = itens.dados;
   } catch (error) {
     mensagemErro.value = error as string;
     erro.value = true;

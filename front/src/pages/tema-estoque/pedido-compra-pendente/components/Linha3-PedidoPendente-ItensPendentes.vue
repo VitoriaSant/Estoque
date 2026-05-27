@@ -5,9 +5,9 @@
         <template #grafico="{ expandido }">
           <Tabela
             :th="['Código', 'Descrição', 'Quantidade', 'Valor Unitário', 'Valor Total']"
-            :campos="['IdItem', 'descricaoItem', 'quantidadeItens', 'valorUnitarioItem', 'valorTotalItem']"
+            :campos="['itemPdc', 'descricaoItem', 'quantidadeItensPendentes', 'valorTotalPendente', 'mediaValorUn']"
             :campoKey="'IdItem'"
-            :dados="props.dados?.itensPendentes || []"
+            :dados="props.dadosItens || []"
             :height="'350px'"
             :corDeAlerta="'corDeAlerta'"
             :expandido="expandido"
@@ -25,9 +25,9 @@
         <template #grafico="{ expandido }">
           <Tabela
             :th="['Codigo', 'Prev. Entrega', 'Valor']"
-            :campos="['pedidoId', 'previsaoEntregaPedido', 'valorTotalPedido']"
-            :campoKey="'pedidoId'"
-            :dados="props.dados?.pedidosPendentes || []"
+            :campos="['codicoPdc', 'dtPrevisaoEntregaPdc', 'valorTotalPendente']"
+            :campoKey="'codicoPdc'"
+            :dados="props.dadosPedido || []"
             :height="'350px'"
             :expandido="expandido"
           />
@@ -39,9 +39,13 @@
 
 <script setup lang="ts">
 import InfoPedidoCompraPendente from './Info-PedidoCompraPendente.vue';
-import InfoTeste from './Info-Teste.vue';
+
+//Classes
+import PedidoCompraPendente from '@/Service/tema-estoque/pedidos-compra-pendente/pedido-compra-pendente/CPedidoCompraPendenteModel.ts';
+import CItensCompraPendente from '@/Service/tema-estoque/pedidos-compra-pendente/itens-compra-pendente/CItensCompraPendenteModel.ts';
 
 const props = defineProps<{
-  dados: any;
+  dadosPedido: PedidoCompraPendente[];
+  dadosItens: CItensCompraPendente[];
 }>();
 </script>

@@ -12,9 +12,9 @@
         <template #grafico="{ expandido }">
           <Tabela
             :th="['Codigo', 'Fornecedor', 'Qtd. Pedidos', 'Valor Total']"
-            :campos="['fornecedorId', 'fornecedorNome', 'quantidadePedidosFornecedor', 'valorTotalFornecedor']"
-            :campoKey="'fornecedorId'"
-            :dados="props.dados?.pedidosPorFornecedor || []"
+            :campos="['fornecedorPdc', 'razaoSocialPessoa', 'totalPedidosComSaldoPendente', 'valorTotalPendente']"
+            :campoKey="'fornecedorPdc'"
+            :dados="props.dadosFornecedor || []"
             :height="'350px'"
             :expandido="expandido"
           />
@@ -30,9 +30,12 @@ import { computed } from 'vue';
 
 //Classes
 import CDatasetGraficoPizza from '@/components/graficos/pizza/CDatasetGraficoPizza';
+import CFornecedoresPedidoCompraPendente from '@/Service/tema-estoque/pedidos-compra-pendente/fornecedores-pedido-compra-pendente/CFornecedoresPedidoCompraPendenteModel';
+import CResumoPedidoCompraPendente from '@/Service/tema-estoque/pedidos-compra-pendente/resumo-pedido-compra-pendente/CResumoPedidoCompraPendenteModel';
 
 const props = defineProps<{
-  dados: any;
+  dadosFornecedor: CFornecedoresPedidoCompraPendente[];
+  dadosResumo: CResumoPedidoCompraPendente | null;
 }>();
 
 type TRegistroPizza = {
@@ -47,11 +50,11 @@ const dataSetPizza = computed(() => {
     registros: [
       {
         titulo: 'Pedidos em Atraso',
-        valor: props.dados?.resumo?.qntPedidoEmAtraso,
+        valor: [props.dadosResumo?.totalPedidosAtrasados || 0],
       },
       {
         titulo: 'Pedidos no Prazo',
-        valor: props.dados?.resumo?.pedidoEmDia,
+        valor: [props.dadosResumo?.totalPedidosComSaldo || 0],
       },
     ],
   });
