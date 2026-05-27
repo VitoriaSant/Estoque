@@ -8,6 +8,7 @@ import { Request, Response } from 'express';
 import CClasseFiltro, { CFiltro } from '../../base/CClasseFiltro';
 //Model
 import CPedidoCompraPendenteModel from '../CPedidoCompraPendenteModel';
+import CResumoPedidoCompraPendente from './CResumoPedidoCompraPendenteModel';
 
 //Base
 import CQueryBuilderSQL from '../../base/CQueryBuilderSQL';
@@ -108,8 +109,13 @@ export default class ResumoPedidoCompraPendenteController {
           db.detach();
           return res.status(500).json({ error: 'Erro na query', details: err.message });
         }
+
+        const dadosMapeados = Array.isArray(result)
+          ? result.map((row) => CResumoPedidoCompraPendente.fromDatabaseRow(row))
+          : CResumoPedidoCompraPendente.fromDatabaseRow(result);
+
         const response = {
-          dados: result,
+          dados: Array.isArray(dadosMapeados) ? dadosMapeados : [dadosMapeados],
         };
 
         res.json(response);
