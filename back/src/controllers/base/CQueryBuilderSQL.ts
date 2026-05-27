@@ -10,4 +10,10 @@ export default class CQueryBuilderSQL {
     return false;
   }
 
+  static obterValorFormatado(filtro: any): any {
+    if (filtro.operador !== 'CONTEM') {
+      return filtro.valor;
+    }
+    return `%${filtro.valor}%`;
+  }
 }
