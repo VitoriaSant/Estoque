@@ -8,6 +8,7 @@ import { Request, Response } from 'express';
 import CClasseFiltro, { CFiltro } from '../../base/CClasseFiltro';
 //Model
 import CPedidoCompraPendenteModel from '../CPedidoCompraPendenteModel';
+import CItensCompraPendente from './CItensCompraPendenteModel';
 
 //Base
 import CQueryBuilderSQL from '../../base/CQueryBuilderSQL';
@@ -37,7 +38,7 @@ export default class ItensCompraPendenteController {
             on item.codigo_item = pedido_compra_item.item_pdcitem
           INNER JOIN pedido_compra_item_detalhe
             on pedido_compra_item_detalhe.autoincpdcitem_pdcitemdet = pedido_compra_item.autoinc_pdcitem
-          INNER JOIN pedido_compra pc
+          INNER JOIN pedido_compra
             on pedido_compra.codigo_pdc = pedido_compra_item.autoincpedido_pdcitem
       `;
 
@@ -114,8 +115,12 @@ export default class ItensCompraPendenteController {
           db.detach();
           return res.status(500).json({ error: 'Erro na query' });
         }
+        const dadosMapeados = Array.isArray(result)
+          ? result.map((row) => CItensCompraPendente.fromDatabaseRow(row))
+          : CItensCompraPendente.fromDatabaseRow(result);
+
         const response = {
-          dados: result,
+          dados: Array.isArray(dadosMapeados) ? dadosMapeados : [dadosMapeados],
         };
 
         res.json(response);
