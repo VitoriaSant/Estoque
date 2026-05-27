@@ -1,5 +1,5 @@
 type TOperadorFiltro = 'IGUAL' | 'DIFERENTE' | 'MAIOR' | 'MENOR' | 'CONTEM';
-type TOperadorSQL = '=' | '<>' | '>' | 'LIKE';
+type TOperadorSQL = '=' | '<>' | 'LIKE';
 
 export class CFiltro<Classe> {
   campo: keyof Classe = '' as any;
