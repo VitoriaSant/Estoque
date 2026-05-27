@@ -1,6 +1,6 @@
 export default class CPedidoCompraPendenteModel {
   //codigo: number = 0;
-  empresaId: number = 0;
+  //empresaId: number = 0;
   //dataEmissao: Date | null = null;
   //dataPrevisaoEntrega: Date | null = null;
   fornecedorId: number = 0;
