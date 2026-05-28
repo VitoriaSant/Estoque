@@ -6,9 +6,11 @@ import options from '../../../database/conection';
 import { Request, Response } from 'express';
 //Classes
 import CClasseFiltro, { CFiltro } from '../../base/CClasseFiltro';
+import CResponseConsultaPaginada from '../../base/CResponseConsultaPaginada';
+
 //Model
-import CPedidoCompraPendenteModel from '../CPedidoCompraPendenteModel';
-import CPedidoCompraPendente from './CPedidoCompraPendenteModel';
+import CPedidoCompraPendenteGeralModel from '../CPedidoCompraPendenteGeralModel';
+import CPedidoCompraPendenteModel from './CPedidoCompraPendenteModel';
 
 //Base
 import CQueryBuilderSQL from '../../base/CQueryBuilderSQL';
@@ -22,9 +24,9 @@ export default class PedidoCompraPendenteController {
         return res.status(500).json({ error: 'Erro ao conectar' });
       }
 
-      const classeFiltro = new CClasseFiltro<CPedidoCompraPendenteModel>(
+      const classeFiltro = new CClasseFiltro<CPedidoCompraPendenteGeralModel>(
         req.body,
-      ) as CClasseFiltro<CPedidoCompraPendenteModel>;
+      ) as CClasseFiltro<CPedidoCompraPendenteGeralModel>;
 
       let query = `
         SELECT
@@ -38,16 +40,18 @@ export default class PedidoCompraPendenteController {
             on pedido_compra_item_detalhe.autoincpdcitem_pdcitemdet = pedido_compra_item.autoinc_pdcitem
       `;
 
-      if (CQueryBuilderSQL.verificarExistencia<CPedidoCompraPendenteModel>('descricaoAcabamento', classeFiltro)) {
+      if (CQueryBuilderSQL.verificarExistencia<CPedidoCompraPendenteGeralModel>('descricaoAcabamento', classeFiltro)) {
         query += PedidosCompraPendenteSQL.JOIN_ACABAMENTO('LEFT JOIN');
-      } else if (CQueryBuilderSQL.verificarExistencia<CPedidoCompraPendenteModel>('descricaoCor', classeFiltro)) {
+      } else if (CQueryBuilderSQL.verificarExistencia<CPedidoCompraPendenteGeralModel>('descricaoCor', classeFiltro)) {
         query += PedidosCompraPendenteSQL.JOIN_COR('LEFT JOIN');
-      } else if (CQueryBuilderSQL.verificarExistencia<CPedidoCompraPendenteModel>('descricaoVariacao', classeFiltro)) {
+      } else if (
+        CQueryBuilderSQL.verificarExistencia<CPedidoCompraPendenteGeralModel>('descricaoVariacao', classeFiltro)
+      ) {
         query += PedidosCompraPendenteSQL.JOIN_VARIACAO('LEFT JOIN');
-      } else if (CQueryBuilderSQL.verificarExistencia<CPedidoCompraPendenteModel>('descricaoItem', classeFiltro)) {
+      } else if (CQueryBuilderSQL.verificarExistencia<CPedidoCompraPendenteGeralModel>('descricaoItem', classeFiltro)) {
         query += PedidosCompraPendenteSQL.JOIN_ITEM('LEFT JOIN');
       } else if (
-        CQueryBuilderSQL.verificarExistencia<CPedidoCompraPendenteModel>('razaoSocialFornecedor', classeFiltro)
+        CQueryBuilderSQL.verificarExistencia<CPedidoCompraPendenteGeralModel>('razaoSocialFornecedor', classeFiltro)
       ) {
         query += PedidosCompraPendenteSQL.JOIN_PESSOA('LEFT JOIN');
       }
@@ -62,42 +66,51 @@ export default class PedidoCompraPendenteController {
       }
 
       for (const filtro of classeFiltro.filtros) {
-        if (CQueryBuilderSQL.verificarExistencia<CPedidoCompraPendenteModel>('fornecedorId', classeFiltro)) {
-          query += PedidosCompraPendenteSQL.WHERE_ID_FORNECEDO(CFiltro.toOperadorSQL(filtro.operador));
-          params.push(CQueryBuilderSQL.obterValorFormatado(filtro));
+        const valorFormatado = CQueryBuilderSQL.obterValorFormatado(filtro);
+        const operadorSQL = CFiltro.toOperadorSQL(filtro.operador);
+
+        if (CQueryBuilderSQL.verificarExistencia<CPedidoCompraPendenteGeralModel>('fornecedorId', classeFiltro)) {
+          query += PedidosCompraPendenteSQL.WHERE_ID_FORNECEDO(operadorSQL);
+          params.push(valorFormatado);
         } else if (
-          CQueryBuilderSQL.verificarExistencia<CPedidoCompraPendenteModel>('razaoSocialFornecedor', classeFiltro)
+          CQueryBuilderSQL.verificarExistencia<CPedidoCompraPendenteGeralModel>('razaoSocialFornecedor', classeFiltro)
         ) {
-          query += PedidosCompraPendenteSQL.WHERE_DESCRICAO_FORNECEDOR(CFiltro.toOperadorSQL(filtro.operador));
-          params.push(CQueryBuilderSQL.obterValorFormatado(filtro));
-        } else if (CQueryBuilderSQL.verificarExistencia<CPedidoCompraPendenteModel>('itemId', classeFiltro)) {
-          query += PedidosCompraPendenteSQL.WHERE_ID_ITEM(CFiltro.toOperadorSQL(filtro.operador));
-          params.push(CQueryBuilderSQL.obterValorFormatado(filtro));
-        } else if (CQueryBuilderSQL.verificarExistencia<CPedidoCompraPendenteModel>('descricaoItem', classeFiltro)) {
-          query += PedidosCompraPendenteSQL.WHERE_DESCRICAO_ITEM(CFiltro.toOperadorSQL(filtro.operador));
-          params.push(CQueryBuilderSQL.obterValorFormatado(filtro));
-        } else if (CQueryBuilderSQL.verificarExistencia<CPedidoCompraPendenteModel>('variacaoId', classeFiltro)) {
-          query += PedidosCompraPendenteSQL.WHERE_ID_VARIACAO(CFiltro.toOperadorSQL(filtro.operador));
-          params.push(CQueryBuilderSQL.obterValorFormatado(filtro));
+          query += PedidosCompraPendenteSQL.WHERE_DESCRICAO_FORNECEDOR(operadorSQL);
+          params.push(valorFormatado);
+        } else if (CQueryBuilderSQL.verificarExistencia<CPedidoCompraPendenteGeralModel>('itemId', classeFiltro)) {
+          query += PedidosCompraPendenteSQL.WHERE_ID_ITEM(operadorSQL);
+          params.push(valorFormatado);
         } else if (
-          CQueryBuilderSQL.verificarExistencia<CPedidoCompraPendenteModel>('descricaoVariacao', classeFiltro)
+          CQueryBuilderSQL.verificarExistencia<CPedidoCompraPendenteGeralModel>('descricaoItem', classeFiltro)
         ) {
-          query += PedidosCompraPendenteSQL.WHERE_DESCRICAO_VARIACAO(CFiltro.toOperadorSQL(filtro.operador));
-          params.push(CQueryBuilderSQL.obterValorFormatado(filtro));
-        } else if (CQueryBuilderSQL.verificarExistencia<CPedidoCompraPendenteModel>('corId', classeFiltro)) {
-          query += PedidosCompraPendenteSQL.WHERE_ID_COR(CFiltro.toOperadorSQL(filtro.operador));
-          params.push(CQueryBuilderSQL.obterValorFormatado(filtro));
-        } else if (CQueryBuilderSQL.verificarExistencia<CPedidoCompraPendenteModel>('descricaoCor', classeFiltro)) {
-          query += PedidosCompraPendenteSQL.WHERE_DESCRICAO_COR(CFiltro.toOperadorSQL(filtro.operador));
-          params.push(CQueryBuilderSQL.obterValorFormatado(filtro));
-        } else if (CQueryBuilderSQL.verificarExistencia<CPedidoCompraPendenteModel>('acabamentoId', classeFiltro)) {
-          query += PedidosCompraPendenteSQL.WHERE_ID_ACABAMENTO(CFiltro.toOperadorSQL(filtro.operador));
-          params.push(CQueryBuilderSQL.obterValorFormatado(filtro));
+          query += PedidosCompraPendenteSQL.WHERE_DESCRICAO_ITEM(operadorSQL);
+          params.push(valorFormatado);
+        } else if (CQueryBuilderSQL.verificarExistencia<CPedidoCompraPendenteGeralModel>('variacaoId', classeFiltro)) {
+          query += PedidosCompraPendenteSQL.WHERE_ID_VARIACAO(operadorSQL);
+          params.push(valorFormatado);
         } else if (
-          CQueryBuilderSQL.verificarExistencia<CPedidoCompraPendenteModel>('descricaoAcabamento', classeFiltro)
+          CQueryBuilderSQL.verificarExistencia<CPedidoCompraPendenteGeralModel>('descricaoVariacao', classeFiltro)
         ) {
-          query += PedidosCompraPendenteSQL.WHERE_DESCRICAO_ACABAMENTO(CFiltro.toOperadorSQL(filtro.operador));
-          params.push(CQueryBuilderSQL.obterValorFormatado(filtro));
+          query += PedidosCompraPendenteSQL.WHERE_DESCRICAO_VARIACAO(operadorSQL);
+          params.push(valorFormatado);
+        } else if (CQueryBuilderSQL.verificarExistencia<CPedidoCompraPendenteGeralModel>('corId', classeFiltro)) {
+          query += PedidosCompraPendenteSQL.WHERE_ID_COR(operadorSQL);
+          params.push(valorFormatado);
+        } else if (
+          CQueryBuilderSQL.verificarExistencia<CPedidoCompraPendenteGeralModel>('descricaoCor', classeFiltro)
+        ) {
+          query += PedidosCompraPendenteSQL.WHERE_DESCRICAO_COR(operadorSQL);
+          params.push(valorFormatado);
+        } else if (
+          CQueryBuilderSQL.verificarExistencia<CPedidoCompraPendenteGeralModel>('acabamentoId', classeFiltro)
+        ) {
+          query += PedidosCompraPendenteSQL.WHERE_ID_ACABAMENTO(operadorSQL);
+          params.push(valorFormatado);
+        } else if (
+          CQueryBuilderSQL.verificarExistencia<CPedidoCompraPendenteGeralModel>('descricaoAcabamento', classeFiltro)
+        ) {
+          query += PedidosCompraPendenteSQL.WHERE_DESCRICAO_ACABAMENTO(operadorSQL);
+          params.push(valorFormatado);
         }
       }
 
@@ -114,8 +127,8 @@ export default class PedidoCompraPendenteController {
         }
 
         const dadosMapeados = Array.isArray(result)
-          ? result.map((row) => CPedidoCompraPendente.fromDatabaseRow(row))
-          : CPedidoCompraPendente.fromDatabaseRow(result);
+          ? result.map((row) => CPedidoCompraPendenteModel.fromDatabaseRow(row))
+          : CPedidoCompraPendenteModel.fromDatabaseRow(result);
 
         const response = {
           dados: Array.isArray(dadosMapeados) ? dadosMapeados : [dadosMapeados],
