@@ -11,7 +11,7 @@ export default class CPedidoCompraPendenteModel {
     return new CPedidoCompraPendenteModel(data);
   }
 
-  static fromDatabaseRow(row: any): CPedidoCompraPendenteModel {
+  static mapearParaModel(row: any): CPedidoCompraPendenteModel {
     return new CPedidoCompraPendenteModel({
       codicoPdc: row.CODIGO_PDC,
       dtPrevisaoEntregaPdc: row.DTPREVENTREGA_PDC,
