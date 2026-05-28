@@ -16,7 +16,7 @@ import { ref, watch } from 'vue';
 
 //Services
 import CClasseFiltro from '@/service/base/CClasseFiltro';
-import CPedidoCompraPendenteModel from '@/service/tema-estoque/pedidos-compra-pendente/CPedidoCompraPendenteModel';
+import CPedidoCompraPendenteModel from '@/service/tema-estoque/pedidos-compra-pendente/CPedidoCompraPendenteGeralModel';
 
 const emit = defineEmits<{
   'update:dataInicio': [value: string];
@@ -49,4 +49,3 @@ watch(dataFim, (newValue) => {
 </script>
 
 <style scoped></style>
-

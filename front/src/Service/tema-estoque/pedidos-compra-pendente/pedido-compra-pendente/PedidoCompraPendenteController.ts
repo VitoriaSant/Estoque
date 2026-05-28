@@ -3,7 +3,7 @@ import { api } from '@/service/base/Axios';
 //Services
 import type CClasseFiltro from '@/service/base/CClasseFiltro';
 //Models
-import CPedidoCompraPendenteModel from '../CPedidoCompraPendenteModel';
+import CPedidoCompraPendenteGeralModel from '..CPedidoCompraPendenteGeralModel';
 import CPedidoCompraPendente from './CPedidoCompraPendenteModel';
 //Classes
 import CResponseConsultaPaginada from '@/service/base/CResponseConsultaPaginada';
@@ -15,7 +15,7 @@ export default class PedidoCompraPendenteController {
     listar: '/pedidoCompraPendente',
   };
   async pedidoCompraPendete(
-    pFiltros: CClasseFiltro<CPedidoCompraPendenteModel>,
+    pFiltros: CClasseFiltro<CPedidoCompraPendenteGeralModel>,
   ): Promise<CResponseConsultaPaginada<CPedidoCompraPendente>> {
     const response = await api.post<CResponseConsultaPaginada<CPedidoCompraPendente>>(
       `${cBASE_URL_API}${this.endpoint.listar}`,
@@ -25,4 +25,3 @@ export default class PedidoCompraPendenteController {
     return response.data;
   }
 }
-

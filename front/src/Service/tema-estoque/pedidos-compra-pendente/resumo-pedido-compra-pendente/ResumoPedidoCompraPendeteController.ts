@@ -3,7 +3,7 @@ import { api } from '@/service/base/Axios';
 //Services
 import type CClasseFiltro from '@/service/base/CClasseFiltro';
 //Models
-import CPedidoCompraPendenteModel from '../CPedidoCompraPendenteModel';
+import type CPedidoCompraPendenteGeralModel from '../CPedidoCompraPendenteGeralModel';
 //Interfaces
 import type { IResumopedidoCompraPendete } from '@/service/tema-estoque/pedidos-compra-pendente/resumo-pedido-compra-pendente/IResumoPedidoCompraPendete';
 //Constants
@@ -14,10 +14,9 @@ export default class PedidoCompraPendenteController {
     listar: '/resumoPedidoCompraPendente',
   };
   async resumoPedidoCompraPendete(
-    pFiltros: CClasseFiltro<CPedidoCompraPendenteModel>,
+    pFiltros: CClasseFiltro<CPedidoCompraPendenteGeralModel>,
   ): Promise<IResumopedidoCompraPendete> {
     const response = await api.post<IResumopedidoCompraPendete>(`${cBASE_URL_API}${this.endpoint.listar}`, pFiltros);
     return response.data;
   }
 }
-

@@ -42,6 +42,7 @@
 </template>
 
 <script setup lang="ts">
+//Classe
 import CResumoPedidoCompraPendente from '@/service/tema-estoque/pedidos-compra-pendente/resumo-pedido-compra-pendente/CResumoPedidoCompraPendenteModel';
 
 const props = defineProps<{

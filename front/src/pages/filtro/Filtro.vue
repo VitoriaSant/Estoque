@@ -42,8 +42,8 @@
 import { ref, toRef } from 'vue';
 
 //Services
-import CClasseFiltro from '@/Service/base/CClasseFiltro';
-import CPedidoCompraPendenteModel from '@/Service/tema-estoque/pedidos-compra-pendente/CPedidoCompraPendenteModel';
+import CClasseFiltro from '@/service/base/CClasseFiltro';
+import CPedidoCompraPendenteGeralModel from '@/service/tema-estoque/pedidos-compra-pendente/CPedidoCompraPendenteGeralModel.ts';
 
 //Components
 import DatasFiltro from './components/DatasFiltro.vue';
@@ -61,7 +61,7 @@ const loading = ref(false);
 const emit = defineEmits(['fechar', 'aplicar', 'update:dialogFiltro', 'update:classe-filtro']);
 
 const props = defineProps<{
-  classeFiltro: CClasseFiltro<CPedidoCompraPendenteModel>;
+  classeFiltro: CClasseFiltro<CPedidoCompraPendenteGeralModel>;
   dialogFiltro: boolean;
 }>();
 const dialogFiltro = toRef(props, 'dialogFiltro');
@@ -99,9 +99,9 @@ function filtrar(valor: string) {
 // Função para buscar dados com os filtros atuais
 async function buscarDados() {
   // Obtém o nome técnico do campo usando o mapeamento do modelo
-  const mapaCampos = CPedidoCompraPendenteModel.getMapaCampos();
+  const mapaCampos = CPedidoCompraPendenteGeralModel.getMapaCampos();
   const campoTecnico = (mapaCampos[filtroSelecionado.value] ||
-    filtroSelecionado.value) as keyof CPedidoCompraPendenteModel;
+    filtroSelecionado.value) as keyof CPedidoCompraPendenteGeralModel;
 
   // Converte valor para número se for um ID
   let valorConvertido: any = valorDigitado.value;
@@ -110,7 +110,7 @@ async function buscarDados() {
   }
 
   // Criar uma cópia do objeto de filtro para modificar
-  const filtroAtualizado = new CClasseFiltro();
+  const filtroAtualizado = new CClasseFiltro<CPedidoCompraPendenteGeralModel>();
   filtroAtualizado.dataInicio = dataInicio.value ? new Date(dataInicio.value) : undefined;
   filtroAtualizado.dataFim = dataFim.value ? new Date(dataFim.value) : undefined;
   filtroAtualizado.filtros = [

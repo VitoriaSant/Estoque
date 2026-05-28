@@ -1,4 +1,4 @@
-export default class CPedidoCompraPendenteModel {
+export default class CPedidoCompraPendenteGeralModel {
   fornecedorId: number = 0;
   razaoSocialFornecedor: string = '';
   itemId: number = 0;
@@ -10,12 +10,12 @@ export default class CPedidoCompraPendenteModel {
   acabamentoId: number = 0;
   descricaoAcabamento: string = '';
 
-  private constructor(data: Partial<CPedidoCompraPendenteModel>) {
+  private constructor(data: Partial<CPedidoCompraPendenteGeralModel>) {
     Object.assign(this, data);
   }
 
   // Mapeamento de nomes amigáveis para nomes técnicos do modelo
-  static readonly mapaCampos: Record<string, keyof CPedidoCompraPendenteModel> = {
+  static readonly mapaCampos: Record<string, keyof CPedidoCompraPendenteGeralModel> = {
     'Código do Fornecedor': 'fornecedorId',
     Fornecedor: 'razaoSocialFornecedor',
     'Código do Item': 'itemId',
@@ -29,6 +29,6 @@ export default class CPedidoCompraPendenteModel {
   };
 
   static getMapaCampos() {
-    return CPedidoCompraPendenteModel.mapaCampos;
+    return CPedidoCompraPendenteGeralModel.mapaCampos;
   }
 }

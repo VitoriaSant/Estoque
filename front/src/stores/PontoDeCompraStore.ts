@@ -2,8 +2,10 @@
 import { ref } from 'vue';
 import { defineStore } from 'pinia';
 
-//Services
+//Controllers
 import PontoDeCompraController from '@/service/tema-estoque/ponto-de-compra/PontoDeCompraController';
+
+//Classe
 import CClasseFiltro from '@/service/base/CClasseFiltro';
 import CPontoDeCompraModel from '@/service/tema-estoque/ponto-de-compra/CPontoDeCompraModel';
 

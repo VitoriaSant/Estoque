@@ -22,8 +22,8 @@
 import { ref, watch } from 'vue';
 
 //Services
-import CClasseFiltro from '@/Service/base/CClasseFiltro';
-import CPedidoCompraPendenteModel from '@/Service/tema-estoque/pedidos-compra-pendente/CPedidoCompraPendenteModel';
+import CClasseFiltro from '@/service/base/CClasseFiltro';
+import CPedidoCompraPendenteModel from '@/service/tema-estoque/pedidos-compra-pendente/CPedidoCompraPendenteGeralModel';
 
 const filtroSelecionado = ref('Item');
 

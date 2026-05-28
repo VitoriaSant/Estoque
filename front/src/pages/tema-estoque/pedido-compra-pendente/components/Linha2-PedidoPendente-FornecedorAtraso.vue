@@ -28,8 +28,10 @@
 //Vue
 import { computed } from 'vue';
 
-//Classes
+//componente
 import CDatasetGraficoPizza from '@/components/graficos/pizza/CDatasetGraficoPizza';
+
+//Classes
 import CFornecedoresPedidoCompraPendente from '@/service/tema-estoque/pedidos-compra-pendente/fornecedores-pedido-compra-pendente/CFornecedoresPedidoCompraPendenteModel';
 import CResumoPedidoCompraPendente from '@/service/tema-estoque/pedidos-compra-pendente/resumo-pedido-compra-pendente/CResumoPedidoCompraPendenteModel';
 
@@ -60,4 +62,3 @@ const dataSetPizza = computed(() => {
   });
 });
 </script>
-

@@ -27,6 +27,8 @@ import { usePedidoPendenteStore } from '@/stores/PedidoPendenteStore';
 import Linha1CardsPedidoPendente from './components/Linha1-Cards-PedidoPendente.vue';
 import Linha2PedidoPendenteFornecedorAtraso from './components/Linha2-PedidoPendente-FornecedorAtraso.vue';
 import Linha3PedidoPendenteItensPendentes from './components/Linha3-PedidoPendente-ItensPendentes.vue';
+
+//Classes
 import CResponseConsultaPaginada from '@/service/base/CResponseConsultaPaginada.ts';
 import type CPedidoCompraPendente from '@/service/tema-estoque/pedidos-compra-pendente/pedido-compra-pendente/CPedidoCompraPendenteModel.ts';
 import type CItensCompraPendente from '@/service/tema-estoque/pedidos-compra-pendente/itens-compra-pendente/CItensCompraPendenteModel.ts';
