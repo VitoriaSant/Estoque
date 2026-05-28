@@ -12,7 +12,7 @@ export default class CItensCompraPendente {
     return new CItensCompraPendente(data);
   }
 
-  static fromDatabaseRow(row: any): CItensCompraPendente {
+  static mapearParaModel(row: any): CItensCompraPendente {
     return new CItensCompraPendente({
       itemPdc: row.ITEM_PDCITEM,
       descricaoItem: row.DESCRICAO_ITEM,

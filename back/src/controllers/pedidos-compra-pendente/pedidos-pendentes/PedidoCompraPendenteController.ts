@@ -27,13 +27,13 @@ export default class PedidoCompraPendenteController {
       const classeFiltro = new CClasseFiltro<CPedidoCompraPendenteGeralModel>(
         req.body,
       ) as CClasseFiltro<CPedidoCompraPendenteGeralModel>;
-      
+
       const pagina = Number(req.body?.paginacao?.pagina) > 0 ? Number(req.body.paginacao.pagina) : 1;
       const limite = Number(req.body?.paginacao?.limite) > 0 ? Number(req.body.paginacao.limite) : 10;
       const skip = (pagina - 1) * limite;
 
       let query = `
-        SELECT
+        SELECT 
           pedido_compra.codigo_pdc,
           pedido_compra.dtpreventrega_pdc,
           SUM(pedido_compra_item_detalhe.qtdeaberta_pdcitemdet * pedido_compra_item_detalhe.vlrunitarioliquido_pdcitemdet) AS valor_total_pendente
@@ -44,28 +44,20 @@ export default class PedidoCompraPendenteController {
             on pedido_compra_item_detalhe.autoincpdcitem_pdcitemdet = pedido_compra_item.autoinc_pdcitem
       `;
 
-      for (const filtro of classeFiltro.filtros) {
-        if (
-          CQueryBuilderSQL.verificarExistencia<CPedidoCompraPendenteGeralModel>('descricaoAcabamento', classeFiltro)
-        ) {
-          query += PedidosCompraPendenteSQL.JOIN_ACABAMENTO('LEFT JOIN');
-        } else if (
-          CQueryBuilderSQL.verificarExistencia<CPedidoCompraPendenteGeralModel>('descricaoCor', classeFiltro)
-        ) {
-          query += PedidosCompraPendenteSQL.JOIN_COR('LEFT JOIN');
-        } else if (
-          CQueryBuilderSQL.verificarExistencia<CPedidoCompraPendenteGeralModel>('descricaoVariacao', classeFiltro)
-        ) {
-          query += PedidosCompraPendenteSQL.JOIN_VARIACAO('LEFT JOIN');
-        } else if (
-          CQueryBuilderSQL.verificarExistencia<CPedidoCompraPendenteGeralModel>('descricaoItem', classeFiltro)
-        ) {
-          query += PedidosCompraPendenteSQL.JOIN_ITEM('LEFT JOIN');
-        } else if (
-          CQueryBuilderSQL.verificarExistencia<CPedidoCompraPendenteGeralModel>('razaoSocialFornecedor', classeFiltro)
-        ) {
-          query += PedidosCompraPendenteSQL.JOIN_PESSOA('LEFT JOIN');
-        }
+      if (CQueryBuilderSQL.verificarExistencia<CPedidoCompraPendenteGeralModel>('descricaoAcabamento', classeFiltro)) {
+        query += PedidosCompraPendenteSQL.JOIN_ACABAMENTO('LEFT JOIN');
+      } else if (CQueryBuilderSQL.verificarExistencia<CPedidoCompraPendenteGeralModel>('descricaoCor', classeFiltro)) {
+        query += PedidosCompraPendenteSQL.JOIN_COR('LEFT JOIN');
+      } else if (
+        CQueryBuilderSQL.verificarExistencia<CPedidoCompraPendenteGeralModel>('descricaoVariacao', classeFiltro)
+      ) {
+        query += PedidosCompraPendenteSQL.JOIN_VARIACAO('LEFT JOIN');
+      } else if (CQueryBuilderSQL.verificarExistencia<CPedidoCompraPendenteGeralModel>('descricaoItem', classeFiltro)) {
+        query += PedidosCompraPendenteSQL.JOIN_ITEM('LEFT JOIN');
+      } else if (
+        CQueryBuilderSQL.verificarExistencia<CPedidoCompraPendenteGeralModel>('razaoSocialFornecedor', classeFiltro)
+      ) {
+        query += PedidosCompraPendenteSQL.JOIN_PESSOA('LEFT JOIN');
       }
 
       query += `WHERE pedido_compra_item_detalhe.qtdeaberta_pdcitemdet > 0`;
@@ -130,6 +122,7 @@ export default class PedidoCompraPendenteController {
                     pedido_compra.codigo_pdc,
                     pedido_compra.dtpreventrega_pdc`;
 
+
       const countQuery = `
         SELECT COUNT(*) AS TOTAL_DE_REGISTROS
         FROM (${query}) consulta
@@ -143,7 +136,7 @@ export default class PedidoCompraPendenteController {
         FROM (${query}) consulta
         ORDER BY consulta.codigo_pdc
       `;
-
+    
       db.query(countQuery, params, (err: any, countResult: any) => {
         if (err) {
           console.error('Erro completo:', err);
