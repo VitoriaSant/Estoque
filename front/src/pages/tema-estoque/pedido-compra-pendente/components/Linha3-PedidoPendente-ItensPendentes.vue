@@ -3,15 +3,18 @@
     <v-col cols="12" md="7" class="pa-1">
       <CardParaComportarGraf :titulo="'Itens Pendentes'" :icone="'mdi-archive-alert'">
         <template #grafico="{ expandido }">
-          <!-- <Tabela
-            :th="['CÃ³digo', 'DescriÃ§Ã£o', 'Quantidade', 'Valor UnitÃ¡rio', 'Valor Total']"
+          <Tabela
+            :th="['Coigo', 'Descrição', 'Quantidade', 'Valor Unitário', 'Valor Total']"
             :campos="['itemPdc', 'descricaoItem', 'quantidadeItensPendentes', 'valorTotalPendente', 'mediaValorUn']"
             :campoKey="'IdItem'"
-            :dados="props.dadosItens || []"
             :height="'350px'"
             :corDeAlerta="'corDeAlerta'"
             :expandido="expandido"
-          /> -->
+            :dados="responseItens.registros || []"
+            :totalDeRegistros="responseItens.paginacao.totalDeRegistros || 0"
+            v-model:pagina="responseItens.paginacao.pagina"
+            v-model:limite="responseItens.paginacao.limite"
+          />
         </template>
       </CardParaComportarGraf>
     </v-col>

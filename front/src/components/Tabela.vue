@@ -37,7 +37,7 @@
         <v-select
           v-model="limite"
           :items="[10, 25, 50, 100]"
-          label="Itens por pÃ¡g."
+          label="Itens por pag."
           density="compact"
           variant="outlined"
           hide-details
@@ -50,7 +50,7 @@
 
 <script setup lang="ts">
 //Vue
-import { ref, computed} from 'vue';
+import { ref, computed } from 'vue';
 
 //Store
 import { useFormatarValorStore } from '@/stores/FormatarValorStore';
@@ -92,8 +92,7 @@ const props = withDefaults(defineProps<Props>(), {
 const paginaAtual = ref(1);
 
 const totalPaginas = computed(() => {
-  if (props.totalDeRegistros && props.totalDeRegistros > 0)
-    return Math.ceil(props.totalDeRegistros / limite.value);
+  if (props.totalDeRegistros && props.totalDeRegistros > 0) return Math.ceil(props.totalDeRegistros / limite.value);
   if (!props.dados || !Array.isArray(props.dados)) return 0;
   return Math.ceil(props.dados.length / limite.value);
 });
