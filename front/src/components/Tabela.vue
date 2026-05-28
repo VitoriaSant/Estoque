@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <div class="table-wrapper" :class="{ fullscreen: expandido }">
     <v-table
       class="tabela-cabecalho-fixo compact-table"
@@ -33,15 +33,15 @@
         @update:model-value="proximaPagina"
       />
 
-      <div style="width: 120px" >
+      <div style="width: 120px">
         <v-select
-          v-model="itensPorPagina"
+          v-model="limite"
           :items="[10, 25, 50, 100]"
-          label="Itens por pág."
+          label="Itens por pÃ¡g."
           density="compact"
           variant="outlined"
           hide-details
-          @update:model-value="proximaPagina(1)"
+          @update:model-value="paginaInicial"
         />
       </div>
     </div>
@@ -50,30 +50,31 @@
 
 <script setup lang="ts">
 //Vue
-import { ref, computed, watch } from 'vue';
+import { ref, computed} from 'vue';
 
 //Store
 import { useFormatarValorStore } from '@/stores/FormatarValorStore';
-import { useLayoutDashboardStore } from '@/stores/LayoutDashboardStore';
-
-const layoutStore = useLayoutDashboardStore();
 
 const formatarValorStore = useFormatarValorStore();
 
+const pagina = defineModel<number>('pagina', {
+  required: true,
+});
+
+const limite = defineModel<number>('limite', {
+  required: true,
+});
+
 interface Props {
   th: string[];
-  dados: any[];
+  dados: Record<string, any>[];
   campos: string[];
   campoKey: string;
   height?: string;
   itensPorPagina?: number;
+  totalDeRegistros: number;
   corDeAlerta?: string;
   expandido?: boolean;
-  paginacaoPedido?: {
-    pagina: number;
-    limite: number;
-    totalDeRegistros: number | null;
-  } | null;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -82,61 +83,36 @@ const props = withDefaults(defineProps<Props>(), {
   campos: () => [],
   campoKey: '',
   height: '',
-  itensPorPagina: 20,
+  itensPorPagina: 10,
+  totalDeRegistros: 0,
   corDeAlerta: '',
   expandido: false,
-  paginacaoPedido: null,
 });
-const emit = defineEmits<{
-  proximaPagina: [
-    paginacao: {
-      pagina: number;
-      limite: number;
-      totalDeRegistros: number | null;
-    },
-  ];
-}>();
 
-const itensPorPagina = ref(props.itensPorPagina);
 const paginaAtual = ref(1);
 
-watch(
-  () => props.paginacaoPedido,
-  (paginacao) => {
-    if (!paginacao) return;
-
-    paginaAtual.value = paginacao.pagina;
-    itensPorPagina.value = paginacao.limite;
-  },
-  { immediate: true },
-);
-
-// Computados para paginação
 const totalPaginas = computed(() => {
-  if (props.paginacaoPedido?.totalDeRegistros && props.paginacaoPedido.totalDeRegistros > 0) return Math.ceil(props.paginacaoPedido.totalDeRegistros / itensPorPagina.value);
+  if (props.totalDeRegistros && props.totalDeRegistros > 0)
+    return Math.ceil(props.totalDeRegistros / limite.value);
   if (!props.dados || !Array.isArray(props.dados)) return 0;
-  return Math.ceil(props.dados.length / itensPorPagina.value);
+  return Math.ceil(props.dados.length / limite.value);
 });
 
 const itensPaginados = computed(() => {
   if (!props.dados || !Array.isArray(props.dados)) return [];
-  if (props.paginacaoPedido?.totalDeRegistros !== null && props.paginacaoPedido?.totalDeRegistros !== undefined) return props.dados;
-  const inicio = (paginaAtual.value - 1) * itensPorPagina.value;
-  const fim = inicio + itensPorPagina.value;
+  if (limite.value !== null && limite.value !== undefined) return props.dados;
+  const inicio = (paginaAtual.value - 1) * limite.value;
+  const fim = inicio + limite.value;
   return props.dados.slice(inicio, fim);
 });
 
-const proximaPagina = (pagina: number) => {
+const proximaPagina = (novaPagina: number) => {
+  pagina.value = novaPagina;
+};
 
-
-  layoutStore.classeFiltro.paginacao = { pagina, limite: itensPorPagina.value, totalDeRegistros: props.paginacaoPedido?.totalDeRegistros ?? null };
-  // paginaAtual.value = pagina;
-
-  // emit('proximaPagina', {
-  //   pagina,
-  //   limite: itensPorPagina.value,
-  //   totalDeRegistros: props.paginacaoPedido?.totalDeRegistros ?? null,
-  // });
+const paginaInicial = () => {
+  pagina.value = 1;
+  paginaAtual.value = 1;
 };
 
 const alerta = (item: any) => {

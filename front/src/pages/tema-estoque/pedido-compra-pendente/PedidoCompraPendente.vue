@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <Error v-model:error="erro" :mensagem="mensagemErro" />
   <div>
     <Linha1-Cards-PedidoPendente :dadosResumo="dadosResumo" />
@@ -8,11 +8,9 @@
       :key="`itens-${layoutStore.classeFiltro?.dataInicio || 'default'}`"
     />
     <Linha3-PedidoPendente-ItensPendentes
-      :dadosPedido="dadosPedido"
-      :dadosItens="dadosItens"
-      :paginacaoPedido="paginacaoPedido"
       :key="`itens-${layoutStore.classeFiltro?.dataInicio || 'default'}`"
-      @proximaPagina="proximaPagina"
+      v-model:responsePedidos="responsePedidos"
+      v-model:responseItens="responseItens"
     />
   </div>
 </template>
@@ -29,6 +27,9 @@ import { usePedidoPendenteStore } from '@/stores/PedidoPendenteStore';
 import Linha1CardsPedidoPendente from './components/Linha1-Cards-PedidoPendente.vue';
 import Linha2PedidoPendenteFornecedorAtraso from './components/Linha2-PedidoPendente-FornecedorAtraso.vue';
 import Linha3PedidoPendenteItensPendentes from './components/Linha3-PedidoPendente-ItensPendentes.vue';
+import CResponseConsultaPaginada from '@/service/base/CResponseConsultaPaginada.ts';
+import type CPedidoCompraPendente from '@/service/tema-estoque/pedidos-compra-pendente/pedido-compra-pendente/CPedidoCompraPendenteModel.ts';
+import type CItensCompraPendente from '@/service/tema-estoque/pedidos-compra-pendente/itens-compra-pendente/CItensCompraPendenteModel.ts';
 
 const layoutStore = useLayoutDashboardStore();
 const pedidoPendenteStore = usePedidoPendenteStore();
@@ -36,9 +37,9 @@ const erro = ref<boolean>(false);
 const mensagemErro = ref('');
 const dadosResumo = ref<any>(null);
 const dadosFornecedor = ref<any>(null);
-const dadosItens = ref<any>(null);
-const dadosPedido = ref<any>(null);
-const paginacaoPedido = ref<any>(null);
+
+const responsePedidos = ref(new CResponseConsultaPaginada<CPedidoCompraPendente>());
+const responseItens = ref(new CResponseConsultaPaginada<CItensCompraPendente>());
 
 const carregarDados = async () => {
   try {
@@ -49,8 +50,7 @@ const carregarDados = async () => {
     // dadosFornecedor.value = fornecedor.dados;
 
     const pedidos = await pedidoPendenteStore.filtrarPedidoCompraPendente(layoutStore.classeFiltro);
-    dadosPedido.value = pedidos.registros;
-    paginacaoPedido.value = pedidos.paginacao;
+    responsePedidos.value = pedidos;
 
     // const itens = await pedidoPendenteStore.filtrarItensCompraPendente(layoutStore.classeFiltro);
     // dadosItens.value = itens.dados;
@@ -59,9 +59,11 @@ const carregarDados = async () => {
     erro.value = true;
   }
 };
+const carregarDadosPaginados = async () => {
+  layoutStore.classeFiltro.paginacao.pagina = responsePedidos.value.paginacao.pagina;
+  layoutStore.classeFiltro.paginacao.limite = responsePedidos.value.paginacao.limite;
 
-const proximaPagina = (paginacao: { pagina: number; limite: number; totalDeRegistros: number | null }) => {
-  layoutStore.classeFiltro.paginacao = paginacao;
+  await carregarDados();
 };
 
 watch(
@@ -71,6 +73,10 @@ watch(
   },
   { deep: true },
 );
+
+watch([() => responsePedidos.value.paginacao.pagina, () => responsePedidos.value.paginacao.limite], () => {
+  carregarDadosPaginados();
+});
 
 onMounted(() => {
   carregarDados();

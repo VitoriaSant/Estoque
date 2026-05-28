@@ -1,13 +1,12 @@
-//Axios
-import { api } from '@/Service/base/Axios';
+﻿//Axios
+import { api } from '@/service/base/Axios';
 //Services
-import type CClasseFiltro from '@/Service/base/CClasseFiltro';
+import type CClasseFiltro from '@/service/base/CClasseFiltro';
 //Models
 import CPedidoCompraPendenteModel from '../CPedidoCompraPendenteModel';
-//Interfaces
-import type { IPedidoCompraPendente } from '@/Service/tema-estoque/pedidos-compra-pendente/pedido-compra-pendente/IPedidoCompraPendente';
+import CPedidoCompraPendente from './CPedidoCompraPendenteModel';
 //Classes
-import CResponseConsultaPaginada from '@/Service/base/CResponseConsultaPaginada';
+import CResponseConsultaPaginada from '@/service/base/CResponseConsultaPaginada';
 //Constants
 import { cBASE_URL_API } from '@/constants/ConstantesRest';
 
@@ -17,8 +16,8 @@ export default class PedidoCompraPendenteController {
   };
   async pedidoCompraPendete(
     pFiltros: CClasseFiltro<CPedidoCompraPendenteModel>,
-  ): Promise<CResponseConsultaPaginada<CPedidoCompraPendenteModel>> {
-    const response = await api.post<CResponseConsultaPaginada<CPedidoCompraPendenteModel>>(
+  ): Promise<CResponseConsultaPaginada<CPedidoCompraPendente>> {
+    const response = await api.post<CResponseConsultaPaginada<CPedidoCompraPendente>>(
       `${cBASE_URL_API}${this.endpoint.listar}`,
       pFiltros,
     );
@@ -26,3 +25,4 @@ export default class PedidoCompraPendenteController {
     return response.data;
   }
 }
+
