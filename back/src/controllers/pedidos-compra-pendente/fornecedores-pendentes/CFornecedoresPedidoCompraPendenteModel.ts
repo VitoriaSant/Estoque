@@ -11,7 +11,7 @@ export default class CFornecedoresPedidoCompraPendente {
     return new CFornecedoresPedidoCompraPendente(data);
   }
 
-  static fromDatabaseRow(row: any): CFornecedoresPedidoCompraPendente {
+  static mapearParaModel(row: any): CFornecedoresPedidoCompraPendente {
     return new CFornecedoresPedidoCompraPendente({
       fornecedorPdc: row.FORNECEDOR_PDC,
       razaoSocialPessoa: row.RAZAOSOCIAL_PESSOA,
