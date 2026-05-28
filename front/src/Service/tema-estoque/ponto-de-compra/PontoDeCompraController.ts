@@ -1,11 +1,11 @@
-//Axios
-import { api } from '@/Service/base/Axios';
+﻿//Axios
+import { api } from '@/service/base/Axios';
 //Services
-import CClasseFiltro from '@/Service/base/CClasseFiltro';
+import CClasseFiltro from '@/service/base/CClasseFiltro';
 //Models
 import CPontoDeCompraModel from './CPontoDeCompraModel';
 //Interfaces
-import type { IPontoDeCompraResponse } from '@/Service/tema-estoque/ponto-de-compra/IPontoDeCompraResponse';
+import type { IPontoDeCompraResponse } from '@/service/tema-estoque/ponto-de-compra/IPontoDeCompraResponse';
 //Constants
 import { cBASE_URL_API } from '@/constants/ConstantesRest';
 
@@ -18,3 +18,4 @@ export default class PontoDeCompraController {
     return response.data;
   }
 }
+

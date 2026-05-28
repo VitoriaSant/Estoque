@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <v-row class="mb-2" no-gutters>
     <v-col cols="12" md="6" class="pa-1">
       <v-text-field v-model="dataInicio" label="Data início" type="date" variant="outlined" />
@@ -15,8 +15,8 @@
 import { ref, watch } from 'vue';
 
 //Services
-import CClasseFiltro from '@/Service/base/CClasseFiltro';
-import CPedidoCompraPendenteModel from '@/Service/tema-estoque/pedidos-compra-pendente/CPedidoCompraPendenteModel';
+import CClasseFiltro from '@/service/base/CClasseFiltro';
+import CPedidoCompraPendenteModel from '@/service/tema-estoque/pedidos-compra-pendente/CPedidoCompraPendenteModel';
 
 const emit = defineEmits<{
   'update:dataInicio': [value: string];
@@ -49,3 +49,4 @@ watch(dataFim, (newValue) => {
 </script>
 
 <style scoped></style>
+

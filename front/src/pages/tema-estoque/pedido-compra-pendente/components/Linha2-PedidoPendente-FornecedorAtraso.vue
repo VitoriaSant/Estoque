@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <v-row no-gutters>
     <v-col cols="12" md="4" class="pa-1">
       <CardParaComportarGraf :titulo="'Pedidos Pendentes'" :icon="'mdi-text-box-edit'">
@@ -30,8 +30,8 @@ import { computed } from 'vue';
 
 //Classes
 import CDatasetGraficoPizza from '@/components/graficos/pizza/CDatasetGraficoPizza';
-import CFornecedoresPedidoCompraPendente from '@/Service/tema-estoque/pedidos-compra-pendente/fornecedores-pedido-compra-pendente/CFornecedoresPedidoCompraPendenteModel';
-import CResumoPedidoCompraPendente from '@/Service/tema-estoque/pedidos-compra-pendente/resumo-pedido-compra-pendente/CResumoPedidoCompraPendenteModel';
+import CFornecedoresPedidoCompraPendente from '@/service/tema-estoque/pedidos-compra-pendente/fornecedores-pedido-compra-pendente/CFornecedoresPedidoCompraPendenteModel';
+import CResumoPedidoCompraPendente from '@/service/tema-estoque/pedidos-compra-pendente/resumo-pedido-compra-pendente/CResumoPedidoCompraPendenteModel';
 
 const props = defineProps<{
   dadosFornecedor: CFornecedoresPedidoCompraPendente[];
@@ -60,3 +60,4 @@ const dataSetPizza = computed(() => {
   });
 });
 </script>
+

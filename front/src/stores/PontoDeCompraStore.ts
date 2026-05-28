@@ -1,14 +1,14 @@
-//Vue
+﻿//Vue
 import { ref } from 'vue';
 import { defineStore } from 'pinia';
 
 //Services
-import PontoDeCompraController from '@/Service/tema-estoque/ponto-de-compra/PontoDeCompraController';
-import CClasseFiltro from '@/Service/base/CClasseFiltro';
-import CPontoDeCompraModel from '@/Service/tema-estoque/ponto-de-compra/CPontoDeCompraModel';
+import PontoDeCompraController from '@/service/tema-estoque/ponto-de-compra/PontoDeCompraController';
+import CClasseFiltro from '@/service/base/CClasseFiltro';
+import CPontoDeCompraModel from '@/service/tema-estoque/ponto-de-compra/CPontoDeCompraModel';
 
 //Interfaces
-import type { IPontoDeCompraResponse } from '@/Service/tema-estoque/ponto-de-compra/IPontoDeCompraResponse';
+import type { IPontoDeCompraResponse } from '@/service/tema-estoque/ponto-de-compra/IPontoDeCompraResponse';
 
 export const usePontoDeCompraStore = defineStore('[PontoDeCompraStore]', () => {
   const pontoDeCompraController = new PontoDeCompraController();
@@ -21,3 +21,4 @@ export const usePontoDeCompraStore = defineStore('[PontoDeCompraStore]', () => {
     filtrarPontoDeCompra,
   };
 });
+

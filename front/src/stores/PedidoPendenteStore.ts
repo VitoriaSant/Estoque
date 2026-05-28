@@ -1,23 +1,24 @@
-//Vue
+﻿//Vue
 import { ref } from 'vue';
 import { defineStore } from 'pinia';
 //Services
 
-import ResumoPedidoCompraPendenteController from '@/Service/tema-estoque/pedidos-compra-pendente/resumo-pedido-compra-pendente/ResumoPedidoCompraPendeteController';
-import FornecedorPedidoCompraPendenteController from '@/Service/tema-estoque/pedidos-compra-pendente/fornecedores-pedido-compra-pendente/FornecedoresPedidoCompraPendenteController';
-import ItensCompraPendenteController from '@/Service/tema-estoque/pedidos-compra-pendente/itens-compra-pendente/ItensCompraPendenteController';
-import PedidoCompraPendenteController from '@/Service/tema-estoque/pedidos-compra-pendente/pedido-compra-pendente/PedidoCompraPendenteController';
+import ResumoPedidoCompraPendenteController from '@/service/tema-estoque/pedidos-compra-pendente/resumo-pedido-compra-pendente/ResumoPedidoCompraPendeteController';
+import FornecedorPedidoCompraPendenteController from '@/service/tema-estoque/pedidos-compra-pendente/fornecedores-pedido-compra-pendente/FornecedoresPedidoCompraPendenteController';
+import ItensCompraPendenteController from '@/service/tema-estoque/pedidos-compra-pendente/itens-compra-pendente/ItensCompraPendenteController';
+import PedidoCompraPendenteController from '@/service/tema-estoque/pedidos-compra-pendente/pedido-compra-pendente/PedidoCompraPendenteController';
 
-import CClasseFiltro from '@/Service/base/CClasseFiltro';
+import CClasseFiltro from '@/service/base/CClasseFiltro';
 //Interfaces
-import type { IResumopedidoCompraPendete } from '@/Service/tema-estoque/pedidos-compra-pendente/resumo-pedido-compra-pendente/IResumoPedidoCompraPendete';
-import type { IFornecedoresPedidoCompraPendente } from '@/Service/tema-estoque/pedidos-compra-pendente/fornecedores-pedido-compra-pendente/IFornecedoresPedidoCompraPendente';
-import type { IItensCompraPendente } from '@/Service/tema-estoque/pedidos-compra-pendente/itens-compra-pendente/IItensCompraPendente';
+import type { IResumopedidoCompraPendete } from '@/service/tema-estoque/pedidos-compra-pendente/resumo-pedido-compra-pendente/IResumoPedidoCompraPendete';
+import type { IFornecedoresPedidoCompraPendente } from '@/service/tema-estoque/pedidos-compra-pendente/fornecedores-pedido-compra-pendente/IFornecedoresPedidoCompraPendente';
+import type { IItensCompraPendente } from '@/service/tema-estoque/pedidos-compra-pendente/itens-compra-pendente/IItensCompraPendente';
 
 //Models
-import type CPedidoCompraPendenteModel from '@/Service/tema-estoque/pedidos-compra-pendente/CPedidoCompraPendenteModel';
+import type CPedidoCompraPendenteModel from '@/service/tema-estoque/pedidos-compra-pendente/CPedidoCompraPendenteModel';
+import type CPedidoCompraPendente from '@/service/tema-estoque/pedidos-compra-pendente/pedido-compra-pendente/CPedidoCompraPendenteModel';
 //Classes
-import CResponseConsultaPaginada from '@/Service/base/CResponseConsultaPaginada';
+import CResponseConsultaPaginada from '@/service/base/CResponseConsultaPaginada';
 
 export const usePedidoPendenteStore = defineStore('[PedidoPendenteStore]', () => {
   const resumoPedidoCompraPendenteController = new ResumoPedidoCompraPendenteController();
@@ -43,7 +44,7 @@ export const usePedidoPendenteStore = defineStore('[PedidoPendenteStore]', () =>
   const filtrarPedidoCompraPendente = ref(
     async (
       classeFiltro: CClasseFiltro<CPedidoCompraPendenteModel>,
-    ): Promise<CResponseConsultaPaginada<CPedidoCompraPendenteModel>> =>
+    ): Promise<CResponseConsultaPaginada<CPedidoCompraPendente>> =>
       pedidoCompraPendenteController.pedidoCompraPendete(classeFiltro),
   );
 
@@ -54,3 +55,4 @@ export const usePedidoPendenteStore = defineStore('[PedidoPendenteStore]', () =>
     filtrarPedidoCompraPendente,
   };
 });
+

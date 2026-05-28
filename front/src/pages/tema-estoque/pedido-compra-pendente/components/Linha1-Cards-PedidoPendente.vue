@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <v-row no-gutters>
     <v-col cols="12" md="6" lg="3" class="pa-1">
       <Card
@@ -42,9 +42,10 @@
 </template>
 
 <script setup lang="ts">
-import CResumoPedidoCompraPendente from '@/Service/tema-estoque/pedidos-compra-pendente/resumo-pedido-compra-pendente/CResumoPedidoCompraPendenteModel';
+import CResumoPedidoCompraPendente from '@/service/tema-estoque/pedidos-compra-pendente/resumo-pedido-compra-pendente/CResumoPedidoCompraPendenteModel';
 
 const props = defineProps<{
   dadosResumo: CResumoPedidoCompraPendente;
 }>();
 </script>
+

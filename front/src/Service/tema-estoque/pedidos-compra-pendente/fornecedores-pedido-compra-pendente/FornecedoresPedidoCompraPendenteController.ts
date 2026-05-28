@@ -1,11 +1,11 @@
-//Axios
-import { api } from '@/Service/base/Axios';
+﻿//Axios
+import { api } from '@/service/base/Axios';
 //Services
-import type CClasseFiltro from '@/Service/base/CClasseFiltro';
+import type CClasseFiltro from '@/service/base/CClasseFiltro';
 //Models
 import CPedidoCompraPendenteModel from '../CPedidoCompraPendenteModel';
 //Interfaces
-import type { IFornecedoresPedidoCompraPendente } from '@/Service/tema-estoque/pedidos-compra-pendente/fornecedores-pedido-compra-pendente/IFornecedoresPedidoCompraPendente';
+import type { IFornecedoresPedidoCompraPendente } from '@/service/tema-estoque/pedidos-compra-pendente/fornecedores-pedido-compra-pendente/IFornecedoresPedidoCompraPendente';
 //Constants
 import { cBASE_URL_API } from '@/constants/ConstantesRest';
 
@@ -23,3 +23,4 @@ export default class PedidoCompraPendenteController {
     return response.data;
   }
 }
+
