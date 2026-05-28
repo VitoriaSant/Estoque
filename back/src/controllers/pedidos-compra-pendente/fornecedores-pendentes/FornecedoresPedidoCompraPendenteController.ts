@@ -7,7 +7,7 @@ import { Request, Response } from 'express';
 //Classes
 import CClasseFiltro, { CFiltro } from '../../base/CClasseFiltro';
 //Model
-import CPedidoCompraPendenteModel from '../CPedidoCompraPendenteModel';
+import CPedidoCompraPendenteModel from '../CPedidoCompraPendenteGeralModel';
 import CFornecedoresPedidoCompraPendente from './CFornecedoresPedidoCompraPendenteModel';
 
 //Base

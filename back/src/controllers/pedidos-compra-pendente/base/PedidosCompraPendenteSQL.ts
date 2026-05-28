@@ -36,7 +36,7 @@ const PedidosCompraPendenteSQL = {
     AND item.codigo_item ${pOperador} ?
   `,
   WHERE_DESCRICAO_ITEM: (pOperador: TOperador) => `
-     AND item.descricao_item ${pOperador} ?
+    AND item.descricao_item ${pOperador} ?
   `,
   WHERE_ID_VARIACAO: (pOperador: TOperador) => `
     AND pedido_compra_item.variacao_pdcitem ${pOperador} ?

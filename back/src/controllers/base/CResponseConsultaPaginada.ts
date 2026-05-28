@@ -1,4 +1,4 @@
-export class CResponseConsultaPaginada<Classe> {
+export default class CResponseConsultaPaginada<Classe> {
   paginacao: {
     pagina: number;
     limite: number;

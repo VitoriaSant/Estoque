@@ -1,4 +1,4 @@
-export default class CPedidoCompraPendenteModel {
+export default class CPedidoCompraPendenteGeralModel {
   fornecedorId: number = 0;
   razaoSocialFornecedor: string = '';
   itemId: number = 0;
@@ -12,7 +12,7 @@ export default class CPedidoCompraPendenteModel {
   dataInicio: Date = new Date();
   dataFim: Date = new Date();
 
-  private constructor(data: Partial<CPedidoCompraPendenteModel>) {
+  private constructor(data: Partial<CPedidoCompraPendenteGeralModel>) {
     Object.assign(this, data);
   }
 }
