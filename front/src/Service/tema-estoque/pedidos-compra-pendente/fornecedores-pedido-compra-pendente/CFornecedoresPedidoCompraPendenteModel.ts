@@ -4,7 +4,7 @@ export default class CFornecedoresPedidoCompraPendente{
   totalPedidosComSaldoPendente: number = 0;
   valorTotalPendente: number = 0;
 
-  private constructor(data: Partial<CFornecedoresPedidoCompraPendente>) {   '
-      Object.assign(this, data);
+  private constructor(data: Partial<CFornecedoresPedidoCompraPendente>) {
+    Object.assign(this, data);
   }
 }

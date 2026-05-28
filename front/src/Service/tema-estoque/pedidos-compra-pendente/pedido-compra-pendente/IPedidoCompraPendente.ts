@@ -1,4 +1,5 @@
-﻿import CResponseConsultaPaginada from '@/service/base/CResponseConsultaPaginada';
+﻿//Classe
+import CResponseConsultaPaginada from '@/service/base/CResponseConsultaPaginada';
 
 export interface IPedidoCompraPendente {
   codicoPdc: number;
@@ -7,4 +8,3 @@ export interface IPedidoCompraPendente {
 }
 
 export type TPedidoCompraPendenteResponse = CResponseConsultaPaginada<IPedidoCompraPendente>;
-
