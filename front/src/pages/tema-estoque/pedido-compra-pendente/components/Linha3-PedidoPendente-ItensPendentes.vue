@@ -30,6 +30,8 @@
             :dados="props.dadosPedido || []"
             :height="'350px'"
             :expandido="expandido"
+            :paginacaoPedido="props.paginacaoPedido"
+            @proximaPagina="proximaPagina"
           />
         </template>
       </CardParaComportarGraf>
@@ -41,11 +43,30 @@
 import InfoPedidoCompraPendente from './Info-PedidoCompraPendente.vue';
 
 //Classes
-import PedidoCompraPendente from '@/Service/tema-estoque/pedidos-compra-pendente/pedido-compra-pendente/CPedidoCompraPendenteModel.ts';
+import CPedidoCompraPendente from '@/Service/tema-estoque/pedidos-compra-pendente/pedido-compra-pendente/CPedidoCompraPendenteModel.ts';
 import CItensCompraPendente from '@/Service/tema-estoque/pedidos-compra-pendente/itens-compra-pendente/CItensCompraPendenteModel.ts';
 
 const props = defineProps<{
-  dadosPedido: PedidoCompraPendente[];
+  dadosPedido: CPedidoCompraPendente[];
+  paginacaoPedido: {
+    pagina: number;
+    limite: number;
+    totalDeRegistros: number | null;
+  } | null;
   dadosItens: CItensCompraPendente[];
 }>();
+
+const emit = defineEmits<{
+  proximaPagina: [
+    paginacao: {
+      pagina: number;
+      limite: number;
+      totalDeRegistros: number | null;
+    },
+  ];
+}>();
+
+const proximaPagina = (paginacao: { pagina: number; limite: number; totalDeRegistros: number | null }) => {
+  emit('proximaPagina', paginacao);
+};
 </script>

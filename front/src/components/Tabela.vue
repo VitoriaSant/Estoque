@@ -22,23 +22,41 @@
       </tbody>
     </v-table>
 
-    <v-pagination
-      v-model="paginaAtual"
-      :length="totalPaginas"
-      :total-visible="$vuetify.display.smAndDown ? 3 : 7"
-      density="compact"
-      size="small"
-      class="mt-2"
-    />
+    <div class="d-flex align-center justify-space-between mt-2 flex-wrap gap-2">
+      <v-pagination
+        v-model="paginaAtual"
+        :length="totalPaginas"
+        :total-visible="$vuetify.display.smAndDown ? 3 : 7"
+        density="compact"
+        size="small"
+        class="flex-grow-1"
+        @update:model-value="proximaPagina"
+      />
+
+      <div style="width: 120px" >
+        <v-select
+          v-model="itensPorPagina"
+          :items="[10, 25, 50, 100]"
+          label="Itens por pág."
+          density="compact"
+          variant="outlined"
+          hide-details
+          @update:model-value="proximaPagina(1)"
+        />
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 //Vue
-import { ref, computed } from 'vue';
+import { ref, computed, watch } from 'vue';
 
 //Store
 import { useFormatarValorStore } from '@/stores/FormatarValorStore';
+import { useLayoutDashboardStore } from '@/stores/LayoutDashboardStore';
+
+const layoutStore = useLayoutDashboardStore();
 
 const formatarValorStore = useFormatarValorStore();
 
@@ -51,6 +69,11 @@ interface Props {
   itensPorPagina?: number;
   corDeAlerta?: string;
   expandido?: boolean;
+  paginacaoPedido?: {
+    pagina: number;
+    limite: number;
+    totalDeRegistros: number | null;
+  } | null;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -62,26 +85,62 @@ const props = withDefaults(defineProps<Props>(), {
   itensPorPagina: 20,
   corDeAlerta: '',
   expandido: false,
+  paginacaoPedido: null,
 });
+const emit = defineEmits<{
+  proximaPagina: [
+    paginacao: {
+      pagina: number;
+      limite: number;
+      totalDeRegistros: number | null;
+    },
+  ];
+}>();
 
-const itensPorPagina = props.itensPorPagina;
+const itensPorPagina = ref(props.itensPorPagina);
 const paginaAtual = ref(1);
+
+watch(
+  () => props.paginacaoPedido,
+  (paginacao) => {
+    if (!paginacao) return;
+
+    paginaAtual.value = paginacao.pagina;
+    itensPorPagina.value = paginacao.limite;
+  },
+  { immediate: true },
+);
 
 // Computados para paginação
 const totalPaginas = computed(() => {
+  if (props.paginacaoPedido?.totalDeRegistros && props.paginacaoPedido.totalDeRegistros > 0) return Math.ceil(props.paginacaoPedido.totalDeRegistros / itensPorPagina.value);
   if (!props.dados || !Array.isArray(props.dados)) return 0;
-  return Math.ceil(props.dados.length / itensPorPagina);
+  return Math.ceil(props.dados.length / itensPorPagina.value);
 });
 
 const itensPaginados = computed(() => {
   if (!props.dados || !Array.isArray(props.dados)) return [];
-  const inicio = (paginaAtual.value - 1) * itensPorPagina;
-  const fim = inicio + itensPorPagina;
+  if (props.paginacaoPedido?.totalDeRegistros !== null && props.paginacaoPedido?.totalDeRegistros !== undefined) return props.dados;
+  const inicio = (paginaAtual.value - 1) * itensPorPagina.value;
+  const fim = inicio + itensPorPagina.value;
   return props.dados.slice(inicio, fim);
 });
 
+const proximaPagina = (pagina: number) => {
+
+
+  layoutStore.classeFiltro.paginacao = { pagina, limite: itensPorPagina.value, totalDeRegistros: props.paginacaoPedido?.totalDeRegistros ?? null };
+  // paginaAtual.value = pagina;
+
+  // emit('proximaPagina', {
+  //   pagina,
+  //   limite: itensPorPagina.value,
+  //   totalDeRegistros: props.paginacaoPedido?.totalDeRegistros ?? null,
+  // });
+};
+
 const alerta = (item: any) => {
-  const corDeAlerta = item.corDeAlerta;
+  const corDeAlerta = props.corDeAlerta ? item[props.corDeAlerta] : item.corDeAlerta;
   if (corDeAlerta == 'Vermelho') {
     return 'linha-vermelha';
   } else if (corDeAlerta == 'Amarelo') {
@@ -92,6 +151,9 @@ const alerta = (item: any) => {
 </script>
 
 <style scoped>
+.gap-2 {
+  gap: 8px;
+}
 .tabela-cabecalho-fixo :deep(thead th) {
   position: sticky;
   top: 0;
