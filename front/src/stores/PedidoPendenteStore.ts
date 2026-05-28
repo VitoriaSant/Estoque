@@ -13,16 +13,18 @@ import CClasseFiltro from '@/Service/base/CClasseFiltro';
 import type { IResumopedidoCompraPendete } from '@/Service/tema-estoque/pedidos-compra-pendente/resumo-pedido-compra-pendente/IResumoPedidoCompraPendete';
 import type { IFornecedoresPedidoCompraPendente } from '@/Service/tema-estoque/pedidos-compra-pendente/fornecedores-pedido-compra-pendente/IFornecedoresPedidoCompraPendente';
 import type { IItensCompraPendente } from '@/Service/tema-estoque/pedidos-compra-pendente/itens-compra-pendente/IItensCompraPendente';
-import type { IPedidoCompraPendente } from '@/Service/tema-estoque/pedidos-compra-pendente/pedido-compra-pendente/IPedidoCompraPendente';
 
 //Models
 import type CPedidoCompraPendenteModel from '@/Service/tema-estoque/pedidos-compra-pendente/CPedidoCompraPendenteModel';
+//Classes
+import CResponseConsultaPaginada from '@/Service/base/CResponseConsultaPaginada';
 
 export const usePedidoPendenteStore = defineStore('[PedidoPendenteStore]', () => {
   const resumoPedidoCompraPendenteController = new ResumoPedidoCompraPendenteController();
   const filtrarResumoPedidoCompraPendete = ref(
-    async (classeFiltro: CClasseFiltro<CPedidoCompraPendenteModel>): Promise<IResumopedidoCompraPendete> =>
-      resumoPedidoCompraPendenteController.resumoPedidoCompraPendete(classeFiltro),
+    async (classeFiltro: CClasseFiltro<CPedidoCompraPendenteModel>): Promise<IResumopedidoCompraPendete> => {
+      return resumoPedidoCompraPendenteController.resumoPedidoCompraPendete(classeFiltro);
+    },
   );
 
   const fornecedorPedidoCompraPendenteController = new FornecedorPedidoCompraPendenteController();
@@ -39,7 +41,9 @@ export const usePedidoPendenteStore = defineStore('[PedidoPendenteStore]', () =>
 
   const pedidoCompraPendenteController = new PedidoCompraPendenteController();
   const filtrarPedidoCompraPendente = ref(
-    async (classeFiltro: CClasseFiltro<CPedidoCompraPendenteModel>): Promise<IPedidoCompraPendente> =>
+    async (
+      classeFiltro: CClasseFiltro<CPedidoCompraPendenteModel>,
+    ): Promise<CResponseConsultaPaginada<CPedidoCompraPendenteModel>> =>
       pedidoCompraPendenteController.pedidoCompraPendete(classeFiltro),
   );
 
