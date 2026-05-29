@@ -22,10 +22,10 @@
 
   <v-main class="bg-accent">
     <Filtro
-      v-model="layoutStore.exibirFiltro"
+      :dialogFiltro="layoutStore.exibirFiltro"
+      @update:dialogFiltro="layoutStore.exibirFiltro = $event"
       @fechar="layoutStore.exibirFiltro = false"
       v-model:classeFiltro="layoutStore.classeFiltro"
-      @aplicar="layoutStore.filtrar"
     />
 
     <Informativo />

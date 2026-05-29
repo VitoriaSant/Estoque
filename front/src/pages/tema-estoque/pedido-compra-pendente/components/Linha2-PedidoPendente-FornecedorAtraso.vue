@@ -1,14 +1,14 @@
 ﻿<template>
   <v-row no-gutters>
     <v-col cols="12" md="4" class="pa-1">
-      <CardParaComportarGraf :titulo="'Pedidos Pendentes'" :icon="'mdi-text-box-edit'">
+      <CardParaComportarGraf :titulo="'Pedidos Pendentes'" :icone="'mdi-text-box-edit'">
         <template #grafico="{ expandido }">
           <Pizza :dataSet="dataSetPizza" :expandido="expandido" />
         </template>
       </CardParaComportarGraf>
     </v-col>
     <v-col cols="12" md="8" class="pa-1">
-      <CardParaComportarGraf :titulo="'Fornecedor em atraso'" :icon="'mdi-account-alert'">
+      <CardParaComportarGraf :titulo="'Fornecedor em atraso'" :icone="'mdi-account-alert'">
         <template #grafico="{ expandido }">
           <Tabela
             :th="['Codigo', 'Fornecedor', 'Qtd. Pedidos', 'Valor Total']"
@@ -41,7 +41,6 @@ import CFornecedoresPedidoCompraPendente from '@/service/tema-estoque/pedidos-co
 import CResumoPedidoCompraPendente from '@/service/tema-estoque/pedidos-compra-pendente/resumo-pedido-compra-pendente/CResumoPedidoCompraPendenteModel';
 import CResponseConsultaPaginada from '@/service/base/CResponseConsultaPaginada.ts';
 import CResponseConsulta from '@/service/base/CResponseConsulta.ts';
-
 
 //Utils
 import formatterUtils from '@/utils/FormatterUtils';
