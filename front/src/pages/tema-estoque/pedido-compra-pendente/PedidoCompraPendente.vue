@@ -1,9 +1,9 @@
 ﻿<template>
   <Error v-model:error="erro" :mensagem="mensagemErro" />
   <div>
-    <Linha1-Cards-PedidoPendente :dadosResumo="dadosResumo" />
+    <Linha1-Cards-PedidoPendente v-model:responseResumo="responseResumo" />
     <Linha2-PedidoPendente-FornecedorAtraso
-      :dadosResumo="dadosResumo"
+      v-model:responseResumo="responseResumo"
       v-model:responseFornecedor="responseFornecedor"
     />
     <Linha3-PedidoPendente-ItensPendentes
@@ -29,20 +29,22 @@ import Linha3PedidoPendenteItensPendentes from './components/Linha3-PedidoPenden
 //Classes
 import CClasseFiltro from '@/service/base/CClasseFiltro.ts';
 import CResponseConsultaPaginada from '@/service/base/CResponseConsultaPaginada.ts';
+import CResponseConsulta from '@/service/base/CResponseConsulta.ts';
 import type CPedidoCompraPendenteGeralModel from '@/service/tema-estoque/pedidos-compra-pendente/CPedidoCompraPendenteGeralModel.ts';
 import type CPedidoCompraPendente from '@/service/tema-estoque/pedidos-compra-pendente/pedido-compra-pendente/CPedidoCompraPendenteModel.ts';
 import type CItensCompraPendente from '@/service/tema-estoque/pedidos-compra-pendente/itens-compra-pendente/CItensCompraPendenteModel.ts';
 import type CFornecedoresPedidoCompraPendente from '@/service/tema-estoque/pedidos-compra-pendente/fornecedores-pedido-compra-pendente/CFornecedoresPedidoCompraPendenteModel.ts';
+import type CResumoPedidoCompraPendente from '@/service/tema-estoque/pedidos-compra-pendente/resumo-pedido-compra-pendente/CResumoPedidoCompraPendenteModel.ts';
 
 const layoutStore = useLayoutDashboardStore();
 const pedidoPendenteStore = usePedidoPendenteStore();
 const erro = ref<boolean>(false);
 const mensagemErro = ref('');
-const dadosResumo = ref<any>(null);
 
 const responsePedidos = ref(new CResponseConsultaPaginada<CPedidoCompraPendente>());
 const responseItens = ref(new CResponseConsultaPaginada<CItensCompraPendente>());
 const responseFornecedor = ref(new CResponseConsultaPaginada<CFornecedoresPedidoCompraPendente>());
+const responseResumo = ref(new CResponseConsulta<CResumoPedidoCompraPendente>());
 const atualizandoFiltrosGerais = ref(false);
 
 const montarFiltroComPaginacao = (paginacao: { pagina: number; limite: number; totalDeRegistros: number | null }) =>
@@ -71,14 +73,14 @@ const carregarItens = async () => {
 
 const carregarFornecedor = async () => {
   const filtroFornecedor = montarFiltroComPaginacao(responseFornecedor.value.paginacao);
-  const itens = await pedidoPendenteStore.filtrarFornecedorPedidoCompraPendente(filtroFornecedor);
-  responseFornecedor.value = itens;
+  const fornecedor = await pedidoPendenteStore.filtrarFornecedorPedidoCompraPendente(filtroFornecedor);
+  responseFornecedor.value = fornecedor;
 };
 
 const carregarDados = async () => {
   try {
     const resumo = await pedidoPendenteStore.filtrarResumoPedidoCompraPendete(layoutStore.classeFiltro);
-    dadosResumo.value = Array.isArray(resumo.dados) ? resumo.dados[0] : resumo.dados;
+    responseResumo.value = resumo;
 
     await Promise.all([carregarPedidos(), carregarItens(), carregarFornecedor()]);
   } catch (error) {

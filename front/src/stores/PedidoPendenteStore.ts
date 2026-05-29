@@ -15,16 +15,17 @@ import type { IResumopedidoCompraPendete } from '@/service/tema-estoque/pedidos-
 import type CPedidoCompraPendenteGeralModel from '@/service/tema-estoque/pedidos-compra-pendente/CPedidoCompraPendenteGeralModel';
 import type CPedidoCompraPendente from '@/service/tema-estoque/pedidos-compra-pendente/pedido-compra-pendente/CPedidoCompraPendenteModel';
 import type CItensCompraPendente from '@/service/tema-estoque/pedidos-compra-pendente/itens-compra-pendente/CItensCompraPendenteModel';
+import type CResumoPedidoCompraPendente from '@/service/tema-estoque/pedidos-compra-pendente/resumo-pedido-compra-pendente/CResumoPedidoCompraPendenteModel';
 import CResponseConsultaPaginada from '@/service/base/CResponseConsultaPaginada';
+import CResponseConsulta from '@/service/base/CResponseConsulta';
 import CClasseFiltro from '@/service/base/CClasseFiltro';
 import type CFornecedoresPedidoCompraPendente from '@/service/tema-estoque/pedidos-compra-pendente/fornecedores-pedido-compra-pendente/CFornecedoresPedidoCompraPendenteModel';
 
 export const usePedidoPendenteStore = defineStore('[PedidoPendenteStore]', () => {
   const resumoPedidoCompraPendenteController = new ResumoPedidoCompraPendenteController();
   const filtrarResumoPedidoCompraPendete = ref(
-    async (classeFiltro: CClasseFiltro<CPedidoCompraPendenteGeralModel>): Promise<IResumopedidoCompraPendete> => {
-      return resumoPedidoCompraPendenteController.resumoPedidoCompraPendete(classeFiltro);
-    },
+    async (classeFiltro: CClasseFiltro<CPedidoCompraPendenteGeralModel>): Promise<CResponseConsulta<CResumoPedidoCompraPendente>> =>
+      resumoPedidoCompraPendenteController.resumoPedidoCompraPendete(classeFiltro),
   );
 
   const fornecedorPedidoCompraPendenteController = new FornecedorPedidoCompraPendenteController();

@@ -40,13 +40,11 @@ import CDatasetGraficoPizza from '@/components/graficos/pizza/CDatasetGraficoPiz
 import CFornecedoresPedidoCompraPendente from '@/service/tema-estoque/pedidos-compra-pendente/fornecedores-pedido-compra-pendente/CFornecedoresPedidoCompraPendenteModel';
 import CResumoPedidoCompraPendente from '@/service/tema-estoque/pedidos-compra-pendente/resumo-pedido-compra-pendente/CResumoPedidoCompraPendenteModel';
 import CResponseConsultaPaginada from '@/service/base/CResponseConsultaPaginada.ts';
+import CResponseConsulta from '@/service/base/CResponseConsulta.ts';
+
 
 //Utils
 import formatterUtils from '@/utils/FormatterUtils';
-
-const props = defineProps<{
-  dadosResumo: CResumoPedidoCompraPendente | null;
-}>();
 
 const responseFornecedor = defineModel<CResponseConsultaPaginada<CFornecedoresPedidoCompraPendente>>(
   'responseFornecedor',
@@ -55,13 +53,18 @@ const responseFornecedor = defineModel<CResponseConsultaPaginada<CFornecedoresPe
   },
 );
 
+const responseResumo = defineModel<CResponseConsulta<CResumoPedidoCompraPendente>>('responseResumo', {
+  required: true,
+});
+
 type TRegistroPizza = {
   titulo: string;
   valor: number;
 };
 
 const valorPendenteNoPrazo =
-  (props.dadosResumo?.totalPedidosComSaldo ?? 0) - (props.dadosResumo?.totalPedidosAtrasados ?? 0);
+  (responseResumo.value.registros[0]?.totalPedidosComSaldo ?? 0) -
+  (responseResumo.value.registros[0]?.totalPedidosAtrasados ?? 0);
 
 const dataSetPizza = computed(() => {
   return new CDatasetGraficoPizza<TRegistroPizza>({
@@ -70,7 +73,7 @@ const dataSetPizza = computed(() => {
     registros: [
       {
         titulo: 'Pedidos em Atraso',
-        valor: props.dadosResumo?.totalPedidosAtrasados || 0,
+        valor: responseResumo.value.registros[0]?.totalPedidosAtrasados || 0,
       },
       {
         titulo: 'Pedidos Pendentes',
