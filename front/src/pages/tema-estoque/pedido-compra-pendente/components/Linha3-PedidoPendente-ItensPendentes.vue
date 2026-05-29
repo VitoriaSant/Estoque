@@ -1,4 +1,5 @@
 ﻿<template>
+  {{ pedidosFormatado }}
   <v-row no-gutters>
     <v-col cols="12" md="7" class="pa-1">
       <CardParaComportarGraf :titulo="'Itens Pendentes'" :icone="'mdi-archive-alert'">
@@ -10,11 +11,12 @@
             :height="'350px'"
             :corDeAlerta="'corDeAlerta'"
             :expandido="expandido"
-            :dados="responseItens.registros || []"
+            :dados="itensFormatado || []"
             :totalDeRegistros="responseItens.paginacao.totalDeRegistros || 0"
             v-model:pagina="responseItens.paginacao.pagina"
             v-model:limite="responseItens.paginacao.limite"
-          />
+          >
+          </Tabela>
         </template>
       </CardParaComportarGraf>
     </v-col>
@@ -32,7 +34,7 @@
             :campoKey="'codicoPdc'"
             :height="'350px'"
             :expandido="expandido"
-            :dados="responsePedidos.registros || []"
+            :dados="pedidosFormatado || []"
             :totalDeRegistros="responsePedidos.paginacao.totalDeRegistros || 0"
             v-model:pagina="responsePedidos.paginacao.pagina"
             v-model:limite="responsePedidos.paginacao.limite"
@@ -44,8 +46,15 @@
 </template>
 
 <script setup lang="ts">
+//Vue
+import { computed } from 'vue';
+
 //Components
 import InfoPedidoCompraPendente from './Info-PedidoCompraPendente.vue';
+
+//Utils
+import formatterUtils from '@/utils/FormatterUtils';
+import corDeAlerta from '@/utils/CorDeAlerta.ts';
 
 //Classes
 import CPedidoCompraPendente from '@/service/tema-estoque/pedidos-compra-pendente/pedido-compra-pendente/CPedidoCompraPendenteModel.ts';
@@ -58,5 +67,27 @@ const responsePedidos = defineModel<CResponseConsultaPaginada<CPedidoCompraPende
 
 const responseItens = defineModel<CResponseConsultaPaginada<CItensCompraPendente>>('responseItens', {
   required: true,
+});
+
+const itensFormatado = computed(() => {
+  const dadosAtuais = responseItens.value;
+  if (!dadosAtuais || !dadosAtuais.registros) return [];
+
+  return dadosAtuais.registros.map((item: any) => ({
+    ...item,
+    valorTotalPendente: formatterUtils.formatarValor(item.valorTotalPendente, 'moeda'),
+    mediaValorUn: formatterUtils.formatarValor(item.mediaValorUn, 'moeda'),
+  }));
+});
+
+const pedidosFormatado = computed(() => {
+  const dadosAtuais = responsePedidos.value;
+  if (!dadosAtuais || !dadosAtuais.registros) return [];
+
+  return dadosAtuais.registros.map((item: any) => ({
+    ...item,
+    dtPrevisaoEntregaPdc: formatterUtils.formatarValor(item.dtPrevisaoEntregaPdc, 'data'),
+    valorTotalPendente: formatterUtils.formatarValor(item.valorTotalPendente, 'moeda'),
+  }));
 });
 </script>

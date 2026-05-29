@@ -14,13 +14,14 @@
             :th="['Codigo', 'Fornecedor', 'Qtd. Pedidos', 'Valor Total']"
             :campos="['fornecedorPdc', 'razaoSocialPessoa', 'totalPedidosComSaldoPendente', 'valorTotalPendente']"
             :campoKey="'fornecedorPdc'"
-            :dados="responseFornecedor.registros || []"
+            :dados="fornecedorFormatado || []"
             :height="'350px'"
             :expandido="expandido"
             :totalDeRegistros="responseFornecedor.paginacao.totalDeRegistros || 0"
             v-model:pagina="responseFornecedor.paginacao.pagina"
             v-model:limite="responseFornecedor.paginacao.limite"
-          />
+          >
+          </Tabela>
         </template>
       </CardParaComportarGraf>
     </v-col>
@@ -39,6 +40,9 @@ import CDatasetGraficoPizza from '@/components/graficos/pizza/CDatasetGraficoPiz
 import CFornecedoresPedidoCompraPendente from '@/service/tema-estoque/pedidos-compra-pendente/fornecedores-pedido-compra-pendente/CFornecedoresPedidoCompraPendenteModel';
 import CResumoPedidoCompraPendente from '@/service/tema-estoque/pedidos-compra-pendente/resumo-pedido-compra-pendente/CResumoPedidoCompraPendenteModel';
 import CResponseConsultaPaginada from '@/service/base/CResponseConsultaPaginada.ts';
+
+//Utils
+import formatterUtils from '@/utils/FormatterUtils';
 
 const props = defineProps<{
   dadosResumo: CResumoPedidoCompraPendente | null;
@@ -74,5 +78,15 @@ const dataSetPizza = computed(() => {
       },
     ],
   });
+});
+
+const fornecedorFormatado = computed(() => {
+  const dadosAtuais = responseFornecedor.value;
+  if (!dadosAtuais || !dadosAtuais.registros) return [];
+
+  return dadosAtuais.registros.map((item: any) => ({
+    ...item,
+    valorTotalPendente: formatterUtils.formatarValor(item.valorTotalPendente, 'moeda'),
+  }));
 });
 </script>

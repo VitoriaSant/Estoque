@@ -16,7 +16,7 @@
       <tbody>
         <tr v-for="item in itensPaginados" :key="item[campoKey]" :class="alerta(item)">
           <td v-for="campo in campos" :key="campo">
-            {{ formatarValorStore.formatarValor(item[campo], campo) }}
+            {{ item[campo] }}
           </td>
         </tr>
       </tbody>
@@ -51,11 +51,6 @@
 <script setup lang="ts">
 //Vue
 import { ref, computed } from 'vue';
-
-//Store
-import { useFormatarValorStore } from '@/stores/FormatarValorStore';
-
-const formatarValorStore = useFormatarValorStore();
 
 const pagina = defineModel<number>('pagina', {
   required: true,
@@ -113,6 +108,12 @@ const paginaInicial = () => {
   pagina.value = 1;
   paginaAtual.value = 1;
 };
+
+const alertaVermelho = computed(() => {
+  if(!props.dados) return [];
+  
+
+});
 
 const alerta = (item: any) => {
   const corDeAlerta = props.corDeAlerta ? item[props.corDeAlerta] : item.corDeAlerta;

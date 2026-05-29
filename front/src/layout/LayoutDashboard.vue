@@ -15,7 +15,7 @@
   <v-navigation-drawer v-model="drawer" app temporary>
     <v-list>
       <v-list-item title="Compras Pendentes" to="/pedido-compra-pendente" />
-      <v-list-item title="Ponto de Compra" to="/ponto-compra" />
+      <!-- <v-list-item title="Ponto de Compra" to="/ponto-compra" /> -->
       <v-list-item title="Exemplo de Gráficos" to="/exemplo-graficos" />
     </v-list>
   </v-navigation-drawer>

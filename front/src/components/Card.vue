@@ -10,22 +10,17 @@
   >
     <template v-slot:text>
       <h2>
-        {{ formatarValorStore.formatarValor(valor, 'valor') }}
+        {{ valor }}
       </h2>
     </template>
   </v-card>
 </template>
 <script setup lang="ts">
-//Store
-import { useFormatarValorStore } from '@/stores/FormatarValorStore';
-
-const formatarValorStore = useFormatarValorStore();
-
 interface Props {
   title?: string;
   subtitle?: string;
   icon?: string;
-  valor: number;
+  valor: number | string;
   cor?: string;
 }
 

@@ -14,7 +14,7 @@
         title="Valor Pendente"
         subtitle="Total de valores pendentes"
         icon="mdi-currency-usd"
-        :valor="props.dadosResumo?.valorTotal || 0"
+        :valor="valorTotal"
         :loading="!props.dadosResumo"
       />
     </v-col>
@@ -33,7 +33,7 @@
         title="Valor Pendente em Atraso"
         subtitle="Total de valores pendentes em atraso"
         icon="mdi-currency-usd"
-        :valor="props.dadosResumo?.valorTotalAtrasado || 0"
+        :valor="valorTotalAtrasadoFormatado"
         cor="error"
         :loading="!props.dadosResumo"
       />
@@ -42,11 +42,24 @@
 </template>
 
 <script setup lang="ts">
+//Vue
+import { computed } from 'vue';
+
 //Classe
 import CResumoPedidoCompraPendente from '@/service/tema-estoque/pedidos-compra-pendente/resumo-pedido-compra-pendente/CResumoPedidoCompraPendenteModel';
+
+//Utils
+import formatterUtils from '@/utils/FormatterUtils';
 
 const props = defineProps<{
   dadosResumo: CResumoPedidoCompraPendente;
 }>();
-</script>
 
+const valorTotalAtrasadoFormatado = computed(() => {
+  return formatterUtils.formatarValor(props.dadosResumo?.valorTotalAtrasado, 'moeda');
+});
+
+const valorTotal = computed(() => {
+  return formatterUtils.formatarValor(props.dadosResumo?.valorTotal, 'moeda');
+});
+</script>
