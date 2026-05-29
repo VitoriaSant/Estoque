@@ -2,9 +2,9 @@
   <v-row no-gutters>
     <v-col cols="12" md="4" class="pa-1">
       <CardParaComportarGraf :titulo="'Pedidos Pendentes'" :icon="'mdi-text-box-edit'">
-        <template #grafico="{ expandido }">
+        <!-- <template #grafico="{ expandido }">
           <Pizza :dataSet="dataSetPizza" :expandido="expandido" />
-        </template>
+        </template> -->
       </CardParaComportarGraf>
     </v-col>
     <v-col cols="12" md="8" class="pa-1">
@@ -14,9 +14,12 @@
             :th="['Codigo', 'Fornecedor', 'Qtd. Pedidos', 'Valor Total']"
             :campos="['fornecedorPdc', 'razaoSocialPessoa', 'totalPedidosComSaldoPendente', 'valorTotalPendente']"
             :campoKey="'fornecedorPdc'"
-            :dados="props.dadosFornecedor || []"
+            :dados="responseFornecedor.registros || []"
             :height="'350px'"
             :expandido="expandido"
+            :totalDeRegistros="responseFornecedor.paginacao.totalDeRegistros || 0"
+            v-model:pagina="responseFornecedor.paginacao.pagina"
+            v-model:limite="responseFornecedor.paginacao.limite"
           />
         </template>
       </CardParaComportarGraf>
@@ -34,11 +37,19 @@ import CDatasetGraficoPizza from '@/components/graficos/pizza/CDatasetGraficoPiz
 //Classes
 import CFornecedoresPedidoCompraPendente from '@/service/tema-estoque/pedidos-compra-pendente/fornecedores-pedido-compra-pendente/CFornecedoresPedidoCompraPendenteModel';
 import CResumoPedidoCompraPendente from '@/service/tema-estoque/pedidos-compra-pendente/resumo-pedido-compra-pendente/CResumoPedidoCompraPendenteModel';
+import CResponseConsultaPaginada from '@/service/base/CResponseConsultaPaginada.ts';
 
-const props = defineProps<{
-  dadosFornecedor: CFornecedoresPedidoCompraPendente[];
-  dadosResumo: CResumoPedidoCompraPendente | null;
-}>();
+// const props = defineProps<{
+//   dadosFornecedor: CFornecedoresPedidoCompraPendente[];
+//   dadosResumo: CResumoPedidoCompraPendente | null;
+// }>();
+
+const responseFornecedor = defineModel<CResponseConsultaPaginada<CFornecedoresPedidoCompraPendente>>(
+  'responseFornecedor',
+  {
+    required: true,
+  },
+);
 
 type TRegistroPizza = {
   titulo: string;

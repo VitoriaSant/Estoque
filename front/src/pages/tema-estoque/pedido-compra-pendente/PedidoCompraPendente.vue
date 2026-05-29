@@ -2,13 +2,8 @@
   <Error v-model:error="erro" :mensagem="mensagemErro" />
   <div>
     <Linha1-Cards-PedidoPendente :dadosResumo="dadosResumo" />
-    <Linha2-PedidoPendente-FornecedorAtraso
-      :dadosFornecedor="dadosFornecedor"
-      :dadosResumo="dadosResumo"
-      :key="`itens-${layoutStore.classeFiltro?.dataInicio || 'default'}`"
-    />
+    <Linha2-PedidoPendente-FornecedorAtraso v-model:responseFornecedor="responseFornecedor" />
     <Linha3-PedidoPendente-ItensPendentes
-      :key="`itens-${layoutStore.classeFiltro?.dataInicio || 'default'}`"
       v-model:responsePedidos="responsePedidos"
       v-model:responseItens="responseItens"
     />
@@ -34,16 +29,17 @@ import CResponseConsultaPaginada from '@/service/base/CResponseConsultaPaginada.
 import type CPedidoCompraPendenteGeralModel from '@/service/tema-estoque/pedidos-compra-pendente/CPedidoCompraPendenteGeralModel.ts';
 import type CPedidoCompraPendente from '@/service/tema-estoque/pedidos-compra-pendente/pedido-compra-pendente/CPedidoCompraPendenteModel.ts';
 import type CItensCompraPendente from '@/service/tema-estoque/pedidos-compra-pendente/itens-compra-pendente/CItensCompraPendenteModel.ts';
+import type CFornecedoresPedidoCompraPendente from '@/service/tema-estoque/pedidos-compra-pendente/fornecedores-pedido-compra-pendente/CFornecedoresPedidoCompraPendenteModel.ts';
 
 const layoutStore = useLayoutDashboardStore();
 const pedidoPendenteStore = usePedidoPendenteStore();
 const erro = ref<boolean>(false);
 const mensagemErro = ref('');
 const dadosResumo = ref<any>(null);
-const dadosFornecedor = ref<any>(null);
 
 const responsePedidos = ref(new CResponseConsultaPaginada<CPedidoCompraPendente>());
 const responseItens = ref(new CResponseConsultaPaginada<CItensCompraPendente>());
+const responseFornecedor = ref(new CResponseConsultaPaginada<CFornecedoresPedidoCompraPendente>());
 const atualizandoFiltrosGerais = ref(false);
 
 const montarFiltroComPaginacao = (paginacao: { pagina: number; limite: number; totalDeRegistros: number | null }) =>
@@ -70,9 +66,10 @@ const carregarItens = async () => {
   responseItens.value = itens;
 };
 
-const resetarPaginas = () => {
-  responsePedidos.value.paginacao.pagina = 1;
-  responseItens.value.paginacao.pagina = 1;
+const carregarFornecedor = async () => {
+  const filtroFornecedor = montarFiltroComPaginacao(responseFornecedor.value.paginacao);
+  const itens = await pedidoPendenteStore.filtrarFornecedorPedidoCompraPendente(filtroFornecedor);
+  responseFornecedor.value = itens;
 };
 
 const carregarDados = async () => {
@@ -80,10 +77,7 @@ const carregarDados = async () => {
     // const resumo = await pedidoPendenteStore.filtrarResumoPedidoCompraPendete(layoutStore.classeFiltro);
     // dadosResumo.value = Array.isArray(resumo.dados) ? resumo.dados[0] : resumo.dados;
 
-    // const fornecedor = await pedidoPendenteStore.filtrarFornecedorPedidoCompraPendente(layoutStore.classeFiltro);
-    // dadosFornecedor.value = fornecedor.dados;
-
-    await Promise.all([carregarPedidos(), carregarItens()]);
+    await Promise.all([carregarPedidos(), carregarItens(), carregarFornecedor()]);
   } catch (error) {
     mensagemErro.value = error as string;
     erro.value = true;
@@ -96,7 +90,6 @@ watch(
     atualizandoFiltrosGerais.value = true;
 
     try {
-      resetarPaginas();
       await carregarDados();
     } finally {
       atualizandoFiltrosGerais.value = false;
@@ -105,23 +98,23 @@ watch(
   { deep: true },
 );
 
-watch(
-  [() => responsePedidos.value.paginacao.pagina, () => responsePedidos.value.paginacao.limite],
-  () => {
-    if (atualizandoFiltrosGerais.value) return;
+watch([() => responsePedidos.value.paginacao.pagina, () => responsePedidos.value.paginacao.limite], () => {
+  if (atualizandoFiltrosGerais.value) return;
 
-    carregarPedidos();
-  },
-);
+  carregarPedidos();
+});
 
-watch(
-  [() => responseItens.value.paginacao.pagina, () => responseItens.value.paginacao.limite],
-  () => {
-    if (atualizandoFiltrosGerais.value) return;
+watch([() => responseItens.value.paginacao.pagina, () => responseItens.value.paginacao.limite], () => {
+  if (atualizandoFiltrosGerais.value) return;
 
-    carregarItens();
-  },
-);
+  carregarItens();
+});
+
+watch([() => responseFornecedor.value.paginacao.pagina, () => responseFornecedor.value.paginacao.limite], () => {
+  if (atualizandoFiltrosGerais.value) return;
+
+  carregarFornecedor();
+});
 
 onMounted(() => {
   carregarDados();
