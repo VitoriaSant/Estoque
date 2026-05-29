@@ -1,16 +1,17 @@
-export default class CResponseConsultaPaginada<Classe> {
+import CResponseConsulta from './CResponseConsulta';
+
+export default class CResponseConsultaPaginada<Classe> extends CResponseConsulta<Classe> {
   paginacao: {
     pagina: number;
     limite: number;
     totalDeRegistros: number | null;
   } = { pagina: 1, limite: 10, totalDeRegistros: null };
 
-  registros: Classe[] = [];
-
   constructor(pParams?: Partial<CResponseConsultaPaginada<Classe>>) {
+    super(pParams);
+
     if (!pParams) return;
 
     this.paginacao = pParams.paginacao ?? this.paginacao;
-    this.registros = pParams.registros ?? this.registros;
   }
 }

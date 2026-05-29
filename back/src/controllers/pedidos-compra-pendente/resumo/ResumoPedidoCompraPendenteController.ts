@@ -6,7 +6,7 @@ import options from '../../../database/conection';
 import { Request, Response } from 'express';
 //Classes
 import CClasseFiltro, { CFiltro } from '../../base/CClasseFiltro';
-//Model
+import CResponseConsulta from '../../base/CResponseConsulta';
 import CPedidoCompraPendenteModel from '../CPedidoCompraPendenteGeralModel';
 import CResumoPedidoCompraPendente from './CResumoPedidoCompraPendenteModel';
 
@@ -114,10 +114,9 @@ export default class ResumoPedidoCompraPendenteController {
           ? result.map((row) => CResumoPedidoCompraPendente.fromDatabaseRow(row))
           : CResumoPedidoCompraPendente.fromDatabaseRow(result);
 
-        const response = {
-          dados: Array.isArray(dadosMapeados) ? dadosMapeados : [dadosMapeados],
-        };
-
+        const response = new CResponseConsulta<CResumoPedidoCompraPendente>({
+          registros: Array.isArray(dadosMapeados) ? dadosMapeados : [dadosMapeados],
+        });
         res.json(response);
         db.detach();
       });
