@@ -8,9 +8,9 @@ export default class CorDeAlerta {
     const tempoAtual = diaAtual.getTime();
 
     if (tempoData < tempoAtual) {
-      return 'vermelho';
+      return 'Vermelho';
     }
 
-    return 'normal';
+    return '';
   }
 }

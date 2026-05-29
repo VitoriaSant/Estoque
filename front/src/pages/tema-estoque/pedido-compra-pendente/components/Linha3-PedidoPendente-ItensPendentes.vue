@@ -1,5 +1,4 @@
 ﻿<template>
-  {{ pedidosFormatado }}
   <v-row no-gutters>
     <v-col cols="12" md="7" class="pa-1">
       <CardParaComportarGraf :titulo="'Itens Pendentes'" :icone="'mdi-archive-alert'">
@@ -9,7 +8,6 @@
             :campos="['itemPdc', 'descricaoItem', 'quantidadeItensPendentes', 'valorTotalPendente', 'mediaValorUn']"
             :campoKey="'IdItem'"
             :height="'350px'"
-            :corDeAlerta="'corDeAlerta'"
             :expandido="expandido"
             :dados="itensFormatado || []"
             :totalDeRegistros="responseItens.paginacao.totalDeRegistros || 0"
@@ -33,6 +31,7 @@
             :campos="['codicoPdc', 'dtPrevisaoEntregaPdc', 'valorTotalPendente']"
             :campoKey="'codicoPdc'"
             :height="'350px'"
+            :corDeAlerta="'corDeAlerta'"
             :expandido="expandido"
             :dados="pedidosFormatado || []"
             :totalDeRegistros="responsePedidos.paginacao.totalDeRegistros || 0"
@@ -88,6 +87,7 @@ const pedidosFormatado = computed(() => {
     ...item,
     dtPrevisaoEntregaPdc: formatterUtils.formatarValor(item.dtPrevisaoEntregaPdc, 'data'),
     valorTotalPendente: formatterUtils.formatarValor(item.valorTotalPendente, 'moeda'),
+    corDeAlerta: corDeAlerta.alerta(item.dtPrevisaoEntregaPdc),
   }));
 });
 </script>
