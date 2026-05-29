@@ -21,9 +21,6 @@ declare module 'vue-router/auto-routes' {
     '/filtro/components/DatasFiltro': RouteRecordInfo<'/filtro/components/DatasFiltro', '/filtro/components/DatasFiltro', Record<never, never>, Record<never, never>>,
     '/filtro/components/OpcoesFiltro': RouteRecordInfo<'/filtro/components/OpcoesFiltro', '/filtro/components/OpcoesFiltro', Record<never, never>, Record<never, never>>,
     '/filtro/components/PesquisaFiltro': RouteRecordInfo<'/filtro/components/PesquisaFiltro', '/filtro/components/PesquisaFiltro', Record<never, never>, Record<never, never>>,
-    '/filtro/Components/DatasFiltro': RouteRecordInfo<'/filtro/Components/DatasFiltro', '/filtro/Components/DatasFiltro', Record<never, never>, Record<never, never>>,
-    '/filtro/Components/OpcoesFiltro': RouteRecordInfo<'/filtro/Components/OpcoesFiltro', '/filtro/Components/OpcoesFiltro', Record<never, never>, Record<never, never>>,
-    '/filtro/Components/PesquisaFiltro': RouteRecordInfo<'/filtro/Components/PesquisaFiltro', '/filtro/Components/PesquisaFiltro', Record<never, never>, Record<never, never>>,
     '/filtro/Filtro': RouteRecordInfo<'/filtro/Filtro', '/filtro/Filtro', Record<never, never>, Record<never, never>>,
     '/login/Login': RouteRecordInfo<'/login/Login', '/login/Login', Record<never, never>, Record<never, never>>,
     '/tema-estoque/exemplo-graficos/components/Info-ExemploGraficos': RouteRecordInfo<'/tema-estoque/exemplo-graficos/components/Info-ExemploGraficos', '/tema-estoque/exemplo-graficos/components/Info-ExemploGraficos', Record<never, never>, Record<never, never>>,
@@ -65,18 +62,6 @@ declare module 'vue-router/auto-routes' {
     }
     'src/pages/filtro/components/PesquisaFiltro.vue': {
       routes: '/filtro/components/PesquisaFiltro'
-      views: never
-    }
-    'src/pages/filtro/Components/DatasFiltro.vue': {
-      routes: '/filtro/Components/DatasFiltro'
-      views: never
-    }
-    'src/pages/filtro/Components/OpcoesFiltro.vue': {
-      routes: '/filtro/Components/OpcoesFiltro'
-      views: never
-    }
-    'src/pages/filtro/Components/PesquisaFiltro.vue': {
-      routes: '/filtro/Components/PesquisaFiltro'
       views: never
     }
     'src/pages/filtro/Filtro.vue': {
