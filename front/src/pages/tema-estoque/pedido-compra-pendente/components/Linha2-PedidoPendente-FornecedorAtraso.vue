@@ -2,9 +2,9 @@
   <v-row no-gutters>
     <v-col cols="12" md="4" class="pa-1">
       <CardParaComportarGraf :titulo="'Pedidos Pendentes'" :icon="'mdi-text-box-edit'">
-        <!-- <template #grafico="{ expandido }">
+        <template #grafico="{ expandido }">
           <Pizza :dataSet="dataSetPizza" :expandido="expandido" />
-        </template> -->
+        </template>
       </CardParaComportarGraf>
     </v-col>
     <v-col cols="12" md="8" class="pa-1">
@@ -32,6 +32,7 @@
 import { computed } from 'vue';
 
 //componente
+import Pizza from '@/components/graficos/pizza/Pizza.vue';
 import CDatasetGraficoPizza from '@/components/graficos/pizza/CDatasetGraficoPizza';
 
 //Classes
@@ -39,10 +40,9 @@ import CFornecedoresPedidoCompraPendente from '@/service/tema-estoque/pedidos-co
 import CResumoPedidoCompraPendente from '@/service/tema-estoque/pedidos-compra-pendente/resumo-pedido-compra-pendente/CResumoPedidoCompraPendenteModel';
 import CResponseConsultaPaginada from '@/service/base/CResponseConsultaPaginada.ts';
 
-// const props = defineProps<{
-//   dadosFornecedor: CFornecedoresPedidoCompraPendente[];
-//   dadosResumo: CResumoPedidoCompraPendente | null;
-// }>();
+const props = defineProps<{
+  dadosResumo: CResumoPedidoCompraPendente | null;
+}>();
 
 const responseFornecedor = defineModel<CResponseConsultaPaginada<CFornecedoresPedidoCompraPendente>>(
   'responseFornecedor',
@@ -53,8 +53,11 @@ const responseFornecedor = defineModel<CResponseConsultaPaginada<CFornecedoresPe
 
 type TRegistroPizza = {
   titulo: string;
-  valor: number[];
+  valor: number;
 };
+
+const valorPendenteNoPrazo =
+  (props.dadosResumo?.totalPedidosComSaldo ?? 0) - (props.dadosResumo?.totalPedidosAtrasados ?? 0);
 
 const dataSetPizza = computed(() => {
   return new CDatasetGraficoPizza<TRegistroPizza>({
@@ -63,11 +66,11 @@ const dataSetPizza = computed(() => {
     registros: [
       {
         titulo: 'Pedidos em Atraso',
-        valor: [props.dadosResumo?.totalPedidosAtrasados || 0],
+        valor: props.dadosResumo?.totalPedidosAtrasados || 0,
       },
       {
-        titulo: 'Pedidos no Prazo',
-        valor: [props.dadosResumo?.totalPedidosComSaldo || 0],
+        titulo: 'Pedidos Pendentes',
+        valor: valorPendenteNoPrazo,
       },
     ],
   });

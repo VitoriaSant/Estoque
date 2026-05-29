@@ -42,23 +42,20 @@ const options = computed<ApexOptions>(() => {
       fontSize: '12px',
       offsetY: 10,
     },
-    labels: lLabels,
+    labels: labels.value,
   };
   return lOptions;
 });
 
-const lLabels = [] as any[];
-for (const registro of props.dataSet.registros) {
-  lLabels.push(registro[props.dataSet.campoLabel]);
-}
-
-const lDados = [] as any[];
-for (const registro of props.dataSet.registros) {
-  lDados.push(registro[props.dataSet.campoValor]);
-}
+const labels = computed(() => {
+  return props.dataSet.registros.map((registro) => registro[props.dataSet.campoLabel]);
+});
 
 const series = computed(() => {
-  return lDados;
+  return props.dataSet.registros.map((registro) => {
+    const valor = registro[props.dataSet.campoValor];
+    return Array.isArray(valor) ? valor[0] : valor;
+  });
 });
 </script>
 <style scoped>

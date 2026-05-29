@@ -2,7 +2,10 @@
   <Error v-model:error="erro" :mensagem="mensagemErro" />
   <div>
     <Linha1-Cards-PedidoPendente :dadosResumo="dadosResumo" />
-    <Linha2-PedidoPendente-FornecedorAtraso v-model:responseFornecedor="responseFornecedor" />
+    <Linha2-PedidoPendente-FornecedorAtraso
+      :dadosResumo="dadosResumo"
+      v-model:responseFornecedor="responseFornecedor"
+    />
     <Linha3-PedidoPendente-ItensPendentes
       v-model:responsePedidos="responsePedidos"
       v-model:responseItens="responseItens"
@@ -74,8 +77,8 @@ const carregarFornecedor = async () => {
 
 const carregarDados = async () => {
   try {
-    // const resumo = await pedidoPendenteStore.filtrarResumoPedidoCompraPendete(layoutStore.classeFiltro);
-    // dadosResumo.value = Array.isArray(resumo.dados) ? resumo.dados[0] : resumo.dados;
+    const resumo = await pedidoPendenteStore.filtrarResumoPedidoCompraPendete(layoutStore.classeFiltro);
+    dadosResumo.value = Array.isArray(resumo.dados) ? resumo.dados[0] : resumo.dados;
 
     await Promise.all([carregarPedidos(), carregarItens(), carregarFornecedor()]);
   } catch (error) {
