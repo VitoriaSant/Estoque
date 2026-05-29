@@ -14,4 +14,11 @@ export default class CResponseConsultaPaginada<Classe> extends CResponseConsulta
 
     this.paginacao = pParams.paginacao ?? this.paginacao;
   }
+
+  toJSON() {
+    return {
+      paginacao: this.paginacao,
+      registros: this.registros,
+    };
+  }
 }
