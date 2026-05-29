@@ -7,8 +7,6 @@ import { Request, Response } from 'express';
 //Classes
 import CClasseFiltro, { CFiltro } from '../../base/CClasseFiltro';
 import CResponseConsultaPaginada from '../../base/CResponseConsultaPaginada';
-
-//Model
 import CPedidoCompraPendenteGeralModel from '../CPedidoCompraPendenteGeralModel';
 import CPedidoCompraPendenteModel from './CPedidoCompraPendenteModel';
 
