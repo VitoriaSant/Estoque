@@ -28,10 +28,10 @@ O objetivo deste repositório é servir como **portfólio técnico**, permitindo
 <img width="1252" height="780" alt="Login" src="https://github.com/user-attachments/assets/281ec41b-9d09-4122-bf65-5e2f2ddd24a9" />
 
 #### 🔎 Filtros
-<img width="1318" height="885" alt="Filtros" src="https://github.com/user-attachments/assets/0c9faadd-d861-4a2c-b8e5-e04657c4ac4e" />
+<img width="1318" height="885" alt="Filtros" src="https://github.com/user-attachments/assets/e4e350a0-2c4a-4461-98f2-a29c0af1b1e3" />
 
 #### ⏳ Tela de Pedido de Compra Pendente
-<img width="1319" height="880" alt="PedidoCompraPendente" src="https://github.com/user-attachments/assets/9a7ccb23-38a7-4e00-a1ee-dce2018695fb" />
+<img width="1319" height="880" alt="PedidoCompraPendente" src="https://github.com/user-attachments/assets/6edaed5e-d49b-4c24-b46c-300a9214c794" />
 
 #### 📝 Tela de Ponto de Compra
 
