@@ -25,6 +25,7 @@ O objetivo deste repositório é servir como **portfólio técnico**, permitindo
 ### Capturas de Tela (Screenshots)
 
 #### 🔒 Tela Login
+<img width="1252" height="780" alt="Login" src="https://github.com/user-attachments/assets/281ec41b-9d09-4122-bf65-5e2f2ddd24a9" />
 
 #### ⏳ Tela de Pedido de Compra Pendente
 
