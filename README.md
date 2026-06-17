@@ -27,8 +27,15 @@ O objetivo deste repositório é servir como **portfólio técnico**, permitindo
 #### 🔒 Tela Login
 <img width="1252" height="780" alt="Login" src="https://github.com/user-attachments/assets/281ec41b-9d09-4122-bf65-5e2f2ddd24a9" />
 
+#### 🔎 Filtros
+
 #### ⏳ Tela de Pedido de Compra Pendente
 
 #### 📝 Tela de Ponto de Compra
 
 #### 📊 Tela de Exemplos de Graficos 
+<img width="1321" height="771" alt="ExemplosGraficos" src="https://github.com/user-attachments/assets/dabbf500-9c75-483c-8c88-8f5f72035dff" />
+<img width="1323" height="347" alt="ExemplosGraficos2" src="https://github.com/user-attachments/assets/9f23fb80-9382-47fe-8059-911c55d8ad79" />
+
+
+
